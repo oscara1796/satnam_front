@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, ButtonGroup, Carousel, Container } from 'react-bootstrap'; // new
 import { LinkContainer } from 'react-router-bootstrap'; // new
 import portada from '../assets/img/portada_feed.jpg'
@@ -9,6 +9,7 @@ import cerebro from '../assets/img/cerebro.png'
 import fuerte from '../assets/img/fuerte.png'
 import video_presentation from '../assets/img/Benvenida.m4v'
 import benefits_pose_sandra from '../assets/img/benefits_pose_sandra.jpeg'
+import { getUser, getAccessToken } from '../services/AuthService'; 
 
 
 function Landing (props) {
@@ -24,6 +25,21 @@ function Landing (props) {
 
 
 function CarouselItem(props) {
+
+  const [userData, setUserData] = useState({});
+
+  useEffect(() => {
+    const fetchUser =() => {
+      const user = getUser();
+      console.log("user ", user);
+      if (user != undefined){
+        setUserData(user);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
   const carouselItems = [
     {
       id: 1,
@@ -55,7 +71,9 @@ function CarouselItem(props) {
                   />
                   <div className="carousel-caption">
                     <h1>{item.caption}</h1>
-                    { props.isLoggedIn ? (<></>) : (<Button variant="outline-light">Inscríbite</Button>)}
+                    { userData.active ? (<></>) : ( <LinkContainer to='/sub-form'>
+                      <Button variant="outline-light">Inscríbite</Button>
+                        </LinkContainer>)}
                   </div>
                 </div>
               </Carousel.Item>

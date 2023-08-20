@@ -11,7 +11,11 @@ import logo from './assets/img/logo.svg'
 import Landing from './components/Landing';
 import LogIn from './components/LogIn';
 import SignUp from './components/SignUp';
+import SubscriptionForm from './components/SubscriptionForm';
+import UserAccount from './components/UserAccount';
 import axios from 'axios';
+import { getUser, getAccessToken, isTokenExpired } from './services/AuthService'; 
+import { getSubscription } from './services/SubsService'; 
 
 
 
@@ -20,9 +24,13 @@ import './App.css';
 // changed
 function App () {
 
+  const [isSubscriptionFormSubmitted, setSubscriptionFormSubmitted] = useState(false);
+
   const [isLoggedIn, setLoggedIn] = useState(() => {
     return window.localStorage.getItem('satnam.auth') !== null;
   });
+
+  const [subscriptionActive, setSubscriptionActive] = useState({});
   const logIn = async (username, password) => {
     // const url = '/api/log_in/';
 
@@ -47,6 +55,35 @@ function App () {
     setLoggedIn(false);
   };
 
+  useEffect(() => {
+    const fetchRefreshToken = async () => {
+      if (isTokenExpired() || isSubscriptionFormSubmitted) {
+        const refreshToken = JSON.parse(
+          window.localStorage.getItem('satnam.auth')
+        )?.refresh;
+        if (!refreshToken) {
+          logOut(); // No refresh token, trigger logout
+          return;
+        }
+  
+        const url = `${process.env.REACT_APP_BASE_URL}/api/token/refresh/`;
+        try {
+          const response = await axios.post(url, { refresh: refreshToken });
+          window.localStorage.setItem(
+            'satnam.auth',
+            JSON.stringify(response.data)
+          );
+          setLoggedIn(true);
+        } catch (error) {
+          console.error(error);
+          logOut(); // Failed to refresh token, trigger logout
+        }
+      } 
+    };
+
+    fetchRefreshToken();
+  }, [isSubscriptionFormSubmitted]);
+
   return (
     <Routes>
        <Route 
@@ -58,9 +95,11 @@ function App () {
                   />
                 } 
               > 
-       <Route index element={<Landing isLoggedIn={isLoggedIn} />} />
+       <Route index element={<Landing isLoggedIn={isLoggedIn}  />} />
         <Route path='sign-up' element={<SignUp isLoggedIn={isLoggedIn}  />} />
         <Route path='log-in' element={<LogIn isLoggedIn={isLoggedIn}   logIn={logIn} />} />
+        <Route path='account' element={<UserAccount isLoggedIn={isLoggedIn}  setSubscriptionFormSubmitted={setSubscriptionFormSubmitted}     logIn={logIn} />} />
+        <Route path='sub-form' element={<SubscriptionForm isLoggedIn={isLoggedIn}  setSubscriptionFormSubmitted={setSubscriptionFormSubmitted}     logIn={logIn} />} />
       </Route>
     </Routes>
   );
@@ -116,7 +155,7 @@ function Layout ({ isLoggedIn, logOut }) {
                   {
                     isLoggedIn ? (
                       <>
-                        <LinkContainer to='/sign-up'>
+                        <LinkContainer to='/account'>
                           <Button data-cy="account">Account</Button>
                         </LinkContainer>
                         <Form>

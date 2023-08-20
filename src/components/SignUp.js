@@ -24,6 +24,8 @@ function SignUp ({isLoggedIn}) {
     formData.append('email', values.email);
     formData.append('telephone', values.telephone);
 
+    
+
     try{
       await axios.post(url, formData);
       setSubmitted(true);

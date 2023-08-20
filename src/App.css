@@ -33,11 +33,11 @@ html{
   margin-left: 1% !important;
   margin-right: 1% !important;
   width: 8vw;
-  background-color: #0230c7 !important;
+  background-color: #137ea7!important;
 }
 
 .navbar-nav button{
-  background-color: #0230c7 !important;
+  background-color: #137ea7!important;
 }
 .navbar-nav .auth_buttons{
   width: 50%;
@@ -164,7 +164,7 @@ html{
   font-size: 100px;
 }
 
-.carousel-caption button{
+.carousel-caption a{
   font-size: 2em;
 }
 
@@ -173,7 +173,7 @@ html{
   .carousel-caption h1{
     font-size: 3rem;
   }
-  .carousel-caption button{
+  .carousel-caption a{
     font-size: 2rem;
   }
   
@@ -276,3 +276,37 @@ html{
 
 
 /* END OF LANDING PAGE */
+
+
+/* USER ACCOUNT COMPONENT  */
+
+.user_info_container {
+  height: 100vh;
+}
+
+.user-info {
+  text-align: center;
+  font-size: 2rem;
+}
+
+.user-info h4 {
+  font-size: 3rem;
+}
+
+.user-info > div:not(:first-child) {
+  margin-top: 15px;
+}
+
+.user_form {
+  /* margin: 1em 0px 0px 0px; */
+  padding-top: 1rem;
+}
+
+.user_form button{
+  margin: 0px 1em 0px 0px;
+}
+
+
+/* END OF USER ACCOUNT INFO */
+
+
