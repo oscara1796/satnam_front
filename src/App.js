@@ -21,6 +21,8 @@ import { getSubscription } from './services/SubsService';
 
 import './App.css';
 
+
+
 // changed
 function App () {
 
@@ -55,6 +57,8 @@ function App () {
     setLoggedIn(false);
   };
 
+
+
   useEffect(() => {
     const fetchRefreshToken = async () => {
       if (isTokenExpired() || isSubscriptionFormSubmitted) {
@@ -79,10 +83,38 @@ function App () {
           logOut(); // Failed to refresh token, trigger logout
         }
       } 
+
+      if (isSubscriptionFormSubmitted) {
+          const user = getUser();
+
+          showPaymentAlert(user.active);
+      }
     };
 
     fetchRefreshToken();
   }, [isSubscriptionFormSubmitted]);
+
+
+  function showPaymentAlert(isSuccessful) {
+    const alertContainer = document.getElementById('paymentAlert');
+    const alertMessage = alertContainer.querySelector('.alert-message');
+  
+    if (isSuccessful) {
+        alertContainer.style.backgroundColor = '#04b852'; // Green background for success
+        alertMessage.textContent = 'El pago se ha realizado con éxito';
+    } else {
+        alertContainer.style.backgroundColor = '#dc3545'; // Red background for failure
+        alertMessage.textContent = 'Payment Failed';
+    }
+  
+    alertContainer.style.display = 'flex';
+  }
+  
+  const  closePaymentAlert = () => {
+    const alertContainer = document.getElementById('paymentAlert');
+    alertContainer.style.display = 'none';
+    console.log("hola");
+  }
 
   return (
     <Routes>
@@ -92,6 +124,7 @@ function App () {
                   <Layout  
                       isLoggedIn={isLoggedIn}
                       logOut={logOut}  
+                      closePaymentAlert={closePaymentAlert}
                   />
                 } 
               > 
@@ -105,7 +138,7 @@ function App () {
   );
 }
 
-function Layout ({ isLoggedIn, logOut }) {
+function Layout ({ isLoggedIn, logOut, closePaymentAlert }) {
 
   const [isSticky, setIsSticky] = useState(false);
 
@@ -183,12 +216,21 @@ function Layout ({ isLoggedIn, logOut }) {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+      {/* <!-- Alert container --> */}
+        <div id="paymentAlert" class="alert-container">
+            <p class="alert-message"></p>
+            <button class="alert-button" onClick={() => closePaymentAlert()}>OK</button>
+        </div>
       {/* <Container className='pt-3'> */}
         <Outlet />
       {/* </Container> */}
     </>
   );
 }
+
+
+
+
 
 
 export default App;

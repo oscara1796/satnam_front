@@ -7,6 +7,8 @@ import { Navigate } from 'react-router-dom';
 import axios from 'axios';
 import { getUser, getAccessToken } from '../services/AuthService'; 
 
+
+
 const SubscriptionForm = ({isLoggedIn, setSubscriptionFormSubmitted, logIn}) => {
   const [isSubmitted, setSubmitted] = useState(false);
 
@@ -37,9 +39,13 @@ const SubscriptionForm = ({isLoggedIn, setSubscriptionFormSubmitted, logIn}) => 
         headers: headers,
       });
       console.log('Subscription created:', response.data);
+      if (response.data.status == 'incomplete') {
+        throw new Error("Subscription was not able to complete");
+      }
       setSubscriptionFormSubmitted(true);
       setSubmitted(true);
     } catch (error) {
+      setSubscriptionFormSubmitted(true);
       console.error('Error creating subscription:', error.response.data);
     }
   };
@@ -56,6 +62,7 @@ const SubscriptionForm = ({isLoggedIn, setSubscriptionFormSubmitted, logIn}) => 
 
   return (
     <Container className="mt-2  sub_form">
+            
             <Formik
               initialValues={initialValues}
               onSubmit={handleSubmit}
