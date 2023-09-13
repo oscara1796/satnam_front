@@ -52,28 +52,7 @@ const logOut = () => {
 
 describe('Payment', function () {
 
-      it('failed payment', function () {
-        signUp();
-        logIn();
-        cy.intercept('POST', 'http://localhost:8009/api/create_subscription/1/').as('createSubscription');
-        cy.get('a[role="button"][tabindex="0"][href="#/sub-form"].btn.btn-outline-light')
-        .eq(0)  // Index 0 refers to the first matching element
-        .click();
-
-
-        cy.visit('/#/sub-form');
-        
-        cy.get('input[name="card_number"]').type("4000000000000341");
-        cy.get('input[name="exp_month"]').type("12");
-        cy.get('input[name="exp_year"]').type("2025");
-        cy.get('input[name="cvc"]').type("123");
-        cy.get('button').contains('Subscribe').click();
-        cy.wait('@createSubscription', 5000);
-        cy.visit('/#/');
-        cy.hash().should('eq', '#/');
-    });
-    // it('Can pay', function () {
-        
+    //   it('failed payment', function () {
     //     signUp();
     //     logIn();
     //     cy.intercept('POST', 'http://localhost:8009/api/create_subscription/1/').as('createSubscription');
@@ -84,14 +63,35 @@ describe('Payment', function () {
 
     //     cy.visit('/#/sub-form');
         
-    //     cy.get('input[name="card_number"]').type("4242424242424242");
+    //     cy.get('input[name="card_number"]').type("4000000000000341");
     //     cy.get('input[name="exp_month"]').type("12");
     //     cy.get('input[name="exp_year"]').type("2025");
     //     cy.get('input[name="cvc"]').type("123");
     //     cy.get('button').contains('Subscribe').click();
     //     cy.wait('@createSubscription', 5000);
+    //     cy.visit('/#/');
     //     cy.hash().should('eq', '#/');
     // });
+    it('Can pay', function () {
+        
+        signUp();
+        logIn();
+        cy.intercept('POST', 'http://localhost:8009/api/create_subscription/1/').as('createSubscription');
+        cy.get('a[role="button"][tabindex="0"][href="#/sub-form"].btn.btn-outline-light')
+        .eq(0)  // Index 0 refers to the first matching element
+        .click();
+
+
+        cy.visit('/#/sub-form');
+        
+        cy.get('input[name="card_number"]').type("4242424242424242");
+        cy.get('input[name="exp_month"]').type("12");
+        cy.get('input[name="exp_year"]').type("2025");
+        cy.get('input[name="cvc"]').type("123");
+        cy.get('button').contains('Subscribe').click();
+        cy.wait('@createSubscription', 5000);
+        cy.hash().should('eq', '#/');
+    });
 
 
     

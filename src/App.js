@@ -16,6 +16,8 @@ import UserAccount from './components/UserAccount';
 import axios from 'axios';
 import { getUser, getAccessToken, isTokenExpired } from './services/AuthService'; 
 import { getSubscription } from './services/SubsService'; 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -57,64 +59,82 @@ function App () {
     setLoggedIn(false);
   };
 
+  const fetchRefreshToken = async () => {
+      const refreshToken = JSON.parse(
+        window.localStorage.getItem('satnam.auth')
+      )?.refresh;
+      if (!refreshToken) {
+        console.log("No refresh token");
+        logOut(); // No refresh token, trigger logout
+        return;
+      }
+
+      const url = `${process.env.REACT_APP_BASE_URL}/api/token/refresh/`;
+      try {
+        const response = await axios.post(url, { refresh: refreshToken });
+        window.localStorage.setItem(
+          'satnam.auth',
+          JSON.stringify(response.data)
+        );
+        setLoggedIn(true);
+      } catch (error) {
+        console.error(error);
+        logOut(); // Failed to refresh token, trigger logout
+      }
+    
+  };
+
 
 
   useEffect(() => {
-    const fetchRefreshToken = async () => {
-      if (isTokenExpired() || isSubscriptionFormSubmitted) {
-        const refreshToken = JSON.parse(
-          window.localStorage.getItem('satnam.auth')
-        )?.refresh;
-        if (!refreshToken) {
-          logOut(); // No refresh token, trigger logout
-          return;
-        }
-  
-        const url = `${process.env.REACT_APP_BASE_URL}/api/token/refresh/`;
-        try {
-          const response = await axios.post(url, { refresh: refreshToken });
-          window.localStorage.setItem(
-            'satnam.auth',
-            JSON.stringify(response.data)
-          );
-          setLoggedIn(true);
-        } catch (error) {
-          console.error(error);
-          logOut(); // Failed to refresh token, trigger logout
-        }
-      } 
-
+    const subSubmitedToken = async () => {
+      
       if (isSubscriptionFormSubmitted) {
-          const user = getUser();
-
+        await fetchRefreshToken();
+        const user = getUser();
+        if (user != undefined) {
           showPaymentAlert(user.active);
+          setSubscriptionFormSubmitted(false);
+        }
       }
     };
 
-    fetchRefreshToken();
+    subSubmitedToken();
   }, [isSubscriptionFormSubmitted]);
+
+  useEffect(() => {
+    const fetchRefreshToken = async () => {
+      if (isTokenExpired() && isLoggedIn) {
+        fetchRefreshToken();
+      } 
+    };
+
+    fetchRefreshToken();
+  }, []);
 
 
   function showPaymentAlert(isSuccessful) {
-    const alertContainer = document.getElementById('paymentAlert');
-    const alertMessage = alertContainer.querySelector('.alert-message');
+    
   
     if (isSuccessful) {
-        alertContainer.style.backgroundColor = '#04b852'; // Green background for success
-        alertMessage.textContent = 'El pago se ha realizado con éxito';
+        toast.success('Pago  Aprovado!', {
+          position: toast.POSITION.TOP_CENTER, // You can customize the position
+          closeOnClick: true,
+          pauseOnHover: true,
+          autoClose: false,
+        });
     } else {
-        alertContainer.style.backgroundColor = '#dc3545'; // Red background for failure
-        alertMessage.textContent = 'Payment Failed';
+      toast.error('Payment Failed!', {
+        position: toast.POSITION.TOP_CENTER, // You can customize the position
+        closeOnClick: true,
+        pauseOnHover: true,
+        autoClose: false,
+      });
     }
   
-    alertContainer.style.display = 'flex';
   }
   
-  const  closePaymentAlert = () => {
-    const alertContainer = document.getElementById('paymentAlert');
-    alertContainer.style.display = 'none';
-    console.log("hola");
-  }
+  
 
   return (
     <Routes>
@@ -124,7 +144,6 @@ function App () {
                   <Layout  
                       isLoggedIn={isLoggedIn}
                       logOut={logOut}  
-                      closePaymentAlert={closePaymentAlert}
                   />
                 } 
               > 
@@ -138,7 +157,7 @@ function App () {
   );
 }
 
-function Layout ({ isLoggedIn, logOut, closePaymentAlert }) {
+function Layout ({ isLoggedIn, logOut }) {
 
   const [isSticky, setIsSticky] = useState(false);
 
@@ -217,10 +236,7 @@ function Layout ({ isLoggedIn, logOut, closePaymentAlert }) {
         </Container>
       </Navbar>
       {/* <!-- Alert container --> */}
-        <div id="paymentAlert" class="alert-container">
-            <p class="alert-message"></p>
-            <button class="alert-button" onClick={() => closePaymentAlert()}>OK</button>
-        </div>
+        <ToastContainer />
       {/* <Container className='pt-3'> */}
         <Outlet />
       {/* </Container> */}

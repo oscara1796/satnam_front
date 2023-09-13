@@ -11,6 +11,9 @@ import { getUser, getAccessToken } from '../services/AuthService';
 
 const SubscriptionForm = ({isLoggedIn, setSubscriptionFormSubmitted, logIn}) => {
   const [isSubmitted, setSubmitted] = useState(false);
+  
+  
+  
 
 
   const initialValues = {
@@ -21,6 +24,7 @@ const SubscriptionForm = ({isLoggedIn, setSubscriptionFormSubmitted, logIn}) => 
   };
 
   const handleSubmit = async (values) => {
+    
     let user = getUser();
     let url = `${process.env.REACT_APP_BASE_URL}/api/create_subscription/${user.id}/`;
 
@@ -39,15 +43,14 @@ const SubscriptionForm = ({isLoggedIn, setSubscriptionFormSubmitted, logIn}) => 
         headers: headers,
       });
       console.log('Subscription created:', response.data);
-      if (response.data.status == 'incomplete') {
+      if (response.data.status === 'incomplete') {
         throw new Error("Subscription was not able to complete");
       }
-      setSubscriptionFormSubmitted(true);
       setSubmitted(true);
     } catch (error) {
-      setSubscriptionFormSubmitted(true);
-      console.error('Error creating subscription:', error.response.data);
+      console.error('Error creating subscription:');
     }
+    setSubscriptionFormSubmitted(true);
   };
 
   const validateForm = (values) => {

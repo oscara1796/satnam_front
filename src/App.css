@@ -313,41 +313,9 @@ html{
 /* SUBSCRIPTION FORM  */
 
 /* Styles for the alert container */
-.alert-container {
-  display: none;
-  flex-direction: column; /* Stack children vertically */
-  justify-content: center; /* Center vertically */
-  align-items: center; /* Center horizontally */
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  padding: 20px;
-  border-radius: 5px;
-  text-align: center;
-  z-index: 1000;
-  width: 45vw;
-  height: 45vh;
-}
-
-/* Styles for the alert message */
-.alert-message {
-  font-size: 25px;
-  margin-bottom: 10px;
-  color: white;
-  font-weight: bold;
-}
-
-/* Styles for the "OK" button */
-.alert-button {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
+.error-toast {
+  background-color: #ff6347 !important; /* Red background color */
+  color: #fff !important; /* White text color */
 }
 
 /* SUBSCRIPTION END */
