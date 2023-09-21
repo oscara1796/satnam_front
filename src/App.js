@@ -5,17 +5,18 @@ import {
 } from 'react-bootstrap'; 
 import Nav from 'react-bootstrap/Nav';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Outlet, Route, Routes } from 'react-router-dom'; // changed
+import { Outlet, Route, Routes} from 'react-router-dom'; // changed
 import logo from './assets/img/logo.svg'
-
 import Landing from './components/Landing';
 import LogIn from './components/LogIn';
 import SignUp from './components/SignUp';
 import SubscriptionForm from './components/SubscriptionForm';
 import UserAccount from './components/UserAccount';
+import StripeCancel from './components/StripeCancel';
+import StripeSuccess from './components/StripeSuccess';
 import axios from 'axios';
-import { getUser, getAccessToken, isTokenExpired } from './services/AuthService'; 
-import { getSubscription } from './services/SubsService'; 
+// import { getUser, getAccessToken, isTokenExpired } from './services/AuthService'; 
+// import { getSubscription, SubStatus } from './services/SubsService'; 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -34,7 +35,7 @@ function App () {
     return window.localStorage.getItem('satnam.auth') !== null;
   });
 
-  const [subscriptionActive, setSubscriptionActive] = useState({});
+  const [subscriptionActive, setSubscriptionActive] = useState(false);
   const logIn = async (username, password) => {
     // const url = '/api/log_in/';
 
@@ -44,6 +45,7 @@ function App () {
       window.localStorage.setItem(
         'satnam.auth', JSON.stringify(response.data)
       );
+      
       setLoggedIn(true);
       return {response, isError: false}
     }
@@ -66,12 +68,14 @@ function App () {
       if (!refreshToken) {
         console.log("No refresh token");
         logOut(); // No refresh token, trigger logout
+        location.reload();
         return;
       }
 
       const url = `${process.env.REACT_APP_BASE_URL}/api/token/refresh/`;
       try {
         const response = await axios.post(url, { refresh: refreshToken });
+        console.log(response);
         window.localStorage.setItem(
           'satnam.auth',
           JSON.stringify(response.data)
@@ -80,59 +84,72 @@ function App () {
       } catch (error) {
         console.error(error);
         logOut(); // Failed to refresh token, trigger logout
+        location.reload();
       }
     
   };
 
 
 
-  useEffect(() => {
-    const subSubmitedToken = async () => {
+  // useEffect(() => {
+  //   const subSubmitedToken = async () => {
       
-      if (isSubscriptionFormSubmitted) {
-        await fetchRefreshToken();
-        const user = getUser();
-        if (user != undefined) {
-          showPaymentAlert(user.active);
-          setSubscriptionFormSubmitted(false);
-        }
-      }
-    };
+  //     if (isSubscriptionFormSubmitted) {
+  //       const object = await SubStatus(setSubscriptionActive);
+  //       console.log(object);
+  //       if (subscriptionActive) {
+  //         showPaymentAlert(true);
+         
+  //       } else{
+  //         showPaymentAlert(false);
+  //       }
+  //       setSubscriptionFormSubmitted(false);
+  //     }
+  //   };
 
-    subSubmitedToken();
-  }, [isSubscriptionFormSubmitted]);
+  //   subSubmitedToken();
+  // }, [isSubscriptionFormSubmitted]);
 
-  useEffect(() => {
-    const fetchRefreshToken = async () => {
-      if (isTokenExpired() && isLoggedIn) {
-        fetchRefreshToken();
-      } 
-    };
+  // useEffect(() => {
+  //   const RefreshToken = async () => {
+  //     if (isTokenExpired() && isLoggedIn) {
+  //       fetchRefreshToken();
+  //       console.log("token expired");
+  //     } 
 
-    fetchRefreshToken();
-  }, []);
+  //     if (isLoggedIn) {
+  //        await SubStatus(setSubscriptionActive);
+  //     }
+  //   };
+
+  //   RefreshToken();
+  // });
 
 
-  function showPaymentAlert(isSuccessful) {
+  
+
+
+  // function showPaymentAlert(isSuccessful) {
     
   
-    if (isSuccessful) {
-        toast.success('Pago  Aprovado!', {
-          position: toast.POSITION.TOP_CENTER, // You can customize the position
-          closeOnClick: true,
-          pauseOnHover: true,
-          autoClose: false,
-        });
-    } else {
-      toast.error('Payment Failed!', {
-        position: toast.POSITION.TOP_CENTER, // You can customize the position
-        closeOnClick: true,
-        pauseOnHover: true,
-        autoClose: false,
-      });
-    }
+  //   if (isSuccessful) {
+  //       toast.success('Pago  Aprovado!', {
+  //         position: toast.POSITION.TOP_CENTER, // You can customize the position
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         autoClose: false,
+  //       });
+  //   } else {
+  //     toast.error('Payment Failed!', {
+  //       position: toast.POSITION.TOP_CENTER, // You can customize the position
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       autoClose: false,
+  //       className: 'error-toast',
+  //     });
+  //   }
   
-  }
+  // }
   
   
 
@@ -152,6 +169,8 @@ function App () {
         <Route path='log-in' element={<LogIn isLoggedIn={isLoggedIn}   logIn={logIn} />} />
         <Route path='account' element={<UserAccount isLoggedIn={isLoggedIn}  setSubscriptionFormSubmitted={setSubscriptionFormSubmitted}     logIn={logIn} />} />
         <Route path='sub-form' element={<SubscriptionForm isLoggedIn={isLoggedIn}  setSubscriptionFormSubmitted={setSubscriptionFormSubmitted}     logIn={logIn} />} />
+        <Route path='sub-success' element={<StripeSuccess isLoggedIn={isLoggedIn} />} />
+        <Route path='sub-cancel' element={<StripeCancel  isLoggedIn={isLoggedIn} />} />
       </Route>
     </Routes>
   );

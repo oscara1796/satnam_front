@@ -17,7 +17,6 @@ function LogIn ({isLoggedIn , logIn}) {
 
       if (isError) {
         const data = response.response.data;
-        console.log("data ", data)
         for (const value in data) {
           actions.setFieldError(value, data[value]);
         }

@@ -11,11 +11,8 @@ import { getUser, getAccessToken } from '../services/AuthService';
 
 const SubscriptionForm = ({isLoggedIn, setSubscriptionFormSubmitted, logIn}) => {
   const [isSubmitted, setSubmitted] = useState(false);
+  const [isSubSuccess, setSubSuccess] = useState(false);
   
-  
-  
-
-
   const initialValues = {
     card_number: '',
     exp_month: '',
@@ -44,13 +41,19 @@ const SubscriptionForm = ({isLoggedIn, setSubscriptionFormSubmitted, logIn}) => 
       });
       console.log('Subscription created:', response.data);
       if (response.data.status === 'incomplete') {
+          
         throw new Error("Subscription was not able to complete");
       }
-      setSubmitted(true);
+      console.log("navigate to success");
+      setSubSuccess(true)
     } catch (error) {
       console.error('Error creating subscription:');
+      console.log(error);
+      console.log("navigate to cancel");
+      setSubSuccess(false)
     }
-    setSubscriptionFormSubmitted(true);
+    setSubmitted(true);
+    // setSubscriptionFormSubmitted(true);
   };
 
   const validateForm = (values) => {
@@ -59,8 +62,15 @@ const SubscriptionForm = ({isLoggedIn, setSubscriptionFormSubmitted, logIn}) => 
     return errors;
   };
 
-  if (!isLoggedIn  || isSubmitted) {
-    return <Navigate to='/' />;
+  if (!isLoggedIn  ) {
+    return <Navigate to='/sign-up' />;
+  }
+
+  if (isSubmitted) {
+    if (isSubSuccess) {
+      return <Navigate to='/sub-success' />;
+    }
+    return <Navigate to='/sub-cancel' />;
   }
 
   return (

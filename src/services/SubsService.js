@@ -13,12 +13,12 @@ export const getSubscription= async () => {
         headers: headers
         // Optionally pass any necessary headers or authentication tokens
       });
-
+      console.log(response);
       if (response.ok) {
-        const subObject = await response.json();
-        console.log(subObject);
+        const subObject = await response.data;
+        console.log("Subscription")
         return subObject;
-       
+        
       } else {
         console.log("No subscription")
         // Handle the error case if the request fails
@@ -35,7 +35,7 @@ export const SubStatus = async (setSubscriptionActive) => {
     try {
 
       const user = getUser();
-      console.log(user);
+      // console.log(user);
       const token = getAccessToken();
       const headers = { Authorization: `Bearer ${token}` };
       const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/create_subscription/${user.id}`, {
@@ -54,6 +54,7 @@ export const SubStatus = async (setSubscriptionActive) => {
       } else {
         console.log("No subscription")
         // Handle the error case if the request fails
+        
       }
     } catch (error) {
       console.log("error ", error)
