@@ -15,7 +15,7 @@ import UserAccount from './components/UserAccount';
 import StripeCancel from './components/StripeCancel';
 import StripeSuccess from './components/StripeSuccess';
 import axios from 'axios';
-// import { getUser, getAccessToken, isTokenExpired } from './services/AuthService'; 
+import { getUser, getAccessToken, isTokenExpired } from './services/AuthService'; 
 // import { getSubscription, SubStatus } from './services/SubsService'; 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -47,6 +47,10 @@ function App () {
       );
       
       setLoggedIn(true);
+      window.localStorage.setItem(
+        'satnam.user', JSON.stringify(getUser())
+      );
+      
       return {response, isError: false}
     }
     catch (error) {

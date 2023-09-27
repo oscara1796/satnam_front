@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import {
  Container
@@ -6,12 +6,16 @@ import {
 import { Navigate } from 'react-router-dom'; 
 import axios from 'axios';
 import { getUser, getAccessToken } from '../services/AuthService'; 
+import { UserContext } from '../context';
 
 
 
 const SubscriptionForm = ({isLoggedIn, setSubscriptionFormSubmitted, logIn}) => {
   const [isSubmitted, setSubmitted] = useState(false);
   const [isSubSuccess, setSubSuccess] = useState(false);
+  const [state, setState] = useContext(UserContext);
+
+  console.log("STATE => ", state);
   
   const initialValues = {
     card_number: '',

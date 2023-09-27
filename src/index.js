@@ -7,12 +7,14 @@ import { HashRouter } from 'react-router-dom'; // changed
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+import {UserProvider} from './context'
 // changed
 ReactDOM.render(
   <React.StrictMode>
     <HashRouter>
-      <App />
+      <UserProvider>
+        <App />
+      </UserProvider>
     </HashRouter>
   </React.StrictMode>,
   document.getElementById('root')

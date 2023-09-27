@@ -7,6 +7,7 @@ import {
 } from 'react-bootstrap';
 import { Link, Navigate } from 'react-router-dom';
 
+
 // changed
 function LogIn ({isLoggedIn , logIn}) {
 
@@ -29,6 +30,7 @@ function LogIn ({isLoggedIn , logIn}) {
     }
   };
   if (isLoggedIn || isSubmitted) {
+   
     return <Navigate to='/' />;
   }
 
