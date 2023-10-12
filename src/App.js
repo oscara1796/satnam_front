@@ -62,6 +62,7 @@ function App () {
 
   const logOut = () => {
     window.localStorage.removeItem('satnam.auth');
+    window.localStorage.removeItem('satnam.user');
     setLoggedIn(false);
   };
 

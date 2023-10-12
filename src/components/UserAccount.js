@@ -22,7 +22,6 @@ function UserAccount({isLoggedIn, setSubscriptionFormSubmitted, logIn}) {
   useEffect(() => {
     const fetchUser =() => {
       const user = getUser();
-      console.log("user ", user);
       if (user != undefined){
         setUserData(user);
       }

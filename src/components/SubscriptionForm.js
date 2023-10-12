@@ -15,7 +15,7 @@ const SubscriptionForm = ({isLoggedIn, setSubscriptionFormSubmitted, logIn}) => 
   const [isSubSuccess, setSubSuccess] = useState(false);
   const [state, setState] = useContext(UserContext);
 
-  console.log("STATE => ", state);
+  
   
   const initialValues = {
     card_number: '',
@@ -30,7 +30,7 @@ const SubscriptionForm = ({isLoggedIn, setSubscriptionFormSubmitted, logIn}) => 
     let url = `${process.env.REACT_APP_BASE_URL}/api/create_subscription/${user.id}/`;
 
     const formData = new FormData();
-    formData.append('number', values.card_number);
+    formData.append('number', values.card_number.replace(/\s+/g, ''));
     formData.append('exp_month', values.exp_month);
     formData.append('exp_year', values.exp_year);
     formData.append('cvc', values.cvc);
@@ -40,6 +40,7 @@ const SubscriptionForm = ({isLoggedIn, setSubscriptionFormSubmitted, logIn}) => 
    
    
     try {
+      console.log(formData);
       let response = await axios.post(url, formData, {
         headers: headers,
       });
@@ -77,15 +78,78 @@ const SubscriptionForm = ({isLoggedIn, setSubscriptionFormSubmitted, logIn}) => 
     return <Navigate to='/sub-cancel' />;
   }
 
+
+  // format credit card number into fours
+
+    function cc_format(value) {
+      var v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '')
+      var matches = v.match(/\d{4,16}/g);
+      var match = matches && matches[0] || ''
+      var parts = []
+
+      for (var i=0, len=match.length; i<len; i+=4) {
+          parts.push(match.substring(i, i+4))
+      }
+
+      if (parts.length) {
+          return parts.join(' ')
+      } else {
+          return value
+      }
+  }
+
+  const handleCreditCardChange = (e, setFieldValue) => {
+    const { name, value } = e.target;
+    const formattedValue = cc_format(value); // Format the value using the cc_format function
+    setFieldValue(name, formattedValue);
+  };
+
+  //validate month 
+
+  function isValidMonth(input) {
+    // Regular expression to match a valid month (01 to 12)
+    const value = input
+    const month = parseInt(value, 10);
+  
+    if ( month >= 1 && month <= 12) {
+      return value; // Return the valid month
+    } else {
+      return ''; // Return an empty string if it's not a valid month
+    }
+  }
+
+  //validate year 
+
+  const currentYear = new Date().getFullYear();
+  const years = [];
+  for (let i = 0; i < 10; i++) {
+    years.push(currentYear + i);
+  }
+
+
+  // Validate cvc of card 
+  const isValidCVC = (cvc) => {
+    // Regular expression to match a valid CVC (3 or 4 digits)
+    const cvcRegex = /^\d{3,4}$/;
+    return cvcRegex.test(cvc);
+  };
+  
+
   return (
     <Container className="mt-2  sub_form">
             
             <Formik
               initialValues={initialValues}
               onSubmit={handleSubmit}
-              
+              validate={(values) => {
+                const errors = {};
+                if (!isValidCVC(values.cvc)) {
+                  errors.cvc = 'CVC invalido. Por favor ingresa un CVC valido de entre 3 a 4 digitos';
+                }
+                return errors;
+              }}
             >
-              {({ isSubmitting }) => (
+              {({ isSubmitting, setFieldValue }) => (
                 <Form>
                   <div className="mb-3">
                     <label htmlFor="card_number" className="form-label">
@@ -95,6 +159,7 @@ const SubscriptionForm = ({isLoggedIn, setSubscriptionFormSubmitted, logIn}) => 
                       type="text"
                       name="card_number"
                       className="form-control"
+                      onChange={(e) => handleCreditCardChange(e, setFieldValue)}
                       required
                     />
                     <ErrorMessage
@@ -112,6 +177,10 @@ const SubscriptionForm = ({isLoggedIn, setSubscriptionFormSubmitted, logIn}) => 
                         type="number"
                         name="exp_month"
                         className="form-control"
+                        onChange={(e) => {
+                          
+                          setFieldValue(e.target.name,isValidMonth(e.target.value))
+                        }}
                         required
                       />
                       <ErrorMessage
@@ -125,11 +194,18 @@ const SubscriptionForm = ({isLoggedIn, setSubscriptionFormSubmitted, logIn}) => 
                         Expiration Year:
                       </label>
                       <Field
-                        type="number"
+                        as="select"
                         name="exp_year"
                         className="form-control"
+                        
                         required
-                      />
+                      >
+                        {years.map((year) => (
+                          <option key={year} value={year}>
+                            {year}
+                          </option>
+                        ))}
+                      </Field>
                       <ErrorMessage
                         name="exp_year"
                         component="div"
@@ -141,7 +217,11 @@ const SubscriptionForm = ({isLoggedIn, setSubscriptionFormSubmitted, logIn}) => 
                     <label htmlFor="cvc" className="form-label">
                       CVC:
                     </label>
-                    <Field type="text" name="cvc" className="form-control" required />
+                    <Field 
+                    type="text"
+                    name="cvc" 
+                    className="form-control" 
+                    required />
                     <ErrorMessage name="cvc" component="div" className="text-danger" />
                   </div>
                   
