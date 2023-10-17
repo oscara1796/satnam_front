@@ -61,9 +61,13 @@ function CarouselItem(props) {
                   />
                   <div className="carousel-caption">
                     <h1>{item.caption}</h1>
-                    { state.user.active ? (<></>) : ( <LinkContainer to='/sub-form'>
-                      <Button variant="outline-light">Inscríbite</Button>
-                        </LinkContainer>)}
+                    { state.user && state.user.active ? (
+                      <></>
+                    ) : ( 
+                      <LinkContainer to='/sub-form'>
+                        <Button variant="outline-light">Inscríbite</Button>
+                      </LinkContainer>
+                    )}
                   </div>
                 </div>
               </Carousel.Item>
