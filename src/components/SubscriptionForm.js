@@ -10,7 +10,7 @@ import { UserContext } from '../context';
 
 
 
-const SubscriptionForm = ({isLoggedIn, setSubscriptionFormSubmitted, logIn}) => {
+const SubscriptionForm = ({isLoggedIn, logIn}) => {
   const [isSubmitted, setSubmitted] = useState(false);
   const [isSubSuccess, setSubSuccess] = useState(false);
   const [state, setState] = useContext(UserContext);
@@ -61,14 +61,9 @@ const SubscriptionForm = ({isLoggedIn, setSubscriptionFormSubmitted, logIn}) => 
     // setSubscriptionFormSubmitted(true);
   };
 
-  const validateForm = (values) => {
-    const errors = {};
-    // Add custom validation rules here if needed
-    return errors;
-  };
-
+ 
   if (!isLoggedIn  ) {
-    return <Navigate to='/sign-up' />;
+    return <Navigate to='/log-in' />;
   }
 
   if (isSubmitted) {
@@ -79,7 +74,7 @@ const SubscriptionForm = ({isLoggedIn, setSubscriptionFormSubmitted, logIn}) => 
   }
 
 
-  // format credit card number into fours
+  // format credit card number into fours and validate credit number
 
     function cc_format(value) {
       var v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '')
@@ -103,6 +98,33 @@ const SubscriptionForm = ({isLoggedIn, setSubscriptionFormSubmitted, logIn}) => 
     const formattedValue = cc_format(value); // Format the value using the cc_format function
     setFieldValue(name, formattedValue);
   };
+
+  function isCreditCardValid(cardNumber) {
+    // Remove any non-digit characters
+    cardNumber = cardNumber.replace(/\D/g, '');
+
+    // Check if the card number is empty or doesn't consist of 13 to 19 digits
+    if (!/^\d{13,19}$/.test(cardNumber)) {
+        return false;
+    }
+
+    // Use the Luhn algorithm to validate the credit card number
+    let sum = 0;
+    let doubleUp = false;
+    for (let i = cardNumber.length - 1; i >= 0; i--) {
+        let digit = parseInt(cardNumber.charAt(i));
+        if (doubleUp) {
+            digit *= 2;
+            if (digit > 9) {
+                digit -= 9;
+            }
+        }
+        sum += digit;
+        doubleUp = !doubleUp;
+    }
+
+    return (sum % 10 === 0);
+}
 
   //validate month 
 
@@ -133,6 +155,8 @@ const SubscriptionForm = ({isLoggedIn, setSubscriptionFormSubmitted, logIn}) => 
     const cvcRegex = /^\d{3,4}$/;
     return cvcRegex.test(cvc);
   };
+
+ 
   
 
   return (
@@ -145,6 +169,10 @@ const SubscriptionForm = ({isLoggedIn, setSubscriptionFormSubmitted, logIn}) => 
                 const errors = {};
                 if (!isValidCVC(values.cvc)) {
                   errors.cvc = 'CVC invalido. Por favor ingresa un CVC valido de entre 3 a 4 digitos';
+                }
+
+                if (!isCreditCardValid(values.card_number)) {
+                  errors.card_number= 'Lo sentimos, pero el número de tarjeta ingresado no es válido.'
                 }
                 return errors;
               }}

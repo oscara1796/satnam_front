@@ -8,7 +8,7 @@ import { getUser, getAccessToken } from '../services/AuthService';
 import axios from 'axios';
 
 
-function UserAccount({isLoggedIn, setSubscriptionFormSubmitted, logIn}) {
+function UserAccount({isLoggedIn, logIn}) {
 
   
 
@@ -89,7 +89,7 @@ function UserAccount({isLoggedIn, setSubscriptionFormSubmitted, logIn}) {
     <Container className='mt-2 user_info_container'>
         <Container>
 
-          {userData.active ? (<UserSubscription  setSubscriptionFormSubmitted={setSubscriptionFormSubmitted}  />) : (<></>)}
+          {/* {userData.active ? (<UserSubscription  setSubscriptionFormSubmitted={setSubscriptionFormSubmitted}  />) : (<></>)} */}
         </Container>
 
 

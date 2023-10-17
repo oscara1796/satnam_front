@@ -5,7 +5,7 @@ import {
 } from 'react-bootstrap'; 
 import Nav from 'react-bootstrap/Nav';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Outlet, Route, Routes} from 'react-router-dom'; // changed
+import { Outlet, Route, Routes, useLocation, Navigate} from 'react-router-dom'; // changed
 import logo from './assets/img/logo.svg'
 import Landing from './components/Landing';
 import LogIn from './components/LogIn';
@@ -29,13 +29,12 @@ import './App.css';
 // changed
 function App () {
 
-  const [isSubscriptionFormSubmitted, setSubscriptionFormSubmitted] = useState(false);
+  var location = useLocation();
 
   const [isLoggedIn, setLoggedIn] = useState(() => {
     return window.localStorage.getItem('satnam.auth') !== null;
   });
 
-  const [subscriptionActive, setSubscriptionActive] = useState(false);
   const logIn = async (username, password) => {
     // const url = '/api/log_in/';
 
@@ -66,14 +65,15 @@ function App () {
     setLoggedIn(false);
   };
 
-  const fetchRefreshToken = async () => {
+  const checkTokenExpiration = async () => {
+
+    if (isTokenExpired() && isLoggedIn) {
       const refreshToken = JSON.parse(
         window.localStorage.getItem('satnam.auth')
       )?.refresh;
       if (!refreshToken) {
         console.log("No refresh token");
         logOut(); // No refresh token, trigger logout
-        location.reload();
         return;
       }
 
@@ -89,72 +89,27 @@ function App () {
       } catch (error) {
         console.error(error);
         logOut(); // Failed to refresh token, trigger logout
-        location.reload();
       }
+      console.log("token expired");
+    }
+    console.log("reviewed token");
     
   };
 
 
 
-  // useEffect(() => {
-  //   const subSubmitedToken = async () => {
-      
-  //     if (isSubscriptionFormSubmitted) {
-  //       const object = await SubStatus(setSubscriptionActive);
-  //       console.log(object);
-  //       if (subscriptionActive) {
-  //         showPaymentAlert(true);
-         
-  //       } else{
-  //         showPaymentAlert(false);
-  //       }
-  //       setSubscriptionFormSubmitted(false);
-  //     }
-  //   };
-
-  //   subSubmitedToken();
-  // }, [isSubscriptionFormSubmitted]);
-
-  // useEffect(() => {
-  //   const RefreshToken = async () => {
-  //     if (isTokenExpired() && isLoggedIn) {
-  //       fetchRefreshToken();
-  //       console.log("token expired");
-  //     } 
-
-  //     if (isLoggedIn) {
-  //        await SubStatus(setSubscriptionActive);
-  //     }
-  //   };
-
-  //   RefreshToken();
-  // });
 
 
-  
+    useEffect(() => {
+      checkTokenExpiration();
+      const tokenCheckInterval = setInterval(checkTokenExpiration, 60000);
+      return () => {
+        clearInterval(tokenCheckInterval); // Clear the interval when the component unmounts
+      };
+     
+  }, []);
 
 
-  // function showPaymentAlert(isSuccessful) {
-    
-  
-  //   if (isSuccessful) {
-  //       toast.success('Pago  Aprovado!', {
-  //         position: toast.POSITION.TOP_CENTER, // You can customize the position
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         autoClose: false,
-  //       });
-  //   } else {
-  //     toast.error('Payment Failed!', {
-  //       position: toast.POSITION.TOP_CENTER, // You can customize the position
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       autoClose: false,
-  //       className: 'error-toast',
-  //     });
-  //   }
-  
-  // }
   
   
 
@@ -172,8 +127,8 @@ function App () {
        <Route index element={<Landing isLoggedIn={isLoggedIn}  />} />
         <Route path='sign-up' element={<SignUp isLoggedIn={isLoggedIn}  />} />
         <Route path='log-in' element={<LogIn isLoggedIn={isLoggedIn}   logIn={logIn} />} />
-        <Route path='account' element={<UserAccount isLoggedIn={isLoggedIn}  setSubscriptionFormSubmitted={setSubscriptionFormSubmitted}     logIn={logIn} />} />
-        <Route path='sub-form' element={<SubscriptionForm isLoggedIn={isLoggedIn}  setSubscriptionFormSubmitted={setSubscriptionFormSubmitted}     logIn={logIn} />} />
+        <Route path='account' element={<UserAccount isLoggedIn={isLoggedIn}     logIn={logIn} />} />
+        <Route path='sub-form' element={<SubscriptionForm isLoggedIn={isLoggedIn}      logIn={logIn} />} />
         <Route path='sub-success' element={<StripeSuccess isLoggedIn={isLoggedIn} />} />
         <Route path='sub-cancel' element={<StripeCancel  isLoggedIn={isLoggedIn} />} />
       </Route>
