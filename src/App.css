@@ -53,7 +53,7 @@ html{
   
 }
 
-.navbar-nav .navbar_links a{
+.navbar-nav .navbar_links .nav_link{
   width: 10%;
   margin-left: 3% !important;
   margin-right: 3% !important;
@@ -79,6 +79,24 @@ html{
   z-index: 999;
   /* Additional styles for the sticky navbar */
   /* Add any desired styles */
+}
+
+
+/* Style of Admin part of navbar  */
+.navbar .nav-item .nav-link {
+  /* Add your custom styles here */
+  color: blue; /* Change text color to red */
+  background-color: #f0f0f0; /* Change background color */
+  /* Add other styles as needed */
+}
+
+.custom-item-navbar-admin {
+  /* Add your custom styles here */
+  color: black;
+  /* background-color: yellow; */
+  width: 100%;
+  margin-left: 0px !important;
+  margin-right: 0px !important;
 }
 
 
@@ -320,3 +338,31 @@ html{
 
 /* SUBSCRIPTION END */
 
+/* CREATE VIDEO  ADMIN CSS */
+
+
+
+.wrapper-class {
+  padding: 1rem;
+  border: 1px solid #ccc;
+}
+.editor-class {
+  /* background-color:lightgray; */
+  padding: 1rem;
+  border: 1px solid black;
+  height: 15rem;
+}
+.toolbar-class {
+  border: 1px solid #ccc;
+}
+
+/* END OF CREATE VIDEO ADMIN  */
+
+
+/* VIDEO CARD */
+
+.video-card{
+  border-radius: 10px;
+  border: 1px solid black;
+  margin: 1rem;
+}

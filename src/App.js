@@ -1,8 +1,9 @@
 // client/src/App.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   Button, Container, Form, Navbar
 } from 'react-bootstrap'; 
+import NavDropdown from 'react-bootstrap/NavDropdown';
 import Nav from 'react-bootstrap/Nav';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Outlet, Route, Routes, useLocation, Navigate} from 'react-router-dom'; // changed
@@ -14,11 +15,14 @@ import SubscriptionForm from './components/SubscriptionForm';
 import UserAccount from './components/UserAccount';
 import StripeCancel from './components/StripeCancel';
 import StripeSuccess from './components/StripeSuccess';
+import VideoList from './components/VideoList';
+import CreateVideoAdmin from './components/CreateVideoAdmin';
 import axios from 'axios';
 import { getUser, getAccessToken, isTokenExpired } from './services/AuthService'; 
 // import { getSubscription, SubStatus } from './services/SubsService'; 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { UserContext } from './context';
 
 
 
@@ -34,6 +38,10 @@ function App () {
   const [isLoggedIn, setLoggedIn] = useState(() => {
     return window.localStorage.getItem('satnam.auth') !== null;
   });
+
+  
+
+  
 
   const logIn = async (username, password) => {
     // const url = '/api/log_in/';
@@ -63,6 +71,11 @@ function App () {
     window.localStorage.removeItem('satnam.auth');
     window.localStorage.removeItem('satnam.user');
     setLoggedIn(false);
+
+
+    // Reload the page
+     window.location.reload();
+    
   };
 
   const checkTokenExpiration = async () => {
@@ -109,7 +122,7 @@ function App () {
      
   }, []);
 
-
+  
   
   
 
@@ -125,6 +138,8 @@ function App () {
                 } 
               > 
        <Route index element={<Landing isLoggedIn={isLoggedIn}  />} />
+        <Route path='videos' element={<VideoList isLoggedIn={isLoggedIn}  />} />
+        <Route path='videos-create' element={<CreateVideoAdmin isLoggedIn={isLoggedIn}  />} />
         <Route path='sign-up' element={<SignUp isLoggedIn={isLoggedIn}  />} />
         <Route path='log-in' element={<LogIn isLoggedIn={isLoggedIn}   logIn={logIn} />} />
         <Route path='account' element={<UserAccount isLoggedIn={isLoggedIn}     logIn={logIn} />} />
@@ -139,6 +154,9 @@ function App () {
 function Layout ({ isLoggedIn, logOut }) {
 
   const [isSticky, setIsSticky] = useState(false);
+  const [state, setState] = useContext(UserContext);
+
+  
 
   useEffect(() => {
     const handleScroll = () => {
@@ -158,6 +176,9 @@ function Layout ({ isLoggedIn, logOut }) {
     };
   }, []);
 
+
+  
+
   return (
     <>
       <Navbar bg='light' expand='lg' variant='light' className={isSticky ? 'sticky' : ''}>
@@ -171,16 +192,31 @@ function Layout ({ isLoggedIn, logOut }) {
 
               <div className='navbar_links'>
                 <LinkContainer to='/'>
-                    <a>Posts</a>
+                    <a className='nav_link'>Posts</a>
+                </LinkContainer>
+
+                <LinkContainer to='/videos'>
+                    <a className='nav_link'>Cursos</a>
                 </LinkContainer>
 
                 <LinkContainer to='/'>
-                    <a>Cursos</a>
+                    <a className='nav_link'>Contacto</a>
                 </LinkContainer>
-
-                <LinkContainer to='/'>
-                    <a>Contacto</a>
-                </LinkContainer>
+                {state && state.user && state.user.is_staff ? (
+                   <NavDropdown
+                      id="adminmenue"
+                      title="Admin"
+                    >
+                      <LinkContainer to='/videos-create'>
+                        <NavDropdown.Item  className='custom-item-navbar-admin'>
+                          Añade Video
+                        </NavDropdown.Item>
+                      </LinkContainer>
+                    </NavDropdown>
+                ) : (
+                  <></>
+                )}
+                
               </div>
               <div className='auth_buttons'>
                   {

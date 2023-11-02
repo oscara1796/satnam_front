@@ -10,7 +10,7 @@ import { UserContext } from '../context';
 
 
 
-const SubscriptionForm = ({isLoggedIn, logIn}) => {
+const SubscriptionForm = ({isLoggedIn}) => {
   const [isSubmitted, setSubmitted] = useState(false);
   const [isSubSuccess, setSubSuccess] = useState(false);
   const [state, setState] = useContext(UserContext);

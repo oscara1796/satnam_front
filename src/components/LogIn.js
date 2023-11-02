@@ -1,17 +1,20 @@
 // client/src/components/LogIn.js
 
-import React, { useState } from 'react'; 
+import React, { useState, useContext } from 'react'; 
 import { Formik } from 'formik';
 import {
   Alert, Breadcrumb, Button, Card, Form, Container
 } from 'react-bootstrap';
 import { Link, Navigate } from 'react-router-dom';
+import { UserContext } from '../context';
+import { getAccessToken} from '../services/AuthService'; 
 
 
 // changed
 function LogIn ({isLoggedIn , logIn}) {
 
   const [isSubmitted, setSubmitted] = useState(false);
+  const [state, setState] = useContext(UserContext);
   const onSubmit = async (values, actions) => {
     try {
       const { response, isError } = await logIn(values.username, values.password);
@@ -22,6 +25,7 @@ function LogIn ({isLoggedIn , logIn}) {
           actions.setFieldError(value, data[value]);
         }
       }else{
+        setState({user: JSON.parse(localStorage.getItem("satnam.user")), auth: getAccessToken() })
         setSubmitted(true);
       }
     }
