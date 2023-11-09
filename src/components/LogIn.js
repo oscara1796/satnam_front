@@ -41,10 +41,7 @@ function LogIn ({isLoggedIn , logIn}) {
 
   return (
     <Container className='mt-2'>
-      <Breadcrumb>
-        <Breadcrumb.Item href='/#/'>Home</Breadcrumb.Item>
-        <Breadcrumb.Item active>Log in</Breadcrumb.Item>
-      </Breadcrumb>
+     
       <Card>
         <Card.Header>Log in</Card.Header>
         <Card.Body>

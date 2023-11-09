@@ -64,7 +64,7 @@ function CarouselItem(props) {
                     { state.user && state.user.active ? (
                       <></>
                     ) : ( 
-                      <LinkContainer to='/sub-form'>
+                      <LinkContainer to='/payment-methods'>
                         <Button variant="outline-light">Inscríbite</Button>
                       </LinkContainer>
                     )}

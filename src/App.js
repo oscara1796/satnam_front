@@ -17,6 +17,7 @@ import StripeCancel from './components/StripeCancel';
 import StripeSuccess from './components/StripeSuccess';
 import VideoList from './components/VideoList';
 import CreateVideoAdmin from './components/CreateVideoAdmin';
+import PaymentOptions from './components/PaymentOptions';
 import axios from 'axios';
 import { getUser, getAccessToken, isTokenExpired } from './services/AuthService'; 
 // import { getSubscription, SubStatus } from './services/SubsService'; 
@@ -139,11 +140,12 @@ function App () {
               > 
        <Route index element={<Landing isLoggedIn={isLoggedIn}  />} />
         <Route path='videos' element={<VideoList isLoggedIn={isLoggedIn}  />} />
+        <Route path='payment-methods' element={<PaymentOptions isLoggedIn={isLoggedIn} logIn={logIn}  />} />
         <Route path='videos-create' element={<CreateVideoAdmin isLoggedIn={isLoggedIn}  />} />
         <Route path='sign-up' element={<SignUp isLoggedIn={isLoggedIn}  />} />
         <Route path='log-in' element={<LogIn isLoggedIn={isLoggedIn}   logIn={logIn} />} />
         <Route path='account' element={<UserAccount isLoggedIn={isLoggedIn}     logIn={logIn} />} />
-        <Route path='sub-form' element={<SubscriptionForm isLoggedIn={isLoggedIn}      logIn={logIn} />} />
+        <Route path='sub-form' element={<SubscriptionForm isLoggedIn={isLoggedIn}    />} />
         <Route path='sub-success' element={<StripeSuccess isLoggedIn={isLoggedIn} />} />
         <Route path='sub-cancel' element={<StripeCancel  isLoggedIn={isLoggedIn} />} />
       </Route>

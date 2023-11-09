@@ -36,9 +36,15 @@ const VideoList = ({isLoggedIn}) => {
 
   return (
     <div className="video-list">
-      {videos && videos.results && videos.results.map((video) => (
-        <VideoCard key={video.id} {...video} />
-      ))}
+      {videos && videos.results && videos.results.length  > 0 ? (
+        videos.results.map((video) => (
+          <VideoCard key={video.id} {...video} />
+        ))
+      ) : (
+        <div className="d-flex align-items-center justify-content-center" style={{height: '80vh'}}>
+          <p className='text-center' style={{fontSize: '3rem'}} >No hay videos por aqui ...  </p>
+        </div>
+      )}
     </div>
   );
 };

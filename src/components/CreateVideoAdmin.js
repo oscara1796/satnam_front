@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import {
  Container
@@ -10,6 +10,9 @@ import { UserContext } from '../context';
 import { EditorState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+
+
+import CreateCategory from './CreateCategory';
 
 const UrlInput = ({ field, form, ...props }) => {
     return (
@@ -24,10 +27,82 @@ const UrlInput = ({ field, form, ...props }) => {
     );
   };
 
+
+  const CategoryList = ({setShowModal, getCategories, setGetCategories, field, form, ...props}) => {
+    const [categories, setCategories] = useState([]);
+    
+   
+    
+    useEffect( () => {
+      async function getCategories() {
+        // Define the URL of your Django API endpoint
+        const url = `${process.env.REACT_APP_BASE_URL}/api/category_list/`
+        const token = getAccessToken();
+        const headers = { Authorization: `Bearer ${token}` };
+  
+        // Fetch categories from the API
+          try {
+            let response = await axios.get(url, {
+              headers: headers,
+            });
+            setCategories(response.data)
+            console.log(response.data);
+          } catch (error) {
+            console.error('Error obtaining categories:');
+            console.log(error);
+          }
+          setGetCategories(false)
+      }
+  
+      getCategories();
+    }, [getCategories]);
+
+
+    const openModal = () => {
+      setShowModal(true);
+    };
+  
+  
+    return (
+          <div className="col-md-6 mb-3 d-flex justify-content-start  align-items-center">
+            <label htmlFor="categories" className="form-label me-3">
+              Categorias:
+            </label>
+            <Field
+                as="select"
+                name="categories"
+                className="form-control me-3"
+               
+                
+                required
+              >
+                
+                {categories.map((category) => (
+                  <option key={category.id} value={category.title}>
+                      {category.title}
+                  </option>
+                ))}
+              </Field>
+              <ErrorMessage
+                name="categories"
+                component="div"
+                className="text-danger"
+              />
+
+              <button type="button"  className="btn btn-primary mt-2" onClick={openModal}>
+                Añade categoria
+              </button>
+
+              
+          </div>
+    );
+  };
+
 const CreateVideoAdmin = ({isLoggedIn, logIn}) => {
   const [isSubmitted, setSubmitted] = useState(false);
-  const [isSubSuccess, setSubSuccess] = useState(false);
   const [state, setState] = useContext(UserContext);
+  const [showModal, setShowModal] = useState(false);
+  const [getCategories, setGetCategories] = useState(false);
 
   
   
@@ -41,6 +116,7 @@ const CreateVideoAdmin = ({isLoggedIn, logIn}) => {
   };
 
   const handleSubmit = async (values) => {
+    console.log("values ",values);
     const contentState = values.description.getCurrentContent();
     const content = JSON.stringify(convertToRaw(contentState));
     const formData = new FormData();
@@ -61,25 +137,30 @@ const CreateVideoAdmin = ({isLoggedIn, logIn}) => {
         headers: headers,
       });
       console.log(response.data);
-      console.log("navigate to success");
+      setSubmitted(true);
     } catch (error) {
       console.error('Error creating subscription:');
       console.log(error);
       console.log("navigate to cancel");
     }
-    setSubmitted(true);
+    
     // setSubmitted(true);
     // setSubscriptionFormSubmitted(true);
   };
 
  
-  if (!isLoggedIn  ) {
+  if (!isLoggedIn ) {
     return <Navigate to='/log-in' />;
   }
 
   if (isSubmitted) {
-    
+    console.log("navigate to videos ");
+    return <Navigate to='/videos' />;
   }
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
 
 
@@ -87,7 +168,7 @@ const CreateVideoAdmin = ({isLoggedIn, logIn}) => {
   
 
   return (
-    <Container className="mt-2  sub_form">
+    <Container className="mt-2  sub_form create_video_form">
             
             <Formik
               initialValues={initialValues}
@@ -180,7 +261,7 @@ const CreateVideoAdmin = ({isLoggedIn, logIn}) => {
                     <ErrorMessage name="url" component="div" className="text-danger" />
                   </div>
 
-                  <div className="mb-3">
+                  <div className="mb-3 create-video-checkbox">
                     <label htmlFor="free" className="form-label">
                       <Field
                           type="checkbox"
@@ -192,34 +273,12 @@ const CreateVideoAdmin = ({isLoggedIn, logIn}) => {
                     <ErrorMessage name="free" component="div" className="text-danger" />
                   </div>
 
-                 
+                 <CategoryList  
+                    setShowModal={setShowModal} 
+                    getCategories={getCategories} 
+                    setGetCategories={setGetCategories}
+                 />
 
-                  <div className="col-md-3 mb-3">
-                    <label htmlFor="categories" className="form-label">
-                      Categorias:
-                    </label>
-                    <Field
-                        as="select"
-                        name="categories"
-                        className="form-control"
-                        
-                        required
-                      >
-                        <option key="hola" value="hola">
-                            "hola"
-                          </option>
-                        {/* {years.map((year) => (
-                          <option key={year} value={year}>
-                            {year}
-                          </option>
-                        ))} */}
-                      </Field>
-                      <ErrorMessage
-                        name="categories"
-                        component="div"
-                        className="text-danger"
-                      />
-                  </div>
                   
                   <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
                     Crea video
@@ -227,8 +286,15 @@ const CreateVideoAdmin = ({isLoggedIn, logIn}) => {
                 </Form>
               )}
             </Formik>
+
+            {showModal && (
+                <CreateCategory onClose={closeModal} setGetCategories={setGetCategories} />
+            )}
     </Container>
   );
 };
+
+
+
 
 export default CreateVideoAdmin;
