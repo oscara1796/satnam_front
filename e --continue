@@ -1,0 +1,77 @@
+[33mcommit 96b7da5bc39a61054666e02c67e6bb438be736e1[m[33m ([m[1;36mHEAD[m[33m)[m
+Author: Oscar Carrillo <oscar.carrillo2941@alumnos.udg.mx>
+Date:   Tue Nov 14 18:09:56 2023 -0600
+
+    modifying pakcgae.json
+
+[33mcommit 66df8e61f2eecaa383eb6fe2891f18239928c61d[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Oscar Abraham <oscara1706cl@gmail.com>
+Date:   Thu Nov 9 08:40:53 2023 -0600
+
+    modifying create video admin form to send category data
+
+[33mcommit f1c472b3e3b796d3b40363f40bd56c9f7442dbeb[m
+Author: Oscar Abraham <oscara1706cl@gmail.com>
+Date:   Thu Nov 2 09:59:45 2023 -0600
+
+    adding beauty to video card and making work the video form
+
+[33mcommit 1af848c684a831639aee112d712a40d236ba1567[m
+Author: Oscar Abraham <oscara1706cl@gmail.com>
+Date:   Tue Oct 17 09:25:51 2023 -0600
+
+     fixing landing page with null exception at state.user
+
+[33mcommit 4441d5da82309a2c49c75bb3fcf551cbe5c69262[m
+Author: Oscar Abraham <oscara1706cl@gmail.com>
+Date:   Tue Oct 17 09:10:45 2023 -0600
+
+     performing and creating the video list components to show the videos
+
+[33mcommit 630817361773e284f3cc8c566e5e713b75f940cc[m
+Author: Oscar Abraham <oscara1706cl@gmail.com>
+Date:   Thu Oct 12 09:15:11 2023 -0600
+
+    adding validation to subscription form
+
+[33mcommit 4b206fd86f8083f074b4d4e53a8c85cbb7b83149[m
+Author: Oscar Abraham <oscara1706cl@gmail.com>
+Date:   Tue Sep 26 22:35:27 2023 -0600
+
+    adding user context to all components
+
+[33mcommit db3f63dd34b2b4018392cd8f7d364364f6863332[m
+Author: Oscar Abraham <oscara1706cl@gmail.com>
+Date:   Thu Sep 21 09:19:37 2023 -0600
+
+    adding spinner to checkout
+
+[33mcommit a53c2546423fa9d0634cc9becadfdfc61b33ecbe[m
+Author: Oscar Abraham <oscara1706cl@gmail.com>
+Date:   Tue Sep 12 21:58:41 2023 -0600
+
+    changing subscriptions I need to add a local storage var for managing payments
+
+[33mcommit eb83774cd592b3051ebc1f4e330dcffa69c216c6[m
+Author: Oscar Abraham <oscara1706cl@gmail.com>
+Date:   Sat Sep 9 08:01:00 2023 -0600
+
+    making cypress test for payments
+
+[33mcommit c62b2858c2d903d0461287dbe5e9284ca01d49fc[m
+Author: Oscar Abraham <oscara1706cl@gmail.com>
+Date:   Sun Aug 20 09:53:17 2023 -0600
+
+    adding payments status to the frontedn
+
+[33mcommit 052565b31642763c5d09c6fe42e1af62d2f9806a[m
+Author: Oscar Abraham <oscara1706cl@gmail.com>
+Date:   Sun Jun 25 08:50:56 2023 -0600
+
+    [feature] added video presentation and benefits to the landing page
+
+[33mcommit 110e329df0701b3e309ddcf09872ab43a041dcfb[m
+Author: Oscar Abraham <oscara1706cl@gmail.com>
+Date:   Tue May 30 19:16:35 2023 -0600
+
+    Initialize project using Create React App

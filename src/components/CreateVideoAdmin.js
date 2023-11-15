@@ -28,7 +28,7 @@ const UrlInput = ({ field, form, ...props }) => {
   };
 
 
-  const CategoryList = ({setShowModal, getCategories, setGetCategories, field, form, ...props}) => {
+  const CategoryList = ({ getCategories, setSelectedCategory, field, form, ...props}) => {
     const [categories, setCategories] = useState([]);
     
    
@@ -51,50 +51,32 @@ const UrlInput = ({ field, form, ...props }) => {
             console.error('Error obtaining categories:');
             console.log(error);
           }
-          setGetCategories(false)
       }
   
       getCategories();
     }, [getCategories]);
 
 
-    const openModal = () => {
-      setShowModal(true);
-    };
+    
   
   
     return (
-          <div className="col-md-6 mb-3 d-flex justify-content-start  align-items-center">
-            <label htmlFor="categories" className="form-label me-3">
-              Categorias:
-            </label>
-            <Field
-                as="select"
-                name="categories"
-                className="form-control me-3"
-               
-                
-                required
-              >
-                
-                {categories.map((category) => (
-                  <option key={category.id} value={category.title}>
-                      {category.title}
-                  </option>
-                ))}
-              </Field>
-              <ErrorMessage
-                name="categories"
-                component="div"
-                className="text-danger"
-              />
-
-              <button type="button"  className="btn btn-primary mt-2" onClick={openModal}>
-                Añade categoria
-              </button>
-
-              
-          </div>
+        <select
+            {...field}
+            {...props}
+            onChange={(e) => {
+              const selectedIndex = e.target.options.selectedIndex;
+              console.log(e.target.options);
+              console.log(e.target.options[selectedIndex].getAttribute('data_key'));
+            }}
+          >
+            {/* <option value="defaultOption" disabled>Selecciona categoria</option> */}
+            {categories.map((category) => (
+              <option key={category.id} data_key={category.id} value={category.title}>
+                {category.title}
+              </option>
+            ))}
+        </select>
     );
   };
 
@@ -103,6 +85,7 @@ const CreateVideoAdmin = ({isLoggedIn, logIn}) => {
   const [state, setState] = useContext(UserContext);
   const [showModal, setShowModal] = useState(false);
   const [getCategories, setGetCategories] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   
   
@@ -117,6 +100,7 @@ const CreateVideoAdmin = ({isLoggedIn, logIn}) => {
 
   const handleSubmit = async (values) => {
     console.log("values ",values);
+    console.log("selectedCategory ", selectedCategory);
     const contentState = values.description.getCurrentContent();
     const content = JSON.stringify(convertToRaw(contentState));
     const formData = new FormData();
@@ -162,7 +146,9 @@ const CreateVideoAdmin = ({isLoggedIn, logIn}) => {
     setShowModal(false);
   };
 
-
+  const openModal = () => {
+    setShowModal(true);
+  };
 
  
   
@@ -273,11 +259,28 @@ const CreateVideoAdmin = ({isLoggedIn, logIn}) => {
                     <ErrorMessage name="free" component="div" className="text-danger" />
                   </div>
 
-                 <CategoryList  
-                    setShowModal={setShowModal} 
-                    getCategories={getCategories} 
-                    setGetCategories={setGetCategories}
-                 />
+                  <div className="col-md-6 mb-3 d-flex justify-content-start  align-items-center">
+                    <label htmlFor="categories" className="form-label me-3">
+                      Categorias:
+                    </label>
+                      <Field
+                          as="select"
+                          name="categories"
+                          className="form-control me-3"
+                          component={CategoryList}
+                          getCategories={getCategories}
+                          setSelectedCategory={setSelectedCategory}
+                          required
+                      />
+                      <ErrorMessage
+                        name="categories"
+                        component="div"
+                        className="text-danger"
+                      />
+                      <button type="button"  className="btn btn-primary mt-2" onClick={openModal}>
+                        Añade categoria
+                      </button>
+                  </div>
 
                   
                   <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
