@@ -356,13 +356,47 @@ body{
 .wrapper-class {
   padding: 1rem;
   border: 1px solid #ccc;
+  overflow: hidden;
 }
 .editor-class {
   /* background-color:lightgray; */
   padding: 1rem;
   border: 1px solid black;
-  height: 15rem;
+  height: 15vh;
 }
+
+.expanded-editor-class {
+  /* background-color:lightgray; */
+  padding: 1rem;
+  border: 1px solid black;
+  height: 60vh;
+}
+
+.expanded-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.9); /* Adjust the background color and opacity as needed */
+  z-index: 1000; /* Set a high z-index to make sure it's above all other content */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.expanded-editor {
+  width: 80vw;
+  height: 80vh;
+  background-color: white;
+  border: 1px solid #ccc;
+  z-index: 1001; /* Set a higher z-index to make sure it's above the overlay */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+
 .toolbar-class {
   border: 1px solid #ccc;
 }

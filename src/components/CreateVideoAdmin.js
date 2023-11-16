@@ -28,7 +28,7 @@ const UrlInput = ({ field, form, ...props }) => {
 };
 
 // Component for selecting a category from the list
-const CategoryList = ({ getCategories, setSelectedCategory, field, form, ...props }) => {
+const CategoryList = ({ getCategories, field, form, ...props }) => {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -74,7 +74,7 @@ const CreateVideoAdmin = ({ isLoggedIn, logIn }) => {
   const [state, setState] = useContext(UserContext);
   const [showModal, setShowModal] = useState(false);
   const [getCategories, setGetCategories] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [isExpanded, setExpanded] = useState(false);
 
   // Initial values for the form fields
   const initialValues = {
@@ -156,6 +156,10 @@ const CreateVideoAdmin = ({ isLoggedIn, logIn }) => {
     setShowModal(true);
   };
 
+  const handleToggleExpand = () => {
+    setExpanded(!isExpanded);
+  };
+
   return (
     <Container className="mt-2  sub_form create_video_form">
 
@@ -207,32 +211,76 @@ const CreateVideoAdmin = ({ isLoggedIn, logIn }) => {
                 className="text-danger"
               />
             </div>
-            <div className="col-md-12 mb-3">
-              <label htmlFor="description" className="form-label">
-                Description:
-              </label>
-              <Field
-                name="description"
-                render={({ field, form }) => (
-                  <Editor
-                    editorState={field.value}
-                    onEditorStateChange={(editorState) =>
-                      form.setFieldValue(field.name, editorState)
-                    }
-                    className="custom-editor"
-                    wrapperClassName="wrapper-class"
-                    editorClassName="editor-class"
-                    toolbarClassName="toolbar-class"
+
+           {isExpanded && (
+             <div className="col-md-12 mb-3 expanded-overlay">
+               <div className="expanded-editor">
+                  <button onClick={handleToggleExpand}>
+                    Reduce Editor
+                  </button>
+                  <label htmlFor="description" className="form-label">
+                    Description:
+                  </label>
+                  <Field
+                    name="description"
+                    render={({ field, form }) => (
+                      <Editor
+                        editorState={field.value}
+                        onEditorStateChange={(editorState) =>
+                          form.setFieldValue(field.name, editorState)
+                        }
+                        className="custom-editor"
+                        wrapperClassName="wrapper-class"
+                        editorClassName="expanded-editor-class"
+                        toolbarClassName="toolbar-class"
+                      />
+                    )}
+                    required
                   />
-                )}
-                required
-              />
-              <ErrorMessage
-                name="description"
-                component="div"
-                className="text-danger"
-              />
-            </div>
+                  <ErrorMessage
+                    name="description"
+                    component="div"
+                    className="text-danger"
+                  />
+                  
+               </div>
+           </div>
+           )}
+
+          {!isExpanded && (
+             <div className="col-md-12 mb-3">
+                <label htmlFor="description" className="form-label">
+                  Description:
+                </label>
+                <Field
+                  name="description"
+                  render={({ field, form }) => (
+                    <Editor
+                      editorState={field.value}
+                      onEditorStateChange={(editorState) =>
+                        form.setFieldValue(field.name, editorState)
+                      }
+                      className="custom-editor"
+                      wrapperClassName="wrapper-class"
+                      editorClassName="editor-class"
+                      toolbarClassName="toolbar-class"
+                    />
+                  )}
+                  required
+                />
+                <ErrorMessage
+                  name="description"
+                  component="div"
+                  className="text-danger"
+                />
+                 <button onClick={handleToggleExpand}>
+                    Expand Editor
+                  </button>
+           </div>
+           )}
+
+
+
             <div className="mb-3">
               <label htmlFor="url" className="form-label">
                 Video url:
@@ -270,7 +318,6 @@ const CreateVideoAdmin = ({ isLoggedIn, logIn }) => {
                 className="form-control me-3"
                 component={CategoryList}
                 getCategories={getCategories}
-                setSelectedCategory={setSelectedCategory}
                 required
               />
               <ErrorMessage
