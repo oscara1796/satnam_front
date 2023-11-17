@@ -215,7 +215,7 @@ const CreateVideoAdmin = ({ isLoggedIn, logIn }) => {
            {isExpanded && (
              <div className="col-md-12 mb-3 expanded-overlay">
                <div className="expanded-editor">
-                  <button onClick={handleToggleExpand}>
+                  <button  className="expanded-editor-button" onClick={handleToggleExpand}>
                     Reduce Editor
                   </button>
                   <label htmlFor="description" className="form-label">

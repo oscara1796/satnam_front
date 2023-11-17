@@ -354,9 +354,9 @@ body{
 
 
 .wrapper-class {
-  padding: 1rem;
   border: 1px solid #ccc;
   overflow: hidden;
+  width: 100%;
 }
 .editor-class {
   /* background-color:lightgray; */
@@ -369,6 +369,7 @@ body{
   /* background-color:lightgray; */
   padding: 1rem;
   border: 1px solid black;
+  width: 100%;
   height: 60vh;
 }
 
@@ -389,11 +390,18 @@ body{
   width: 80vw;
   height: 80vh;
   background-color: white;
-  border: 1px solid #ccc;
+  border: 3px solid #ccc;
+  border-radius: 10px;
   z-index: 1001; /* Set a higher z-index to make sure it's above the overlay */
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  padding: 5px;
+}
+
+.expanded-editor-button{
+  width: 20%;
 }
 
 
