@@ -6,9 +6,25 @@ import { Navigate } from 'react-router-dom';
 
 const VideoList = ({isLoggedIn}) => {
   const [videos, setVideos] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const handleSearch = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/search_videos/?search=${searchQuery}`);
+      console.log(response.data);
+      setVideos(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
 
   const getVideos = async () => {
-    let url = `${process.env.REACT_APP_BASE_URL}/api/video_list/`+ `?page=1&page_size=10`;
+    let url = `${process.env.REACT_APP_BASE_URL}/api/video_list/`+ `?page=1&page_size=5`;
     const token = getAccessToken();
     const headers = { Authorization: `Bearer ${token}` };
     
@@ -17,6 +33,7 @@ const VideoList = ({isLoggedIn}) => {
       let response = await axios.get(url, {
           headers: headers,
         });
+        console.log(response.data);
         setVideos(response.data)
     }catch(error){
       console.error('Error getting videos');
@@ -35,11 +52,24 @@ const VideoList = ({isLoggedIn}) => {
   }
 
   return (
-    <div className="video-list">
+    <div className="video-list container-fluid mt-4">
       {videos && videos.results && videos.results.length  > 0 ? (
-        videos.results.map((video) => (
-          <VideoCard key={video.id} {...video} />
-        ))
+        <>
+           <div className='video_search_container'>
+            <input type="text" value={searchQuery} onChange={handleSearchChange} />
+              <button onClick={handleSearch}>Buscar videos</button>
+           </div>
+           <div className='categories_container'>
+
+           </div>
+           <div className='videos-grid'>
+            {
+              videos.results.map((video) => (
+                <VideoCard key={video.id} {...video} />
+              ))
+            }
+           </div>
+        </>
       ) : (
         <div className="d-flex align-items-center justify-content-center" style={{height: '80vh'}}>
           <p className='text-center' style={{fontSize: '3rem'}} >No hay videos por aqui ...  </p>

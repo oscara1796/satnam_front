@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { EditorState, ContentState, convertFromRaw } from 'draft-js';
+import { EditorState, ContentState, convertFromRaw, convertToRaw } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
+import { LinkContainer } from 'react-router-bootstrap';
 
 
 
@@ -15,27 +16,41 @@ const VideoCard = ({ title, image, description, url, free, date_of_creation }) =
     // Parse the retrieved data and convert it to ContentState
     const parsedData = JSON.parse(description);
     const contentState = convertFromRaw(parsedData);
+    console.log(parsedData);
     // Store the parsed data for rendering
     setSavedData(parsedData);
   }, []); // Ensure this effect runs once when the component mounts
 
+  const getPlainTextFromContentState = (contentState) => {
+    const fullContent = contentState.blocks.map((block) => block.text).join('\n');;
+    const maxLength = 200; // Set the maximum length you want to display
 
-
+    const truncatedContent = fullContent.length > maxLength
+    ? fullContent.slice(0, maxLength) + '...' // Display ellipsis for truncated content
+    : fullContent;
+    return truncatedContent
+  };
     return (
       <div className="video-card container">
-        <img src={image} alt={title} />
+        
         <h2>{title}</h2>
+        <div className="video-image-container">
+          <img src={`${process.env.REACT_APP_BASE_URL}${image}`} alt={title} className="play-icon" />
+          <i className="play-icon">▶️</i> {/* Add a play icon */}
+        </div>
           {savedData && (
           <div>
             <hr />
-            <div dangerouslySetInnerHTML={{ __html: stateToHTML(convertFromRaw(savedData)) }} />
+            {/* <div dangerouslySetInnerHTML={{ __html: stateToHTML(convertFromRaw(savedData)) }} /> */}
+            <p>{getPlainTextFromContentState(savedData)}</p>
           </div>
         )}
-        <a href={url} target="_blank" rel="noopener noreferrer">
-          Watch Video
-        </a>
-        <p>{free ? 'Free' : 'Paid'}</p>
-        <p>Created on: {new Date(date_of_creation).toLocaleDateString()}</p>
+         <LinkContainer to='/'>
+                    <a className='video_link'>Ver Video</a>
+          </LinkContainer>
+        
+        <p className='video_free'>{free ? 'Gratis' : 'Inscribite'}</p>
+        <p>Creado el: {new Date(date_of_creation).toLocaleDateString()}</p>
       </div>
     );
   };

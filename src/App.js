@@ -82,37 +82,12 @@ function App () {
   const checkTokenExpiration = async () => {
 
     if (isTokenExpired() && isLoggedIn) {
-      const refreshToken = JSON.parse(
-        window.localStorage.getItem('satnam.auth')
-      )?.refresh;
-      if (!refreshToken) {
-        console.log("No refresh token");
-        logOut(); // No refresh token, trigger logout
-        return;
-      }
-
-      const url = `${process.env.REACT_APP_BASE_URL}/api/token/refresh/`;
-      try {
-        const response = await axios.post(url, { refresh: refreshToken });
-        console.log(response);
-        window.localStorage.setItem(
-          'satnam.auth',
-          JSON.stringify(response.data)
-        );
-        setLoggedIn(true);
-      } catch (error) {
-        console.error(error);
-        logOut(); // Failed to refresh token, trigger logout
-      }
+      logOut(); // Failed to refresh token, trigger logout
       console.log("token expired");
     }
     console.log("reviewed token");
     
   };
-
-
-
-
 
     useEffect(() => {
       checkTokenExpiration();
