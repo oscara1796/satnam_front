@@ -547,6 +547,30 @@ body{
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Adjusted box shadow on hover */
   }
 }
+.categories_container  {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.categories_container button {
+  background-color: white;
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  border: 1px solid black;
+  margin-right: 1rem;
+  
+}
+
+.categories_container button:hover {
+  background-color: #c7c7c7;
+}
 
 /* 
 PAYMENT OPTIONS CSS */

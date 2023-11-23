@@ -4,6 +4,41 @@ import { getUser, getAccessToken } from '../services/AuthService';
 import VideoCard from './VideoCard';
 import { Navigate } from 'react-router-dom'; 
 
+const Categories = ({handleCategoryOption}) => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    async function getCategories() {
+      // Define the URL of your Django API endpoint
+      const url = `${process.env.REACT_APP_BASE_URL}/api/category_list/`;
+      const token = getAccessToken();
+      const headers = { Authorization: `Bearer ${token}` };
+
+      // Fetch categories from the API
+      try {
+        let response = await axios.get(url, {
+          headers: headers,
+        });
+        setCategories(response.data);
+        console.log("categories", response.data);
+      } catch (error) {
+        console.error('Error obtaining categories:');
+        console.log(error);
+      }
+    }
+
+    getCategories();
+  }, []);
+
+  return (
+    <>
+      {categories.map((category) => (
+        <button key={category.id} onClick={handleCategoryOption} value={category.id}>{category.title}</button>
+      ))}
+    </>
+  );
+};
+
 const VideoList = ({isLoggedIn}) => {
   const [videos, setVideos] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -15,6 +50,16 @@ const VideoList = ({isLoggedIn}) => {
   const handleSearch = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/search_videos/?search=${searchQuery}`);
+      console.log(response.data);
+      setVideos(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const handleCategoryOption = async (event) => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/search_videos/?category=${event.target.value}`);
       console.log(response.data);
       setVideos(response.data);
     } catch (error) {
@@ -60,7 +105,7 @@ const VideoList = ({isLoggedIn}) => {
               <button onClick={handleSearch}>Buscar videos</button>
            </div>
            <div className='categories_container'>
-
+            <Categories handleCategoryOption={handleCategoryOption} />
            </div>
            <div className='videos-grid'>
             {
@@ -78,5 +123,8 @@ const VideoList = ({isLoggedIn}) => {
     </div>
   );
 };
+
+
+
 
 export default VideoList;
