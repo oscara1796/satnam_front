@@ -13,19 +13,7 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 import CreateCategory from './CreateCategory';
 
-// Custom input component for URL field
-const UrlInput = ({ field, form, ...props }) => {
-  return (
-    <input
-      type="url"
-      {...field}
-      {...props}
-      onChange={(e) => {
-        field.onChange(e);
-      }}
-    />
-  );
-};
+
 
 // Component for selecting a category from the list
 const CategoryList = ({ getCategories, field, form, ...props }) => {
@@ -289,8 +277,9 @@ const CreateVideoAdmin = ({ isLoggedIn, logIn }) => {
                 type="url"
                 name="url"
                 required
-                component={UrlInput} // Use the custom URL input component
+                as="textarea"  // Use the custom URL input component
                 className="form-control"
+                rows={4}  
               />
               <ErrorMessage name="url" component="div" className="text-danger" />
             </div>

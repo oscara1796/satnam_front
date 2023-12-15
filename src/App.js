@@ -18,6 +18,7 @@ import StripeSuccess from './components/StripeSuccess';
 import VideoList from './components/VideoList';
 import CreateVideoAdmin from './components/CreateVideoAdmin';
 import PaymentOptions from './components/PaymentOptions';
+import VideoDetailed from './components/VideoDetailed';
 import axios from 'axios';
 import { getUser, getAccessToken, isTokenExpired } from './services/AuthService'; 
 // import { getSubscription, SubStatus } from './services/SubsService'; 
@@ -28,6 +29,7 @@ import { UserContext } from './context';
 
 
 import './App.css';
+
 
 
 
@@ -114,6 +116,7 @@ function App () {
                 } 
               > 
        <Route index element={<Landing isLoggedIn={isLoggedIn}  />} />
+        <Route path='video-detailed/:video_id/:video_title' element={<VideoDetailed isLoggedIn={isLoggedIn}  />} />
         <Route path='videos' element={<VideoList isLoggedIn={isLoggedIn}  />} />
         <Route path='payment-methods' element={<PaymentOptions isLoggedIn={isLoggedIn} logIn={logIn}  />} />
         <Route path='videos-create' element={<CreateVideoAdmin isLoggedIn={isLoggedIn}  />} />

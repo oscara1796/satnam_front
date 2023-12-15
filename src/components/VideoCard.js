@@ -5,7 +5,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 
 
 
-const VideoCard = ({ title, image, description, url, free, date_of_creation }) => {
+const VideoCard = ({ id, title, image, description, url, free, date_of_creation }) => {
 
   const [savedData, setSavedData] = useState(null); // Data retrieved from the database
 
@@ -34,6 +34,7 @@ const VideoCard = ({ title, image, description, url, free, date_of_creation }) =
       <div className="video-card container">
         
         <h2>{title}</h2>
+        <p>{id}</p>
         <div className="video-image-container">
           <img src={`${process.env.REACT_APP_BASE_URL}${image}`} alt={title} className="play-icon" />
           <i className="play-icon">▶️</i> {/* Add a play icon */}
@@ -45,7 +46,10 @@ const VideoCard = ({ title, image, description, url, free, date_of_creation }) =
             <p>{getPlainTextFromContentState(savedData)}</p>
           </div>
         )}
-         <LinkContainer to='/'>
+         <LinkContainer to={{
+            pathname: `/video-detailed/${id}/${title}`, // Adjust the route path as needed
+            
+          }}>
                     <a className='video_link'>Ver Video</a>
           </LinkContainer>
         
