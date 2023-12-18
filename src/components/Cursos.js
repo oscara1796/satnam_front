@@ -1,17 +1,12 @@
 import {
-    Alert, Breadcrumb, Button, Card, Form, Container
-  } from 'react-bootstrap';
+  Alert,
+  Breadcrumb,
+  Button,
+  Card,
+  Form,
+  Container,
+} from 'react-bootstrap'
 
-
-function Cursos ({isLoggedIn , subscriptionActive}) {
-
-
-
-    
-
-    return (
-        <>
-
-        </>
-    )
+function Cursos({ isLoggedIn, subscriptionActive }) {
+  return <></>
 }

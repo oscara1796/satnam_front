@@ -1,68 +1,61 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import {
-  Container
-} from 'react-bootstrap';
-import { Navigate } from 'react-router-dom';
-import axios from 'axios';
-import { getUser, getAccessToken } from '../services/AuthService';
-import { UserContext } from '../context';
-import { EditorState, convertToRaw } from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import React, { useState, useContext, useEffect } from 'react'
+import { Formik, Form, Field, ErrorMessage } from 'formik'
+import { Container } from 'react-bootstrap'
+import { Navigate } from 'react-router-dom'
+import axios from 'axios'
+import { getUser, getAccessToken } from '../services/AuthService'
+import { UserContext } from '../context'
+import { EditorState, convertToRaw } from 'draft-js'
+import { Editor } from 'react-draft-wysiwyg'
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 
-import CreateCategory from './CreateCategory';
-
-
+import CreateCategory from './CreateCategory'
 
 // Component for selecting a category from the list
 const CategoryList = ({ getCategories, field, form, ...props }) => {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([])
 
   useEffect(() => {
     async function getCategories() {
       // Define the URL of your Django API endpoint
-      const url = `${process.env.REACT_APP_BASE_URL}/api/category_list/`;
-      const token = getAccessToken();
-      const headers = { Authorization: `Bearer ${token}` };
+      const url = `${process.env.REACT_APP_BASE_URL}/api/category_list/`
+      const token = getAccessToken()
+      const headers = { Authorization: `Bearer ${token}` }
 
       // Fetch categories from the API
       try {
         let response = await axios.get(url, {
           headers: headers,
-        });
-        setCategories(response.data);
-        console.log(response.data);
+        })
+        setCategories(response.data)
+        console.log(response.data)
       } catch (error) {
-        console.error('Error obtaining categories:');
-        console.log(error);
+        console.error('Error obtaining categories:')
+        console.log(error)
       }
     }
 
-    getCategories();
-  }, [getCategories]);
+    getCategories()
+  }, [getCategories])
 
   return (
-    <select
-      {...field}
-      {...props}
-    >
+    <select {...field} {...props}>
       {categories.map((category) => (
         <option key={category.id} data_key={category.id} value={category.title}>
           {category.title}
         </option>
       ))}
     </select>
-  );
-};
+  )
+}
 
 // Main component for creating a video in the admin interface
 const CreateVideoAdmin = ({ isLoggedIn, logIn }) => {
-  const [isSubmitted, setSubmitted] = useState(false);
-  const [state, setState] = useContext(UserContext);
-  const [showModal, setShowModal] = useState(false);
-  const [getCategories, setGetCategories] = useState(false);
-  const [isExpanded, setExpanded] = useState(false);
+  const [isSubmitted, setSubmitted] = useState(false)
+  const [state, setState] = useContext(UserContext)
+  const [showModal, setShowModal] = useState(false)
+  const [getCategories, setGetCategories] = useState(false)
+  const [isExpanded, setExpanded] = useState(false)
 
   // Initial values for the form fields
   const initialValues = {
@@ -72,254 +65,269 @@ const CreateVideoAdmin = ({ isLoggedIn, logIn }) => {
     url: '',
     free: '',
     categories: '',
-  };
+  }
 
   // Function to handle form submission
   const handleSubmit = async (values) => {
     // Log the form values
-    console.log("values ", values);
+    console.log('values ', values)
 
     // Getting selected category details
-    const selectedOption = document.getElementById('mySelect').options[document.getElementById('mySelect').selectedIndex];
-    const optionAttributes = Array.from(selectedOption.attributes).reduce((acc, attr) => {
-      acc[attr.name] = attr.value;
-      return acc;
-    }, {});
+    const selectedOption =
+      document.getElementById('mySelect').options[
+        document.getElementById('mySelect').selectedIndex
+      ]
+    const optionAttributes = Array.from(selectedOption.attributes).reduce(
+      (acc, attr) => {
+        acc[attr.name] = attr.value
+        return acc
+      },
+      {}
+    )
 
     // Log the selected category details
-    console.log('Selected Option Value:', selectedOption.value);
-    console.log('Selected Option Attributes:', optionAttributes);
+    console.log('Selected Option Value:', selectedOption.value)
+    console.log('Selected Option Attributes:', optionAttributes)
 
     // Convert description to JSON
-    const contentState = values.description.getCurrentContent();
-    const content = JSON.stringify(convertToRaw(contentState));
+    const contentState = values.description.getCurrentContent()
+    const content = JSON.stringify(convertToRaw(contentState))
 
     // Create form data for submission
-    const formData = new FormData();
-    formData.append('title', values.title);
-    formData.append('image', values.image);
-    formData.append('description', content);
-    formData.append('categories',  JSON.stringify(optionAttributes));
-    formData.append('url', values.url);
-    formData.append('free', values.free);
-    console.log(formData);
+    const formData = new FormData()
+    formData.append('title', values.title)
+    formData.append('image', values.image)
+    formData.append('description', content)
+    formData.append('categories', JSON.stringify(optionAttributes))
+    formData.append('url', values.url)
+    formData.append('free', values.free)
+    console.log(formData)
 
-    const url = `${process.env.REACT_APP_BASE_URL}/api/video_detail/`;
-    const token = getAccessToken();
-    const headers = { Authorization: `Bearer ${token}` };
+    const url = `${process.env.REACT_APP_BASE_URL}/api/video_detail/`
+    const token = getAccessToken()
+    const headers = { Authorization: `Bearer ${token}` }
 
     try {
       // Make a POST request to submit the form data
-      console.log(formData);
+      console.log(formData)
       let response = await axios.post(url, formData, {
         headers: headers,
-      });
-      console.log(response.data);
-      setSubmitted(true);
+      })
+      console.log(response.data)
+      setSubmitted(true)
     } catch (error) {
-      console.error('Error creating subscription:');
-      console.log(error);
-      console.log("navigate to cancel");
+      console.error('Error creating subscription:')
+      console.log(error)
+      console.log('navigate to cancel')
     }
-  };
+  }
 
   // Redirect to login page if not logged in
   if (!isLoggedIn) {
-    return <Navigate to='/log-in' />;
+    return <Navigate to='/log-in' />
   }
 
   // Redirect to videos page after successful submission
   if (isSubmitted) {
-    console.log("navigate to videos ");
-    return <Navigate to='/videos' />;
+    console.log('navigate to videos ')
+    return <Navigate to='/videos' />
   }
 
   // Function to close the modal
   const closeModal = () => {
-    setShowModal(false);
-  };
+    setShowModal(false)
+  }
 
   // Function to open the modal
   const openModal = () => {
-    setShowModal(true);
-  };
+    setShowModal(true)
+  }
 
   const handleToggleExpand = () => {
-    setExpanded(!isExpanded);
-  };
+    setExpanded(!isExpanded)
+  }
 
   return (
-    <Container className="mt-2  sub_form create_video_form">
-
+    <Container className='mt-2  sub_form create_video_form'>
       {/* Formik component for handling form state and submission */}
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
         validate={(values) => {
-          const errors = {};
+          const errors = {}
 
-          return errors;
+          return errors
         }}
       >
         {({ isSubmitting, setFieldValue, handleChange }) => (
           <Form>
-            <div className="mb-3">
-              <label htmlFor="title" className="form-label">
+            <div className='mb-3'>
+              <label htmlFor='title' className='form-label'>
                 Titulo video:
               </label>
               <Field
-                type="text"
-                name="title"
-                className="form-control"
+                type='text'
+                name='title'
+                className='form-control'
                 required
               />
               <ErrorMessage
-                name="title"
-                component="div"
-                className="text-danger"
+                name='title'
+                component='div'
+                className='text-danger'
               />
             </div>
-            <div className="col-md-12 mb-3">
-              <label htmlFor="image" className="form-label">
+            <div className='col-md-12 mb-3'>
+              <label htmlFor='image' className='form-label'>
                 Image:
               </label>
               <input
-                type="file"
-                name="image"
-                className="form-control"
+                type='file'
+                name='image'
+                className='form-control'
                 onChange={(event) => {
-                  const file = event.currentTarget.files[0];
-                  setFieldValue("image", file);
+                  const file = event.currentTarget.files[0]
+                  setFieldValue('image', file)
                 }}
                 required
               />
               <ErrorMessage
-                name="image"
-                component="div"
-                className="text-danger"
+                name='image'
+                component='div'
+                className='text-danger'
               />
             </div>
 
-           {isExpanded && (
-             <div className="col-md-12 mb-3 expanded-overlay">
-               <div className="expanded-editor">
-                  <button  className="expanded-editor-button" onClick={handleToggleExpand}>
+            {isExpanded && (
+              <div className='col-md-12 mb-3 expanded-overlay'>
+                <div className='expanded-editor'>
+                  <button
+                    className='expanded-editor-button'
+                    onClick={handleToggleExpand}
+                  >
                     Reduce Editor
                   </button>
-                  <label htmlFor="description" className="form-label">
+                  <label htmlFor='description' className='form-label'>
                     Description:
                   </label>
                   <Field
-                    name="description"
+                    name='description'
                     render={({ field, form }) => (
                       <Editor
                         editorState={field.value}
                         onEditorStateChange={(editorState) =>
                           form.setFieldValue(field.name, editorState)
                         }
-                        className="custom-editor"
-                        wrapperClassName="wrapper-class"
-                        editorClassName="expanded-editor-class"
-                        toolbarClassName="toolbar-class"
+                        className='custom-editor'
+                        wrapperClassName='wrapper-class'
+                        editorClassName='expanded-editor-class'
+                        toolbarClassName='toolbar-class'
                       />
                     )}
                     required
                   />
                   <ErrorMessage
-                    name="description"
-                    component="div"
-                    className="text-danger"
+                    name='description'
+                    component='div'
+                    className='text-danger'
                   />
-                  
-               </div>
-           </div>
-           )}
+                </div>
+              </div>
+            )}
 
-          {!isExpanded && (
-             <div className="col-md-12 mb-3">
-                <label htmlFor="description" className="form-label">
+            {!isExpanded && (
+              <div className='col-md-12 mb-3'>
+                <label htmlFor='description' className='form-label'>
                   Description:
                 </label>
                 <Field
-                  name="description"
+                  name='description'
                   render={({ field, form }) => (
                     <Editor
                       editorState={field.value}
                       onEditorStateChange={(editorState) =>
                         form.setFieldValue(field.name, editorState)
                       }
-                      className="custom-editor"
-                      wrapperClassName="wrapper-class"
-                      editorClassName="editor-class"
-                      toolbarClassName="toolbar-class"
+                      className='custom-editor'
+                      wrapperClassName='wrapper-class'
+                      editorClassName='editor-class'
+                      toolbarClassName='toolbar-class'
                     />
                   )}
                   required
                 />
                 <ErrorMessage
-                  name="description"
-                  component="div"
-                  className="text-danger"
+                  name='description'
+                  component='div'
+                  className='text-danger'
                 />
-                 <button onClick={handleToggleExpand}>
-                    Expand Editor
-                  </button>
-           </div>
-           )}
+                <button onClick={handleToggleExpand}>Expand Editor</button>
+              </div>
+            )}
 
-
-
-            <div className="mb-3">
-              <label htmlFor="url" className="form-label">
+            <div className='mb-3'>
+              <label htmlFor='url' className='form-label'>
                 Video url:
               </label>
               <Field
-                type="url"
-                name="url"
+                type='url'
+                name='url'
                 required
-                as="textarea"  // Use the custom URL input component
-                className="form-control"
-                rows={4}  
+                as='textarea' // Use the custom URL input component
+                className='form-control'
+                rows={4}
               />
-              <ErrorMessage name="url" component="div" className="text-danger" />
+              <ErrorMessage
+                name='url'
+                component='div'
+                className='text-danger'
+              />
             </div>
 
-            <div className="mb-3 create-video-checkbox">
-              <label htmlFor="free" className="form-label">
-                <Field
-                  type="checkbox"
-                  name="free"
-                  required
-                /> Gratis
+            <div className='mb-3 create-video-checkbox'>
+              <label htmlFor='free' className='form-label'>
+                <Field type='checkbox' name='free' required /> Gratis
               </label>
 
-              <ErrorMessage name="free" component="div" className="text-danger" />
+              <ErrorMessage
+                name='free'
+                component='div'
+                className='text-danger'
+              />
             </div>
 
-            <div className="col-md-6 mb-3 d-flex justify-content-start  align-items-center">
-              <label htmlFor="categories" className="form-label me-3">
+            <div className='col-md-6 mb-3 d-flex justify-content-start  align-items-center'>
+              <label htmlFor='categories' className='form-label me-3'>
                 Categorias:
               </label>
               <Field
-                as="select"
-                id="mySelect"
-                name="categories"
-                className="form-control me-3"
+                as='select'
+                id='mySelect'
+                name='categories'
+                className='form-control me-3'
                 component={CategoryList}
                 getCategories={getCategories}
                 required
               />
               <ErrorMessage
-                name="categories"
-                component="div"
-                className="text-danger"
+                name='categories'
+                component='div'
+                className='text-danger'
               />
-              <button type="button" className="btn btn-primary mt-2" onClick={openModal}>
+              <button
+                type='button'
+                className='btn btn-primary mt-2'
+                onClick={openModal}
+              >
                 Añade categoria
               </button>
             </div>
 
-            <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+            <button
+              type='submit'
+              className='btn btn-primary'
+              disabled={isSubmitting}
+            >
               Crea video
             </button>
           </Form>
@@ -328,10 +336,13 @@ const CreateVideoAdmin = ({ isLoggedIn, logIn }) => {
 
       {/* Display the modal for creating a category */}
       {showModal && (
-        <CreateCategory onClose={closeModal} setGetCategories={setGetCategories} />
+        <CreateCategory
+          onClose={closeModal}
+          setGetCategories={setGetCategories}
+        />
       )}
     </Container>
-  );
-};
+  )
+}
 
-export default CreateVideoAdmin;
+export default CreateVideoAdmin

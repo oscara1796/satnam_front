@@ -15,7 +15,7 @@ html{
 }
 
 body{
- height: 100vh;
+ display: block;
 }
 
 /* NAVBAR */
@@ -422,7 +422,7 @@ body{
 
 /* VIDEO CARD */
 
-.video-card {
+.video-card-search {
   
   border-radius: 10px;
   border: 1px solid #ccc;
@@ -444,7 +444,7 @@ body{
   border-radius: 10px;
 }
 
-.video-card img {
+.video-card-search img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -468,13 +468,13 @@ body{
 
 
 
-.video-card h2 {
+.video-card-search h2 {
   text-align: center;
   margin: 1rem 0; /* Add some margin to the heading */
 }
 
 
-.video-card:hover .play-icon {
+.video-card-search:hover .play-icon {
   opacity: 1;
 }
 
@@ -510,6 +510,7 @@ body{
 .video-list{
   display: flex;
   flex-direction: column;
+  height: 100vh;
 }
 .video_search_container  {
   width: 100%;
@@ -647,3 +648,108 @@ input[type="checkbox"]:checked + .checkbox-circle {
 /* END OF PAYMENT OPTIONS */
 
 
+/* VIDEO CARD STYLE */
+
+.free-icon {
+  /* Modern blue background */
+  background-color: #2D8CFF;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-family: sans-serif; /* Adjust font if needed */
+  font-size: 30px;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* END OF VIDEO CARD STYLE  */
+
+
+/* VIDEO DETAILS  */
+
+
+.video-detail-container {
+  display: block;
+  height: 100vh;
+}
+
+.video-card {
+  margin-left: auto;
+  margin-right: auto;
+  width: 60vw;
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.video-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.video-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.video-description {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.video-embed {
+  margin-bottom: 20px;
+}
+
+.video-date {
+  font-size: 14px;
+  color: #888;
+}
+
+
+.custom-video-container {
+
+  width: 100%;
+  
+  background-color: #333;
+  height: 50vh;
+}
+
+.video-overlay {
+  display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.play-button {
+
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 20px 0 20px 40px;
+  border-color: transparent transparent transparent rgb(255, 255, 255);
+  cursor: pointer;
+  margin: 10px;
+}
+
+.inscribe-button {
+  margin-top: 10px;
+}
+
+/* Add more styles as needed */
+
+
+
+/* END OF VIDEO DETAILS  */

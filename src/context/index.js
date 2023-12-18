@@ -1,25 +1,31 @@
-import { useState, useEffect, createContext } from "react";
-import { getUser, getAccessToken, isTokenExpired } from '../services/AuthService'; 
+import { useState, useEffect, createContext } from 'react'
+import {
+  getUser,
+  getAccessToken,
+  isTokenExpired,
+} from '../services/AuthService'
 
-const UserContext = createContext();
+const UserContext = createContext()
 
+const UserProvider = ({ children }) => {
+  const [state, setState] = useState({
+    user: {},
+    auth: '',
+  })
 
-const UserProvider = ({children}) => {
-    const [state, setState] = useState({
-        user : {},
-        auth : ""
-    })
+  useEffect(() => {
+    var tempState = {
+      user: JSON.parse(localStorage.getItem('satnam.user')),
+      auth: getAccessToken(),
+    }
+    setState(tempState)
+  }, [])
 
-    useEffect(() => {
-        var tempState = {user: JSON.parse(localStorage.getItem("satnam.user")), auth: getAccessToken() }
-        setState(tempState)
-    }, [])
+  return (
+    <UserContext.Provider value={[state, setState]}>
+      {children}
+    </UserContext.Provider>
+  )
+}
 
-    return (
-        <UserContext.Provider value={[state, setState]}>
-            {children}
-        </UserContext.Provider>
-    )
-};
-
-export {UserContext, UserProvider};
+export { UserContext, UserProvider }
