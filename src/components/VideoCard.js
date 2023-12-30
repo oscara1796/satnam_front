@@ -16,6 +16,7 @@ const VideoCard = ({
   url,
   free,
   date_of_creation,
+  is_staff,
 }) => {
   const [savedData, setSavedData] = useState(null) // Data retrieved from the database
 
@@ -44,6 +45,17 @@ const VideoCard = ({
   }
   return (
     <div className='video-card-search container'>
+      {/* if user is staff then can modify videos */}
+      {is_staff && (
+        <LinkContainer
+          to={{
+            pathname: `/video-update/${id}/${title}`, // Adjust the route path as needed
+          }}
+        >
+          <a className='video_link_edit'>editar Video</a>
+        </LinkContainer>
+      )}
+
       {free && (
         <div className='free-icon'>
           {/* Add an icon or board design for free videos */}

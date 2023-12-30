@@ -39,6 +39,7 @@ function LogIn({ isLoggedIn, logIn }) {
       }
     } catch (error) {
       console.error(error)
+      toast.error(`Error no pudimos hacer log in: ${error.message}`)
     }
   }
   if (isLoggedIn || isSubmitted) {

@@ -1,10 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import axios from 'axios'
 import { getUser, getAccessToken } from '../services/AuthService'
 import VideoCard from './VideoCard'
+import PageIndex from './PageIndex'
 import { Navigate } from 'react-router-dom'
+import { UserContext } from '../context'
+import './Spinner.css'
 
-const Categories = ({ handleCategoryOption }) => {
+const Spinner = () => {
+  return <div className='spinner'></div>
+}
+
+const Categories = ({ handleCategoryOption, selectedCategory }) => {
   const [categories, setCategories] = useState([])
 
   useEffect(() => {
@@ -37,6 +44,11 @@ const Categories = ({ handleCategoryOption }) => {
           key={category.id}
           onClick={handleCategoryOption}
           value={category.id}
+          style={{
+            backgroundColor:
+              category.id == selectedCategory ? '#007bff' : 'initial',
+            color: category.id == selectedCategory ? 'white' : 'initial',
+          }}
         >
           {category.title}
         </button>
@@ -48,49 +60,63 @@ const Categories = ({ handleCategoryOption }) => {
 const VideoList = ({ isLoggedIn }) => {
   const [videos, setVideos] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
+  const [category, setCategory] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [searchInitiated, setSearchInitiated] = useState(false)
+  const [state, setState] = useContext(UserContext)
+
+  const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(0)
+  const video_elements_per_page = 9
 
   const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value)
+    setSearchQuery(event.target.value.trim())
   }
 
   const handleSearch = async () => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/api/search_videos/?search=${searchQuery}`
-      )
-      console.log(response.data)
-      setVideos(response.data)
-    } catch (error) {
-      console.error('Error fetching data:', error)
+    setCategory('')
+    if (searchQuery === '') {
+      setPage(1)
     }
+    setSearchInitiated(!searchInitiated)
   }
 
   const handleCategoryOption = async (event) => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/api/search_videos/?category=${event.target.value}`
-      )
-      console.log(response.data)
-      setVideos(response.data)
-    } catch (error) {
-      console.error('Error fetching data:', error)
+    setSearchQuery('')
+    setPage(1)
+    if (event.target.value === category) {
+      setCategory('')
+    } else {
+      setCategory(event.target.value)
     }
   }
 
   const getVideos = async () => {
     let url =
       `${process.env.REACT_APP_BASE_URL}/api/video_list/` +
-      `?page=1&page_size=5`
+      `?page=${page}&page_size=${video_elements_per_page}`
     const token = getAccessToken()
     const headers = { Authorization: `Bearer ${token}` }
+
+    if (searchQuery) {
+      url = url + `&search=${searchQuery}`
+    }
+
+    if (category) {
+      url = url + `&category=${category}`
+    }
 
     try {
       let response = await axios.get(url, {
         headers: headers,
       })
+      setTotalPages(
+        Math.ceil(response.data.total_count / video_elements_per_page)
+      )
       console.log(response.data)
       setVideos(response.data)
     } catch (error) {
+      setVideos([])
       console.error('Error getting videos')
       console.log(error)
     }
@@ -100,7 +126,7 @@ const VideoList = ({ isLoggedIn }) => {
     // Fetch video data from your API or data source here
     // Example fetch:
     getVideos()
-  }, [])
+  }, [page, category, searchInitiated])
 
   if (!isLoggedIn) {
     return <Navigate to='/log-in' />
@@ -113,15 +139,23 @@ const VideoList = ({ isLoggedIn }) => {
         <button onClick={handleSearch}>Buscar videos</button>
       </div>
       <div className='categories_container'>
-        <Categories handleCategoryOption={handleCategoryOption} />
+        <Categories
+          handleCategoryOption={handleCategoryOption}
+          selectedCategory={category}
+        />
       </div>
       {videos && videos.results && videos.results.length > 0 ? (
         <>
           <div className='videos-grid'>
             {videos.results.map((video) => (
-              <VideoCard key={video.id} {...video} />
+              <VideoCard
+                key={video.id}
+                {...video}
+                is_staff={state.user ? state.user.is_staff : false}
+              />
             ))}
           </div>
+          <PageIndex totalPages={totalPages} page={page} setPage={setPage} />
         </>
       ) : (
         <div

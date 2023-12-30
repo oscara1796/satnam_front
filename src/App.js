@@ -17,6 +17,7 @@ import VideoList from './components/VideoList'
 import CreateVideoAdmin from './components/CreateVideoAdmin'
 import PaymentOptions from './components/PaymentOptions'
 import VideoDetailed from './components/VideoDetailed'
+import UpdateVideoAdmin from './components/UpdateVideoAdmin'
 import axios from 'axios'
 import { getUser, getAccessToken, isTokenExpired } from './services/AuthService'
 // import { getSubscription, SubStatus } from './services/SubsService';
@@ -88,6 +89,11 @@ function App() {
         <Route
           path='video-detailed/:video_id/:video_title'
           element={<VideoDetailed isLoggedIn={isLoggedIn} />}
+        />
+
+        <Route
+          path='video-update/:video_id/:video_title'
+          element={<UpdateVideoAdmin isLoggedIn={isLoggedIn} />}
         />
         <Route path='videos' element={<VideoList isLoggedIn={isLoggedIn} />} />
         <Route
@@ -169,7 +175,9 @@ function Layout({ isLoggedIn, logOut }) {
                 </LinkContainer>
 
                 <LinkContainer to='/videos'>
-                  <a className='nav_link'>Cursos</a>
+                  <a id='video_cursos' className='nav_link'>
+                    Cursos
+                  </a>
                 </LinkContainer>
 
                 <LinkContainer to='/'>
@@ -219,7 +227,7 @@ function Layout({ isLoggedIn, logOut }) {
         </Container>
       </Navbar>
       {/* <!-- Alert container --> */}
-      <ToastContainer />
+      <ToastContainer position='top-center' />
       {/* <Container className='pt-3'> */}
       <Outlet />
       {/* </Container> */}

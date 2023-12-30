@@ -1,19 +1,18 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
-import { Container } from 'react-bootstrap'
-import { Navigate } from 'react-router-dom'
+import { Container, Button } from 'react-bootstrap'
+import { useParams } from 'react-router-dom'
+import { UserContext } from '../context'
 import axios from 'axios'
 import { getUser, getAccessToken } from '../services/AuthService'
-import { UserContext } from '../context'
-import { EditorState, convertToRaw } from 'draft-js'
+import { Navigate } from 'react-router-dom'
+import { EditorState, convertToRaw, convertFromRaw } from 'draft-js'
 import { Editor } from 'react-draft-wysiwyg'
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
-import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 
 import CreateCategory from './CreateCategory'
+// import { CategoryList } from './CreateVideoAdmin'
 
-// Component for displaying a dropdown list of categories
+
 const CategoryList = ({ getCategory, field, form, ...props }) => {
   const [categories, setCategories] = useState([])
 
@@ -49,23 +48,44 @@ const CategoryList = ({ getCategory, field, form, ...props }) => {
   )
 }
 
-// Main component for creating a video admin interface
-const CreateVideoAdmin = ({ isLoggedIn, logIn }) => {
+const UpdateVideoAdmin = (props) => {
   const [isSubmitted, setSubmitted] = useState(false)
-  const [state, setState] = useContext(UserContext)
   const [showModal, setShowModal] = useState(false)
   const [getCategory, setGetCategories] = useState(false)
   const [isExpanded, setExpanded] = useState(false)
+  const { video_id, video_title } = useParams()
+  const [state, setState] = useContext(UserContext)
+  const [video, setVideo] = useState({})
+  // const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
-  // Initial values for the form fields
-  const initialValues = {
-    title: '',
-    image: '',
-    description: EditorState.createEmpty(),
-    url: '',
-    free: '',
-    categories: '',
+  const getVideo = async () => {
+    // Replace 'your_api_base_url' with the actual base URL of your API
+    const apiUrl = `${process.env.REACT_APP_BASE_URL}/api/video_detail/${video_id}/`
+
+    const token = getAccessToken()
+    const headers = { Authorization: `Bearer ${token}` }
+
+    // Make the GET request to retrieve the video
+    try {
+      let response = await axios.get(apiUrl, {
+        headers: headers,
+      })
+      console.log('videos', response.data)
+      setVideo({
+        ...response.data,
+        description: EditorState.createWithContent(
+          convertFromRaw(JSON.parse(response.data.description))
+        ),
+      })
+    } catch (error) {
+      console.error('Error obtaining videos:')
+      console.log(error)
+    }
   }
+
+  useEffect(() => {
+    getVideo()
+  }, [])
 
   // Handles form submission
   const handleSubmit = async (values) => {
@@ -99,13 +119,13 @@ const CreateVideoAdmin = ({ isLoggedIn, logIn }) => {
     formData.append('url', values.url)
     formData.append('free', values.free)
 
-    const url = `${process.env.REACT_APP_BASE_URL}/api/video_detail/`
+    const url = `${process.env.REACT_APP_BASE_URL}/api/video_detail/${video_id}/`
     const token = getAccessToken()
     const headers = { Authorization: `Bearer ${token}` }
 
     try {
       // Make a POST request to submit the form data
-      let response = await axios.post(url, formData, {
+      let response = await axios.put(url, formData, {
         headers: headers,
       })
       console.log(response.data)
@@ -114,21 +134,19 @@ const CreateVideoAdmin = ({ isLoggedIn, logIn }) => {
       console.error('Error creating subscription:')
       console.log(error)
       console.log('navigate to cancel')
-      toast.error(`Error creando video: ${error.message}`)
+      toast.error(`Error actualizando video: ${error.message}`)
     }
   }
 
-  // Redirect to login page if not logged in
-  if (!isLoggedIn) {
+  if (!props.isLoggedIn || (state.user && !state.user.is_staff)) {
     return <Navigate to='/log-in' />
   }
 
-  // Redirect to videos page after successful submission
   if (isSubmitted) {
+    console.log('navigate to videos ')
     return <Navigate to='/videos' />
   }
 
-  // Function to close the modal
   const closeModal = () => {
     setShowModal(false)
   }
@@ -166,11 +184,12 @@ const CreateVideoAdmin = ({ isLoggedIn, logIn }) => {
     <Container className='mt-2  sub_form create_video_form'>
       {/* Formik component for handling form state and submission */}
       <Formik
-        initialValues={initialValues}
+        initialValues={video}
+        enableReinitialize={true}
         onSubmit={handleSubmit}
         validate={validate}
       >
-        {({ isSubmitting, setFieldValue, handleChange }) => (
+        {({ isSubmitting, setFieldValue, handleChange, values }) => (
           <Form>
             <div className='mb-3'>
               <label htmlFor='title' className='form-label'>
@@ -180,6 +199,7 @@ const CreateVideoAdmin = ({ isLoggedIn, logIn }) => {
                 type='text'
                 name='title'
                 className='form-control'
+                value={values.title}
                 required
               />
               <ErrorMessage
@@ -225,7 +245,7 @@ const CreateVideoAdmin = ({ isLoggedIn, logIn }) => {
                     name='description'
                     render={({ field, form }) => (
                       <Editor
-                        editorState={field.value}
+                        editorState={field.value || EditorState.createEmpty()}
                         onEditorStateChange={(editorState) =>
                           form.setFieldValue(field.name, editorState)
                         }
@@ -255,7 +275,7 @@ const CreateVideoAdmin = ({ isLoggedIn, logIn }) => {
                   name='description'
                   render={({ field, form }) => (
                     <Editor
-                      editorState={field.value}
+                      editorState={field.value || EditorState.createEmpty()}
                       onEditorStateChange={(editorState) =>
                         form.setFieldValue(field.name, editorState)
                       }
@@ -342,6 +362,9 @@ const CreateVideoAdmin = ({ isLoggedIn, logIn }) => {
             >
               Crea video
             </button>
+            <Button variant='danger' className='ms-4' onClick={openModal}>
+              Eliminar
+            </Button>
           </Form>
         )}
       </Formik>
@@ -357,4 +380,4 @@ const CreateVideoAdmin = ({ isLoggedIn, logIn }) => {
   )
 }
 
-export default CreateVideoAdmin
+export default UpdateVideoAdmin

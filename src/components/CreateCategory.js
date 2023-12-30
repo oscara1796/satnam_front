@@ -65,6 +65,7 @@ const CreateCategory = ({ onClose, setGetCategories }) => {
                       Título
                     </label>
                     <Field
+                      id='title_category'
                       type='text'
                       name='title'
                       className='form-control'
@@ -82,6 +83,7 @@ const CreateCategory = ({ onClose, setGetCategories }) => {
                       Descripción
                     </label>
                     <Field
+                      id='category_description'
                       as='textarea'
                       name='description'
                       className='form-control'
@@ -95,6 +97,7 @@ const CreateCategory = ({ onClose, setGetCategories }) => {
                   </div>
 
                   <button
+                    id='category_submit_button'
                     type='submit'
                     disabled={isSubmitting}
                     className='btn btn-primary'

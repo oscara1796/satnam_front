@@ -23,3 +23,10 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('setLocalStorage', () => {
+  const localStorageData = win.localStorage.getItem('satnam.auth')
+  cy.window().then((win) => {
+    win.localStorage.setItem('satnam.auth', localStorageData)
+  })
+})
