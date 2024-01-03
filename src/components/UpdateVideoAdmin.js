@@ -3,15 +3,15 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { Container, Button } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import { UserContext } from '../context'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { getUser, getAccessToken } from '../services/AuthService'
 import { Navigate } from 'react-router-dom'
 import { EditorState, convertToRaw, convertFromRaw } from 'draft-js'
 import { Editor } from 'react-draft-wysiwyg'
-
+import { toast } from 'react-toastify'
 import CreateCategory from './CreateCategory'
 // import { CategoryList } from './CreateVideoAdmin'
-
 
 const CategoryList = ({ getCategory, field, form, ...props }) => {
   const [categories, setCategories] = useState([])
@@ -56,6 +56,7 @@ const UpdateVideoAdmin = (props) => {
   const { video_id, video_title } = useParams()
   const [state, setState] = useContext(UserContext)
   const [video, setVideo] = useState({})
+  const navigate = useNavigate()
   // const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   const getVideo = async () => {
@@ -90,12 +91,6 @@ const UpdateVideoAdmin = (props) => {
   // Handles form submission
   const handleSubmit = async (values) => {
     // Ensure you handle the description properly
-    const contentState = values.description.getCurrentContent()
-    if (!contentState.hasText()) {
-      toast.error('Please provide a description.')
-      return
-    }
-    const content = JSON.stringify(convertToRaw(contentState))
 
     // Getting selected category details
     const selectedOption =
@@ -112,12 +107,31 @@ const UpdateVideoAdmin = (props) => {
 
     // Create form data for submission
     const formData = new FormData()
-    formData.append('title', values.title)
-    formData.append('image', values.image)
-    formData.append('description', content)
+
     formData.append('categories', JSON.stringify(optionAttributes))
-    formData.append('url', values.url)
+
+    if (values.title) {
+      formData.append('title', values.title)
+    }
+    // Check if image is a file object (indicating a new file was uploaded)
+    if (values.image && typeof values.image === 'object') {
+      formData.append('image', values.image)
+    }
+
+    // Only append description if it has text
+    const contentState = values.description.getCurrentContent()
+    if (contentState.hasText()) {
+      const content = JSON.stringify(convertToRaw(contentState))
+      formData.append('description', content)
+    }
+
+    // Append other fields only if they have values
+    if (values.url) {
+      formData.append('url', values.url)
+    }
+
     formData.append('free', values.free)
+    console.log(formData)
 
     const url = `${process.env.REACT_APP_BASE_URL}/api/video_detail/${video_id}/`
     const token = getAccessToken()
@@ -125,7 +139,7 @@ const UpdateVideoAdmin = (props) => {
 
     try {
       // Make a POST request to submit the form data
-      let response = await axios.put(url, formData, {
+      let response = await axios.patch(url, formData, {
         headers: headers,
       })
       console.log(response.data)
@@ -133,7 +147,6 @@ const UpdateVideoAdmin = (props) => {
     } catch (error) {
       console.error('Error creating subscription:')
       console.log(error)
-      console.log('navigate to cancel')
       toast.error(`Error actualizando video: ${error.message}`)
     }
   }
@@ -143,7 +156,6 @@ const UpdateVideoAdmin = (props) => {
   }
 
   if (isSubmitted) {
-    console.log('navigate to videos ')
     return <Navigate to='/videos' />
   }
 
@@ -158,6 +170,23 @@ const UpdateVideoAdmin = (props) => {
 
   const handleToggleExpand = () => {
     setExpanded(!isExpanded)
+  }
+
+  const handleDelete = async () => {
+    const apiUrl = `${process.env.REACT_APP_BASE_URL}/api/video_detail/${video_id}/`
+    const token = getAccessToken()
+    const headers = { Authorization: `Bearer ${token}` }
+
+    try {
+      await axios.delete(apiUrl, { headers: headers })
+      toast.success('Video eliminado con éxito')
+      // Redirect or update state after successful deletion
+      // For example, redirect to the videos page
+      navigate('/videos')
+    } catch (error) {
+      console.error('Error deleting video:', error)
+      toast.error(`Error eliminando video: ${error.message}`)
+    }
   }
 
   // Validation logic for Formik
@@ -200,7 +229,6 @@ const UpdateVideoAdmin = (props) => {
                 name='title'
                 className='form-control'
                 value={values.title}
-                required
               />
               <ErrorMessage
                 name='title'
@@ -212,6 +240,7 @@ const UpdateVideoAdmin = (props) => {
               <label htmlFor='image' className='form-label'>
                 Image:
               </label>
+              {video.image && <div>Archivo actual: {video.image}</div>}
               <input
                 type='file'
                 name='image'
@@ -220,7 +249,6 @@ const UpdateVideoAdmin = (props) => {
                   const file = event.currentTarget.files[0]
                   setFieldValue('image', file)
                 }}
-                required
               />
               <ErrorMessage
                 name='image'
@@ -285,7 +313,6 @@ const UpdateVideoAdmin = (props) => {
                       toolbarClassName='toolbar-class'
                     />
                   )}
-                  required
                 />
                 <ErrorMessage
                   name='description'
@@ -303,7 +330,6 @@ const UpdateVideoAdmin = (props) => {
               <Field
                 type='url'
                 name='url'
-                required
                 as='textarea' // Use the custom URL input component
                 className='form-control'
                 rows={4}
@@ -360,9 +386,9 @@ const UpdateVideoAdmin = (props) => {
               className='btn btn-primary'
               disabled={isSubmitting}
             >
-              Crea video
+              Actualizar video
             </button>
-            <Button variant='danger' className='ms-4' onClick={openModal}>
+            <Button variant='danger' className='ms-4' onClick={handleDelete}>
               Eliminar
             </Button>
           </Form>

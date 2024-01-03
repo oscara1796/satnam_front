@@ -137,7 +137,19 @@ body{
 
 /* END OF NAVBAR */
 
+/* LOG IN  */
+.centered-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh; /* Use the full height of the viewport */
+}
 
+.centered-container .card{
+  width: 100%;
+}
+
+/* END OF LOG IN  */
 
 /* LANDING PAGE  */
 .carousel-container {

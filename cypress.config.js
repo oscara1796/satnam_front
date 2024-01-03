@@ -14,6 +14,10 @@ module.exports = defineConfig({
         username: 'oscar@example.com',
         password: 'adminpassword',
       },
+      staff_credentials: {
+        username: 'staff@example.com',
+        password: 'staffpassword',
+      },
     },
     setupNodeEvents(on, config) {
       // Define custom task for executing CLI commands

@@ -135,10 +135,21 @@ const VideoList = ({ isLoggedIn }) => {
   return (
     <div className='video-list container-fluid mt-4'>
       <div className='video_search_container'>
-        <input type='text' value={searchQuery} onChange={handleSearchChange} />
+        <input
+          type='text'
+          value={searchQuery}
+          onChange={handleSearchChange}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              handleSearch()
+            }
+          }}
+        />
         <button onClick={handleSearch}>Buscar videos</button>
       </div>
+      <h3 className='text-center'>Categorías</h3>
       <div className='categories_container'>
+      
         <Categories
           handleCategoryOption={handleCategoryOption}
           selectedCategory={category}

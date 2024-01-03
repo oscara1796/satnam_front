@@ -47,7 +47,7 @@ function LogIn({ isLoggedIn, logIn }) {
   }
 
   return (
-    <Container className='mt-2'>
+    <Container className='mt-2 centered-container'>
       <Card>
         <Card.Header>Log in</Card.Header>
         <Card.Body>

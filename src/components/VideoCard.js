@@ -63,14 +63,16 @@ const VideoCard = ({
         </div>
       )}
       <h2>{title}</h2>
-      <div className='video-image-container'>
-        <img
-          src={`${process.env.REACT_APP_BASE_URL}${image}`}
-          alt={title}
-          className='play-icon'
-        />
-        <i className='play-icon'>▶️</i> {/* Add a play icon */}
-      </div>
+      <LinkContainer to={`/video-detailed/${id}/${title}`}>
+        <div className='video-image-container'>
+          <img
+            src={`${process.env.REACT_APP_BASE_URL}${image}`}
+            alt={title}
+            className='play-icon'
+          />
+          <i className='play-icon'>▶️</i> {/* Add a play icon */}
+        </div>
+      </LinkContainer>
       {savedData && (
         <div>
           <hr />
