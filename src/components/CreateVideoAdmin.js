@@ -119,7 +119,7 @@ const CreateVideoAdmin = ({ isLoggedIn, logIn }) => {
   }
 
   // Redirect to login page if not logged in
-  if (!isLoggedIn) {
+  if (!isLoggedIn || (state.user && !state.user.is_staff)) {
     return <Navigate to='/log-in' />
   }
 

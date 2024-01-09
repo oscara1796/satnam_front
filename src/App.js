@@ -18,6 +18,7 @@ import CreateVideoAdmin from './components/CreateVideoAdmin'
 import PaymentOptions from './components/PaymentOptions'
 import VideoDetailed from './components/VideoDetailed'
 import UpdateVideoAdmin from './components/UpdateVideoAdmin'
+import ContactForm from './components/ContactForm'
 import axios from 'axios'
 import { getUser, getAccessToken, isTokenExpired } from './services/AuthService'
 // import { getSubscription, SubStatus } from './services/SubsService';
@@ -114,6 +115,10 @@ function App() {
           element={<UserAccount isLoggedIn={isLoggedIn} logIn={logIn} />}
         />
         <Route
+          path='contact-form'
+          element={<ContactForm isLoggedIn={isLoggedIn}  />}
+        />
+        <Route
           path='sub-form'
           element={<SubscriptionForm isLoggedIn={isLoggedIn} />}
         />
@@ -180,7 +185,7 @@ function Layout({ isLoggedIn, logOut }) {
                   </a>
                 </LinkContainer>
 
-                <LinkContainer to='/'>
+                <LinkContainer to='/contact-form'>
                   <a className='nav_link'>Contacto</a>
                 </LinkContainer>
                 {state && state.user && state.user.is_staff ? (
@@ -188,6 +193,11 @@ function Layout({ isLoggedIn, logOut }) {
                     <LinkContainer to='/videos-create'>
                       <NavDropdown.Item className='custom-item-navbar-admin'>
                         Añade Video
+                      </NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to='/videos-create'>
+                      <NavDropdown.Item className='custom-item-navbar-admin'>
+                        Mensajes de contacto
                       </NavDropdown.Item>
                     </LinkContainer>
                   </NavDropdown>
@@ -227,7 +237,7 @@ function Layout({ isLoggedIn, logOut }) {
         </Container>
       </Navbar>
       {/* <!-- Alert container --> */}
-      <ToastContainer position='top-center' />
+      <ToastContainer position='top-center' theme="colored"/>
       {/* <Container className='pt-3'> */}
       <Outlet />
       {/* </Container> */}

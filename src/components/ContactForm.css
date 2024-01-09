@@ -1,0 +1,51 @@
+.contact-form {
+    font-family: 'Arial', sans-serif;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f3f3f3;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 3rem;
+  }
+  
+  .contact-form h1 {
+    color: #137ea7; /* King blue tone */
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .contact-form label {
+    display: block;
+    margin-bottom: 5px;
+    color: #137ea7; /* King blue tone */
+  }
+  
+  .contact-form input,
+  .contact-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .contact-form button {
+    background-color: #137ea7; /* King blue tone */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .contact-form button:hover {
+    background-color: #3949ab; /* A slightly lighter king blue */
+  }
+  
+  .contact-form .error-message {
+    color: #ff1744; /* Red color for errors */
+    margin-bottom: 10px;
+  }
+  

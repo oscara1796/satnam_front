@@ -19,6 +19,12 @@ body{
  height: 100vh;
 }
 
+.success-message{
+  color: green;
+  font-weight: bolder;
+  font-size: 1rem;
+}
+
 /* NAVBAR */
 /* .navbar .container{
   display: flex;
@@ -488,10 +494,21 @@ body{
     width: 90vw;
   }
 }
+
+.video-image-container img {
+  width: 100%;       /* Makes the image fill the container */
+  height: auto;      /* Maintains the aspect ratio of the image */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .video-image-container{
   position: relative;
   overflow: hidden;
   border-radius: 10px;
+  height: 35vh;
 }
 
 .video-card-search img {
@@ -781,6 +798,13 @@ input[type="checkbox"]:checked + .checkbox-circle {
   margin-top: 10px;
 }
 
+
+@media screen and (max-width: 768px) {
+  .video-card {
+    width: 100vw;
+  }
+}
+
 .video-title {
   font-size: 24px;
   margin-bottom: 10px;
@@ -881,3 +905,5 @@ input[type="checkbox"]:checked + .checkbox-circle {
 
 
 /* END OF PAGE INDEX STYLE */
+
+
