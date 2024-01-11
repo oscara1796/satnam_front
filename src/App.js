@@ -19,6 +19,7 @@ import PaymentOptions from './components/PaymentOptions'
 import VideoDetailed from './components/VideoDetailed'
 import UpdateVideoAdmin from './components/UpdateVideoAdmin'
 import ContactForm from './components/ContactForm'
+import ContactAdminList from './components/ContactAdminList'
 import axios from 'axios'
 import { getUser, getAccessToken, isTokenExpired } from './services/AuthService'
 // import { getSubscription, SubStatus } from './services/SubsService';
@@ -97,6 +98,12 @@ function App() {
           element={<UpdateVideoAdmin isLoggedIn={isLoggedIn} />}
         />
         <Route path='videos' element={<VideoList isLoggedIn={isLoggedIn} />} />
+
+        <Route
+          path='admin-contact-list'
+          element={<ContactAdminList isLoggedIn={isLoggedIn} logIn={logIn} />}
+        />
+
         <Route
           path='payment-methods'
           element={<PaymentOptions isLoggedIn={isLoggedIn} logIn={logIn} />}
@@ -195,7 +202,7 @@ function Layout({ isLoggedIn, logOut }) {
                         Añade Video
                       </NavDropdown.Item>
                     </LinkContainer>
-                    <LinkContainer to='/videos-create'>
+                    <LinkContainer to='/admin-contact-list'>
                       <NavDropdown.Item className='custom-item-navbar-admin'>
                         Mensajes de contacto
                       </NavDropdown.Item>

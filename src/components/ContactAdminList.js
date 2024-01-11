@@ -2,15 +2,21 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Navigate } from 'react-router-dom'
 import { UserContext } from '../context'
 import axios from 'axios';
+import { getUser, getAccessToken } from '../services/AuthService'
 
-const ContactAdminList = () => {
+const ContactAdminList = ({isLoggedIn}) => {
   const [messages, setMessages] = useState([]);
   const [state, setState] = useContext(UserContext)
 
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/get-captcha/`);
+
+        const token = getAccessToken()
+        const headers = { Authorization: `Bearer ${token}` }
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/contact/`, {
+          headers: headers,
+        });
         setMessages(response.data);
       } catch (error) {
         console.error('Error fetching messages:', error);
