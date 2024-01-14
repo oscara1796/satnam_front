@@ -20,6 +20,7 @@ import VideoDetailed from './components/VideoDetailed'
 import UpdateVideoAdmin from './components/UpdateVideoAdmin'
 import ContactForm from './components/ContactForm'
 import ContactAdminList from './components/ContactAdminList'
+import TrialDayForm from './components/TrialDayForm'
 import axios from 'axios'
 import { getUser, getAccessToken, isTokenExpired } from './services/AuthService'
 // import { getSubscription, SubStatus } from './services/SubsService';
@@ -36,6 +37,8 @@ function App() {
   const [isLoggedIn, setLoggedIn] = useState(() => {
     return window.localStorage.getItem('satnam.auth') !== null
   })
+
+  const [trialDays, setTrialDays] = useState(0);
 
   const logIn = async (username, password) => {
     // const url = '/api/log_in/';
@@ -73,6 +76,16 @@ function App() {
     console.log('reviewed token')
   }
 
+  const checkTrialPeriod = async () => {
+    if (isTokenExpired() && isLoggedIn) {
+      logOut() // Failed to refresh token, trigger logout
+      console.log('token expired')
+    }
+    console.log('reviewed token')
+  }
+
+  u
+
   useEffect(() => {
     checkTokenExpiration()
     const tokenCheckInterval = setInterval(checkTokenExpiration, 60000)
@@ -80,6 +93,20 @@ function App() {
       clearInterval(tokenCheckInterval) // Clear the interval when the component unmounts
     }
   }, [])
+
+  useEffect(() => {
+    const fetchTrialDays = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/trial-days/`);
+        setTrialDays(response.data.days); // Assuming the response has a 'days' field
+      } catch (error) {
+        console.error("Error fetching trialDays data:", error);
+        // Handle the error as needed, maybe set trialDays to some default or error value
+      }
+    };
+
+    fetchTrialDays();
+  }, []);
 
   return (
     <Routes>
@@ -111,6 +138,10 @@ function App() {
         <Route
           path='videos-create'
           element={<CreateVideoAdmin isLoggedIn={isLoggedIn} />}
+        />
+        <Route
+          path='trial-days-create'
+          element={<TrialDayForm isLoggedIn={isLoggedIn}  trialDays={} />}
         />
         <Route path='sign-up' element={<SignUp isLoggedIn={isLoggedIn} />} />
         <Route
