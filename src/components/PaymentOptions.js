@@ -2,17 +2,16 @@ import React, { useState } from 'react'
 import SubscriptionForm from './SubscriptionForm'
 import { Navigate } from 'react-router-dom'
 
-const PaymentOptions = ({ isLoggedIn }) => {
+const PaymentOptions = ({ isLoggedIn, trialDays}) => {
   const [selectedOption, setSelectedOption] = useState(null)
 
   const paymentOptions = [
     {
       id: 1,
       label: 'Tarjeta credito',
-      component: <SubscriptionForm isLoggedIn={isLoggedIn} />,
+      component: <SubscriptionForm isLoggedIn={isLoggedIn}  trialDays={trialDays} />,
     },
     { id: 2, label: 'PayPal' },
-    { id: 3, label: 'Google Pay' },
   ]
 
   const handleOptionChange = (optionId) => {

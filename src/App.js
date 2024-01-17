@@ -20,7 +20,7 @@ import VideoDetailed from './components/VideoDetailed'
 import UpdateVideoAdmin from './components/UpdateVideoAdmin'
 import ContactForm from './components/ContactForm'
 import ContactAdminList from './components/ContactAdminList'
-import TrialDayForm from './components/TrialDayForm'
+import TrialDaysForm from './components/TrialDaysForm'
 import axios from 'axios'
 import { getUser, getAccessToken, isTokenExpired } from './services/AuthService'
 // import { getSubscription, SubStatus } from './services/SubsService';
@@ -38,7 +38,7 @@ function App() {
     return window.localStorage.getItem('satnam.auth') !== null
   })
 
-  const [trialDays, setTrialDays] = useState(0);
+  const [trialDays, setTrialDays] = useState([]);
 
   const logIn = async (username, password) => {
     // const url = '/api/log_in/';
@@ -84,7 +84,6 @@ function App() {
     console.log('reviewed token')
   }
 
-  u
 
   useEffect(() => {
     checkTokenExpiration()
@@ -97,16 +96,19 @@ function App() {
   useEffect(() => {
     const fetchTrialDays = async () => {
       try {
+
         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/trial-days/`);
-        setTrialDays(response.data.days); // Assuming the response has a 'days' field
+        console.log("days ", response.data);
+        
+        setTrialDays(response.data); // Assuming the response has a 'days' field
       } catch (error) {
-        console.error("Error fetching trialDays data:", error);
+        // console.error("Error fetching trialDays data:", error);
         // Handle the error as needed, maybe set trialDays to some default or error value
       }
     };
 
     fetchTrialDays();
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <Routes>
@@ -114,7 +116,7 @@ function App() {
         path='/'
         element={<Layout isLoggedIn={isLoggedIn} logOut={logOut} />}
       >
-        <Route index element={<Landing isLoggedIn={isLoggedIn} />} />
+        <Route index element={<Landing isLoggedIn={isLoggedIn} trialDays={trialDays}  />} />
         <Route
           path='video-detailed/:video_id/:video_title'
           element={<VideoDetailed isLoggedIn={isLoggedIn} />}
@@ -133,7 +135,7 @@ function App() {
 
         <Route
           path='payment-methods'
-          element={<PaymentOptions isLoggedIn={isLoggedIn} logIn={logIn} />}
+          element={<PaymentOptions isLoggedIn={isLoggedIn} logIn={logIn} trialDays={trialDays}  />}
         />
         <Route
           path='videos-create'
@@ -141,7 +143,7 @@ function App() {
         />
         <Route
           path='trial-days-create'
-          element={<TrialDayForm isLoggedIn={isLoggedIn}  trialDays={} />}
+          element={<TrialDaysForm isLoggedIn={isLoggedIn}  trialDays={trialDays}  setTrialDays={setTrialDays} />}
         />
         <Route path='sign-up' element={<SignUp isLoggedIn={isLoggedIn} />} />
         <Route
@@ -156,10 +158,10 @@ function App() {
           path='contact-form'
           element={<ContactForm isLoggedIn={isLoggedIn}  />}
         />
-        <Route
+        {/* <Route
           path='sub-form'
           element={<SubscriptionForm isLoggedIn={isLoggedIn} />}
-        />
+        /> */}
         <Route
           path='sub-success'
           element={<StripeSuccess isLoggedIn={isLoggedIn} />}
@@ -236,6 +238,11 @@ function Layout({ isLoggedIn, logOut }) {
                     <LinkContainer to='/admin-contact-list'>
                       <NavDropdown.Item className='custom-item-navbar-admin'>
                         Mensajes de contacto
+                      </NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to='/trial-days-create'>
+                      <NavDropdown.Item className='custom-item-navbar-admin'>
+                        Días de prueba 
                       </NavDropdown.Item>
                     </LinkContainer>
                   </NavDropdown>

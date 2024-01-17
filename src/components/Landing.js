@@ -15,14 +15,14 @@ import { UserContext } from '../context'
 function Landing(props) {
   return (
     <>
-      <CarouselItem isLoggedIn={props.isLoggedIn} />
+      <CarouselItem isLoggedIn={props.isLoggedIn} trialDays={props.trialDays}/>
       <VideoPresentation />
       <Benefits />
     </>
   )
 }
 
-function CarouselItem(props) {
+function CarouselItem({trialDays}) {
   const [state, setState] = useContext(UserContext)
 
   const carouselItems = [
@@ -60,7 +60,7 @@ function CarouselItem(props) {
                   <></>
                 ) : (
                   <LinkContainer to='/payment-methods'>
-                    <Button variant='outline-light'>Inscríbite</Button>
+                    <Button variant='outline-light'>{trialDays.length > 0 ? `¡${trialDays[0].days} días de prueba! Inscríbite` : "Inscríbite"}</Button>
                   </LinkContainer>
                 )}
               </div>
