@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import { toast } from 'react-toastify'
 import axios from 'axios';
 
-function TrialDayForm({ trialDays }) {
+function TrialDaysForm({ trialDays }) {
   const [days, setDays] = useState('');
   const [isFormEnabled, setFormEnabled] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -107,4 +107,4 @@ function TrialDayForm({ trialDays }) {
   }
 }
 
-export default TrialDayForm;
+export default TrialDaysForm;

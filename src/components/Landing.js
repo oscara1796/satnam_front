@@ -121,7 +121,7 @@ function Benefits(props) {
         </div>
         <div className='benefits-list'>
           {benefitItems.map((item) => (
-            <div className='benefit-item'>
+            <div key={item.id}  className='benefit-item'>
               <img
                 className='d-block w-100'
                 src={item.imageSrc}

@@ -20,7 +20,7 @@ import VideoDetailed from './components/VideoDetailed'
 import UpdateVideoAdmin from './components/UpdateVideoAdmin'
 import ContactForm from './components/ContactForm'
 import ContactAdminList from './components/ContactAdminList'
-import TrialDayForm from './components/TrialDayForm'
+import TrialDaysForm from './components/TrialDaysForm'
 import axios from 'axios'
 import { getUser, getAccessToken, isTokenExpired } from './services/AuthService'
 // import { getSubscription, SubStatus } from './services/SubsService';
@@ -84,7 +84,7 @@ function App() {
     console.log('reviewed token')
   }
 
-  u
+  
 
   useEffect(() => {
     checkTokenExpiration()
@@ -141,7 +141,7 @@ function App() {
         />
         <Route
           path='trial-days-create'
-          element={<TrialDayForm isLoggedIn={isLoggedIn}  trialDays={} />}
+          element={<TrialDaysForm isLoggedIn={isLoggedIn}  trialDays={trialDays} />}
         />
         <Route path='sign-up' element={<SignUp isLoggedIn={isLoggedIn} />} />
         <Route
