@@ -20,7 +20,7 @@ const StripeCancel = ({ isLoggedIn }) => {
           Lo sentimos, pero su pago no se realizó. Inténtalo de nuevo o elige
           otro método de pago.
         </p>
-        <Link to='/sub-form'>
+        <Link to='/payment-methods'>
           {' '}
           {/* Use Link to navigate to the payment form */}
           <Button variant='primary' style={{ marginTop: '20px' }}>

@@ -156,10 +156,10 @@ function App() {
           path='contact-form'
           element={<ContactForm isLoggedIn={isLoggedIn}  />}
         />
-        <Route
+        {/* <Route
           path='sub-form'
           element={<SubscriptionForm isLoggedIn={isLoggedIn} />}
-        />
+        /> */}
         <Route
           path='sub-success'
           element={<StripeSuccess isLoggedIn={isLoggedIn} />}

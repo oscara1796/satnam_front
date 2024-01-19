@@ -297,8 +297,10 @@ function UserSubscription(props) {
         })
         console.log('Subscription :', response.data)
         setUserSub(response.data)
-        if (response.data.status == "canceled") {
+        if (response.data.cancel_at_period_end === true) {
           setIsCancelled(true)
+        } else{
+          setIsCancelled(false)
         }
       } catch (error) {
         console.error('Error getting subscription:', error.response.data)
@@ -323,10 +325,9 @@ function UserSubscription(props) {
     const headers = { Authorization: `Bearer ${token}` }
 
     try {
-      let response = await axios.delete(url, {
+      let response = await axios.delete(url,  {
         headers: headers,
       })
-      setIsCancelled(true);
       setRefreshSubData(!refreshSubData);
     } catch (error) {
       toast.error("Error al intentar cancelar tu subscrición, por favor contactenos")
@@ -337,6 +338,26 @@ function UserSubscription(props) {
 
   const handleReactivateSubscription = async () => {
 
+    let user = getUser()
+    const url = `${process.env.REACT_APP_BASE_URL}/api/create_subscription/${user.id}/`
+
+    
+
+    try {
+      const token = getAccessToken()
+      const headers = { Authorization: `Bearer ${token}` }
+
+      let response = await axios.patch(url, {}, {
+        headers: headers,
+      })
+
+      console.log(response.data);
+      setRefreshSubData(!refreshSubData);
+    } catch (error) {
+      toast.error("Error al intentar reactivar tu subscrición, por favor contactenos")
+      console.error('Error reactivate subscription:', error.response.data)
+    }
+    console.log('Subscription reactivated')
   }
 
   if (isLoading) {
