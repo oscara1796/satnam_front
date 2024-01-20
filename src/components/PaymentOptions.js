@@ -5,6 +5,7 @@ import { UserContext } from '../context'
 import { getUser, getAccessToken } from '../services/AuthService'
 import axios from 'axios';
 import { toast } from 'react-toastify'
+import TrialBanner from './TrialBanner';
 
 const TotalCheckoutBox = ({setSelectedPriceId, selectedPriceId}) => {
   const [prices, setPrices] = useState([]);
@@ -86,7 +87,7 @@ const TotalCheckoutBox = ({setSelectedPriceId, selectedPriceId}) => {
   );
 };
 
-const PaymentOptions = ({ isLoggedIn }) => {
+const PaymentOptions = ({ isLoggedIn, trialDays}) => {
   const [selectedOption, setSelectedOption] = useState(null)
   const [selectedPriceId, setSelectedPriceId] = useState(null);
   const [state, setState] = useContext(UserContext)
@@ -117,6 +118,14 @@ const PaymentOptions = ({ isLoggedIn }) => {
 
     <div className='checkout_page' >
       <div className='container my-3 payments-box'>
+        {
+          trialDays && trialDays.days 
+            ?
+          <TrialBanner trialDays={trialDays.days} />
+            : 
+          <></>
+        }
+        
         <h2 className='my-3'>Opciones de pago</h2>
         <div className='payment-options mt-2'>
           {paymentOptions.map((option) => (

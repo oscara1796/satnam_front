@@ -133,7 +133,7 @@ function App() {
 
         <Route
           path='payment-methods'
-          element={<PaymentOptions isLoggedIn={isLoggedIn} logIn={logIn} />}
+          element={<PaymentOptions isLoggedIn={isLoggedIn} trialDays={trialDays} />}
         />
         <Route
           path='videos-create'
@@ -231,6 +231,11 @@ function Layout({ isLoggedIn, logOut }) {
                     <LinkContainer to='/videos-create'>
                       <NavDropdown.Item className='custom-item-navbar-admin'>
                         Añade Video
+                      </NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to='/trial-days-create'>
+                      <NavDropdown.Item className='custom-item-navbar-admin'>
+                        Trial days form
                       </NavDropdown.Item>
                     </LinkContainer>
                     <LinkContainer to='/admin-contact-list'>
