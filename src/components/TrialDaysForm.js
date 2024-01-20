@@ -7,8 +7,7 @@ import { Navigate } from 'react-router-dom'
 import './TrialDaysForm.css';
 import { UserContext } from '../context'
 
-
-function TrialDaysForm({ isLoggedIn, trialDays, setTrialDays }) {
+function TrialDaysForm({ trialDays }) {
   const [days, setDays] = useState('');
   const [state, setState] = useContext(UserContext)
   const [isFormEnabled, setFormEnabled] = useState(false);
@@ -119,6 +118,5 @@ function TrialDaysForm({ isLoggedIn, trialDays, setTrialDays }) {
     </div>
   );
 }
-
 
 export default TrialDaysForm;

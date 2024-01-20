@@ -84,6 +84,10 @@ function App() {
     console.log('reviewed token')
   }
 
+<<<<<<< HEAD
+=======
+  
+>>>>>>> 727540d88afef75a605cc33f3d2f8685ab24213d
 
   useEffect(() => {
     checkTokenExpiration()
@@ -135,7 +139,11 @@ function App() {
 
         <Route
           path='payment-methods'
+<<<<<<< HEAD
           element={<PaymentOptions isLoggedIn={isLoggedIn} logIn={logIn} trialDays={trialDays}  />}
+=======
+          element={<PaymentOptions isLoggedIn={isLoggedIn} trialDays={trialDays} />}
+>>>>>>> 727540d88afef75a605cc33f3d2f8685ab24213d
         />
         <Route
           path='videos-create'
@@ -143,7 +151,11 @@ function App() {
         />
         <Route
           path='trial-days-create'
+<<<<<<< HEAD
           element={<TrialDaysForm isLoggedIn={isLoggedIn}  trialDays={trialDays}  setTrialDays={setTrialDays} />}
+=======
+          element={<TrialDaysForm isLoggedIn={isLoggedIn}  trialDays={trialDays} />}
+>>>>>>> 727540d88afef75a605cc33f3d2f8685ab24213d
         />
         <Route path='sign-up' element={<SignUp isLoggedIn={isLoggedIn} />} />
         <Route
@@ -233,6 +245,11 @@ function Layout({ isLoggedIn, logOut }) {
                     <LinkContainer to='/videos-create'>
                       <NavDropdown.Item className='custom-item-navbar-admin'>
                         Añade Video
+                      </NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to='/trial-days-create'>
+                      <NavDropdown.Item className='custom-item-navbar-admin'>
+                        Trial days form
                       </NavDropdown.Item>
                     </LinkContainer>
                     <LinkContainer to='/admin-contact-list'>

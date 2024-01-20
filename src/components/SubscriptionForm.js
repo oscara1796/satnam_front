@@ -5,10 +5,14 @@ import { Navigate } from 'react-router-dom'
 import axios from 'axios'
 import { getUser, getAccessToken } from '../services/AuthService'
 import { UserContext } from '../context'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCcVisa, faCcMastercard, faCcAmex, faCcDiscover } from '@fortawesome/free-brands-svg-icons';
 
-const SubscriptionForm = ({ isLoggedIn }) => {
+
+const SubscriptionForm = ({ isLoggedIn, selectedPriceId}) => {
   const [isSubmitted, setSubmitted] = useState(false)
   const [isSubSuccess, setSubSuccess] = useState(false)
+  const [priceError, setPriceError] = useState(''); 
   const [state, setState] = useContext(UserContext)
 
   const initialValues = {
@@ -19,6 +23,11 @@ const SubscriptionForm = ({ isLoggedIn }) => {
   }
 
   const handleSubmit = async (values) => {
+
+    if (!selectedPriceId) {
+      setPriceError('Por favor selecciona un plan ');
+      return; // Stop the submission if no price is selected
+    }
     let user = getUser()
     let url = `${process.env.REACT_APP_BASE_URL}/api/create_subscription/${user.id}/`
 
@@ -27,6 +36,7 @@ const SubscriptionForm = ({ isLoggedIn }) => {
     formData.append('exp_month', values.exp_month)
     formData.append('exp_year', values.exp_year)
     formData.append('cvc', values.cvc)
+    formData.append('price_id', selectedPriceId)
 
     const token = getAccessToken()
     const headers = { Authorization: `Bearer ${token}` }
@@ -146,6 +156,7 @@ const SubscriptionForm = ({ isLoggedIn }) => {
 
   return (
     <Container className='mt-2  sub_form'>
+       {priceError && <p className='text-danger'>{priceError}</p>}
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
@@ -181,6 +192,13 @@ const SubscriptionForm = ({ isLoggedIn }) => {
                 component='div'
                 className='text-danger'
               />
+                {/* Card Brand Icons */}
+              <div className="card-icons">
+                <FontAwesomeIcon icon={faCcVisa} className="card-icon" />
+                <FontAwesomeIcon icon={faCcMastercard} className="card-icon" />
+                <FontAwesomeIcon icon={faCcAmex} className="card-icon" />
+                <FontAwesomeIcon icon={faCcDiscover} className="card-icon" />
+              </div>
             </div>
             <div className='row'>
               <div className='col-md-6 mb-3'>
