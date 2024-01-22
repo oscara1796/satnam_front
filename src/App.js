@@ -1,5 +1,5 @@
 // client/src/App.js
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import { Button, Container, Form, Navbar } from 'react-bootstrap'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import Nav from 'react-bootstrap/Nav'
@@ -22,7 +22,7 @@ import ContactForm from './components/ContactForm'
 import ContactAdminList from './components/ContactAdminList'
 import TrialDaysForm from './components/TrialDaysForm'
 import axios from 'axios'
-import { getUser, getAccessToken, isTokenExpired } from './services/AuthService'
+import { getUser, getAccessToken, isTokenExpired, setTokenExpirationTimeout } from './services/AuthService'
 // import { getSubscription, SubStatus } from './services/SubsService';
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -34,11 +34,26 @@ import './App.css'
 function App() {
   var location = useLocation()
 
-  const [isLoggedIn, setLoggedIn] = useState(() => {
-    return window.localStorage.getItem('satnam.auth') !== null
-  })
+  const [isLoggedIn, setLoggedIn] = useState(false)
 
   const [trialDays, setTrialDays] = useState([]);
+
+  const isLoggedInRef = useRef(isLoggedIn);
+
+  
+  useEffect(() => {
+    isLoggedInRef.current = isLoggedIn;
+
+    const token = getAccessToken(); // Function to get the JWT token
+    const timeoutId = setTokenExpirationTimeout(token, () => {
+      // Handle token expiration (e.g., log out the user)
+      if (isLoggedInRef.current) {
+          logOut() 
+          console.log('token expired')
+      }
+    });
+    return () => clearTimeout(timeoutId);
+  }, [isLoggedIn]);
 
   const logIn = async (username, password) => {
     // const url = '/api/log_in/';
@@ -47,10 +62,7 @@ function App() {
     try {
       const response = await axios.post(url, { username, password })
       window.localStorage.setItem('satnam.auth', JSON.stringify(response.data))
-
-      setLoggedIn(true)
       window.localStorage.setItem('satnam.user', JSON.stringify(getUser()))
-
       return { response, isError: false }
     } catch (error) {
       console.error(error)
@@ -68,34 +80,6 @@ function App() {
     window.location.reload()
   }
 
-  const checkTokenExpiration = async () => {
-    if (isTokenExpired() && isLoggedIn) {
-      logOut() // Failed to refresh token, trigger logout
-      console.log('token expired')
-    }
-    console.log('reviewed token')
-  }
-
-  const checkTrialPeriod = async () => {
-    if (isTokenExpired() && isLoggedIn) {
-      logOut() // Failed to refresh token, trigger logout
-      console.log('token expired')
-    }
-    console.log('reviewed token')
-  }
-
-<<<<<<< HEAD
-=======
-  
->>>>>>> 727540d88afef75a605cc33f3d2f8685ab24213d
-
-  useEffect(() => {
-    checkTokenExpiration()
-    const tokenCheckInterval = setInterval(checkTokenExpiration, 60000)
-    return () => {
-      clearInterval(tokenCheckInterval) // Clear the interval when the component unmounts
-    }
-  }, [])
 
   useEffect(() => {
     const fetchTrialDays = async () => {
@@ -139,11 +123,7 @@ function App() {
 
         <Route
           path='payment-methods'
-<<<<<<< HEAD
-          element={<PaymentOptions isLoggedIn={isLoggedIn} logIn={logIn} trialDays={trialDays}  />}
-=======
           element={<PaymentOptions isLoggedIn={isLoggedIn} trialDays={trialDays} />}
->>>>>>> 727540d88afef75a605cc33f3d2f8685ab24213d
         />
         <Route
           path='videos-create'
@@ -151,16 +131,12 @@ function App() {
         />
         <Route
           path='trial-days-create'
-<<<<<<< HEAD
-          element={<TrialDaysForm isLoggedIn={isLoggedIn}  trialDays={trialDays}  setTrialDays={setTrialDays} />}
-=======
-          element={<TrialDaysForm isLoggedIn={isLoggedIn}  trialDays={trialDays} />}
->>>>>>> 727540d88afef75a605cc33f3d2f8685ab24213d
+          element={<TrialDaysForm isLoggedIn={isLoggedIn}  trialDays={trialDays}  setTrialDays={setTrialDays}/>}
         />
         <Route path='sign-up' element={<SignUp isLoggedIn={isLoggedIn} />} />
         <Route
           path='log-in'
-          element={<LogIn isLoggedIn={isLoggedIn} logIn={logIn} />}
+          element={<LogIn isLoggedIn={isLoggedIn} logIn={logIn} setLoggedIn={setLoggedIn} />}
         />
         <Route
           path='account'
@@ -247,11 +223,7 @@ function Layout({ isLoggedIn, logOut }) {
                         Añade Video
                       </NavDropdown.Item>
                     </LinkContainer>
-                    <LinkContainer to='/trial-days-create'>
-                      <NavDropdown.Item className='custom-item-navbar-admin'>
-                        Trial days form
-                      </NavDropdown.Item>
-                    </LinkContainer>
+                    
                     <LinkContainer to='/admin-contact-list'>
                       <NavDropdown.Item className='custom-item-navbar-admin'>
                         Mensajes de contacto

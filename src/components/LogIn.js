@@ -15,7 +15,7 @@ import { UserContext } from '../context'
 import { getAccessToken } from '../services/AuthService'
 
 // changed
-function LogIn({ isLoggedIn, logIn }) {
+function LogIn({ isLoggedIn, logIn, setLoggedIn}) {
   const [isSubmitted, setSubmitted] = useState(false)
   const [state, setState] = useContext(UserContext)
   const onSubmit = async (values, actions) => {
@@ -31,6 +31,7 @@ function LogIn({ isLoggedIn, logIn }) {
           actions.setFieldError(value, data[value])
         }
       } else {
+        setLoggedIn(true)
         setState({
           user: JSON.parse(localStorage.getItem('satnam.user')),
           auth: getAccessToken(),

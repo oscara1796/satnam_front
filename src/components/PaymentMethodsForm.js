@@ -10,9 +10,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCcVisa, faCcMastercard, faCcAmex, faCcDiscover } from '@fortawesome/free-brands-svg-icons';
 
 
-const SubscriptionForm = ({ isLoggedIn, selectedPriceId, trialDays}) => {
+const PaymentMethodsForm = ({ isLoggedIn, selectedPriceId,}) => {
   const [isSubmitted, setSubmitted] = useState(false)
-  const [isSubSuccess, setSubSuccess] = useState(false)
   const [priceError, setPriceError] = useState(''); 
   const [state, setState] = useContext(UserContext)
 
@@ -22,28 +21,22 @@ const SubscriptionForm = ({ isLoggedIn, selectedPriceId, trialDays}) => {
     exp_year: '',
     cvc: '',
   }
+
   // card expiration years options
   const years = []
 
   const handleSubmit = async (values) => {
 
-    if (!selectedPriceId) {
-      setPriceError('Por favor selecciona un plan ');
-      return; // Stop the submission if no price is selected
-    }
     let user = getUser()
-    let url = `${process.env.REACT_APP_BASE_URL}/api/create_subscription/${user.id}/`
+    let url = `${process.env.REACT_APP_BASE_URL}/api/payment_method/${user.id}/`
 
     const formData = new FormData()
     formData.append('number', values.card_number.replace(/\s+/g, ''))
     formData.append('exp_month', values.exp_month)
     formData.append('exp_year', values.exp_year)
     formData.append('cvc', values.cvc)
-    formData.append('price_id', selectedPriceId)
 
-    if (trialDays.length > 0) {
-      formData.append('trial', trialDays[0].days)
-    }
+
 
     const token = getAccessToken()
     const headers = { Authorization: `Bearer ${token}` }
@@ -53,20 +46,13 @@ const SubscriptionForm = ({ isLoggedIn, selectedPriceId, trialDays}) => {
       let response = await axios.post(url, formData, {
         headers: headers,
       })
-      console.log('Subscription created:', response.data)
-      if (response.data.status === 'incomplete') {
-        throw new Error('Subscription was not able to complete')
-      }
-      console.log('navigate to success')
-      setSubSuccess(true)
+      console.log('Payment method added:', response.data)
+     
+      setSubmitted(true)
     } catch (error) {
-      console.error('Error creating subscription:')
+      console.error('Error adding  payment method:')
       console.log(error)
-      console.log('navigate to cancel')
-      setSubSuccess(false)
     }
-    setSubmitted(true)
-    // setSubscriptionFormSubmitted(true);
   }
 
   if (!isLoggedIn) {
@@ -74,14 +60,8 @@ const SubscriptionForm = ({ isLoggedIn, selectedPriceId, trialDays}) => {
   }
 
   if (isSubmitted) {
-    if (isSubSuccess) {
-      return <Navigate to='/sub-success' />
-    }
-    return <Navigate to='/sub-cancel' />
+    
   }
-
-  // format credit card number into fours and validate credit number
-
 
   const handleCreditCardChange = (e, setFieldValue) => {
     const { name, value } = e.target
@@ -89,9 +69,7 @@ const SubscriptionForm = ({ isLoggedIn, selectedPriceId, trialDays}) => {
     setFieldValue(name, formattedValue)
   }
 
-
   AddExpirationYears(years, 10)
-
 
   return (
     <Container className='mt-2  sub_form'>
@@ -199,7 +177,7 @@ const SubscriptionForm = ({ isLoggedIn, selectedPriceId, trialDays}) => {
               className='btn btn-primary'
               disabled={isSubmitting}
             >
-              Subscribe
+              Agregar
             </button>
           </Form>
         )}
@@ -208,4 +186,4 @@ const SubscriptionForm = ({ isLoggedIn, selectedPriceId, trialDays}) => {
   )
 }
 
-export default SubscriptionForm
+export default PaymentMethodsForm

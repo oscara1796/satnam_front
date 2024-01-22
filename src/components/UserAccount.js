@@ -2,13 +2,13 @@ import React, { useState, useEffect, useContext } from 'react'
 import { Breadcrumb, Button, Card, Form, Container, Spinner } from 'react-bootstrap'
 import { Formik } from 'formik'
 import { Link, Navigate } from 'react-router-dom'
-import { LinkContainer } from 'react-router-bootstrap'
+
 import { UserContext } from '../context'
 import { getUser, getAccessToken } from '../services/AuthService'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import * as Yup from 'yup';
-
+import SubscribeBanner from './SubscribeBanner'
 
 
 
@@ -120,9 +120,7 @@ function UserAccount({ isLoggedIn, logIn }) {
         {state.user && state.user.active ? 
           (<UserSubscription   />) : 
         (
-          <LinkContainer to='/payment-methods'>
-            <Button variant='outline-light'>Inscríbite</Button>
-          </LinkContainer>
+          <SubscribeBanner />
         )}
       </Container>
 

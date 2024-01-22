@@ -96,7 +96,7 @@ const PaymentOptions = ({ isLoggedIn, trialDays}) => {
     {
       id: 1,
       label: 'Tarjeta credito/debito',
-      component: <SubscriptionForm isLoggedIn={isLoggedIn} selectedPriceId={selectedPriceId} />,
+      component: <SubscriptionForm isLoggedIn={isLoggedIn} selectedPriceId={selectedPriceId} trialDays={trialDays} />,
     },
     // { id: 2, label: 'PayPal' },
     // { id: 3, label: 'Google Pay' },
@@ -119,11 +119,11 @@ const PaymentOptions = ({ isLoggedIn, trialDays}) => {
     <div className='checkout_page' >
       <div className='container my-3 payments-box'>
         {
-          trialDays && trialDays.days 
+          trialDays.length > 0 
             ?
-          <TrialBanner trialDays={trialDays.days} />
+          (<TrialBanner trialDays={trialDays[0].days} />)
             : 
-          <></>
+          (<></>)
         }
         
         <h2 className='my-3'>Opciones de pago</h2>

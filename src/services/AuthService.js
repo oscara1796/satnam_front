@@ -34,6 +34,25 @@ export const isTokenExpired = () => {
   return decodedToken.exp < currentTime // Return true if token is expired
 }
 
+export const setTokenExpirationTimeout = (token, onTokenExpired) => {
+  if (!token) return;
+
+  try {
+    const decodedToken = jwtDecode(token);
+    const currentTime = Date.now() / 1000; // convert to seconds
+    const timeUntilExpiration = decodedToken.exp - currentTime;
+
+    if (timeUntilExpiration > 0) {
+      console.log("timeUntilExpiration",timeUntilExpiration);
+      return setTimeout(onTokenExpired, timeUntilExpiration * 1000); // Convert to milliseconds
+    } else {
+      onTokenExpired(); // Token is already expired
+    }
+  } catch (error) {
+    console.error('Error decoding token:', error);
+  }
+};
+
 export const isStaff = () => {
   const user = getUser()
   return user && user.is_staff === 'true'

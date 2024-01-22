@@ -15,6 +15,7 @@ import { UserContext } from '../context'
 function Landing(props) {
   return (
     <>
+      
       <CarouselItem isLoggedIn={props.isLoggedIn} trialDays={props.trialDays}/>
       <VideoPresentation />
       <Benefits />
