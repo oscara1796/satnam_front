@@ -34,7 +34,11 @@ import './App.css'
 function App() {
   var location = useLocation()
 
-  const [isLoggedIn, setLoggedIn] = useState(false)
+  const [isLoggedIn, setLoggedIn] = useState(
+    () => {
+      return window.localStorage.getItem('satnam.auth') !== null;
+    }
+  )
 
   const [trialDays, setTrialDays] = useState([]);
 

@@ -9,6 +9,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import * as Yup from 'yup';
 import SubscribeBanner from './SubscribeBanner'
+import PaymentMethodsList from './PaymentMethodsList'
 
 
 
@@ -122,6 +123,10 @@ function UserAccount({ isLoggedIn, logIn }) {
         (
           <SubscribeBanner />
         )}
+      </Container>
+
+      <Container>
+         <PaymentMethodsList />
       </Container>
 
       <Container className='mt-2  user_form'>
