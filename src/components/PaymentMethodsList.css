@@ -1,0 +1,60 @@
+.payment-methods-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Adjust the space between boxes */
+    width: 100%;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    justify-content: center;
+}
+
+.payment-method-box {
+    border: 1px solid #ccc; /* Border for the box */
+    padding: 10px;
+    border-radius: 5px; /* Rounded corners */
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effect */
+    cursor: pointer; /* Change cursor to indicate it's clickable */
+    position: relative; 
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+    background-color: #fff;
+}
+
+.payment-method-box:hover {
+    transform: scale(1.05); /* Slightly scale up the box */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+    background-color: #a9a2a2;
+}
+
+.payment-method-details {
+    /* Styles for the details section */
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.payment-method-details > * {
+    margin-right: 1rem; /* Adjust the margin as needed */
+}
+
+.payment-method-actions {
+    display: flex;
+    gap: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    position: absolute;
+    right: 10px; /* Adjust as needed */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.payment-method-box:hover .payment-method-actions {
+    opacity: 1;
+    button {
+        color: #000; /* Change text color if needed */
+    }
+}

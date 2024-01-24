@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCcVisa, faCcMastercard, faCcAmex, faCcDiscover } from '@fortawesome/free-brands-svg-icons';
 
 
-const PaymentMethodsForm = ({ isLoggedIn, selectedPriceId,}) => {
+const PaymentMethodsForm = ({ setShowForm, setFetchPaymentMethods, fetchPaymentMethods}) => {
   const [isSubmitted, setSubmitted] = useState(false)
   const [priceError, setPriceError] = useState(''); 
   const [state, setState] = useContext(UserContext)
@@ -47,17 +47,16 @@ const PaymentMethodsForm = ({ isLoggedIn, selectedPriceId,}) => {
         headers: headers,
       })
       console.log('Payment method added:', response.data)
-     
-      setSubmitted(true)
+      
+      setFetchPaymentMethods(!fetchPaymentMethods)
+      setShowForm(false)
     } catch (error) {
       console.error('Error adding  payment method:')
       console.log(error)
     }
   }
 
-  if (!isLoggedIn) {
-    return <Navigate to='/log-in' />
-  }
+
 
   if (isSubmitted) {
     
