@@ -8,6 +8,7 @@ import { LinkContainer } from 'react-router-bootstrap'
 import axios from 'axios'
 import { Navigate } from 'react-router-dom'
 import { UserContext } from '../context'
+import './VideoDetailed.css';
 
 const VideoDetailed = (props) => {
   // Use the useLocation hook to get the location object
@@ -33,11 +34,13 @@ const VideoDetailed = (props) => {
     } catch (error) {
       console.error('Error obtaining videos:')
       console.log(error)
+      console.log(video);
     }
   }
 
   useEffect(() => {
     getVideo()
+    console.log("video", video);
   }, [])
 
   if (!props.isLoggedIn) {
@@ -94,7 +97,16 @@ const VideoDetailed = (props) => {
           </div>
         </div>
       ) : (
-        <></>
+        <div className="subscription-container text-center">
+            <div className="subscription-box">
+            <h2>Suscríbete a la Escuela de Yoga</h2>
+            <p>Para ver el video completo, suscríbete a nuestra escuela de yoga y disfruta del acceso completo a todo el contenido.</p>
+
+                <LinkContainer to='/payment-methods'>
+                    <Button variant="primary" className="subscribe-button">Subscribe</Button>
+                </LinkContainer>
+            </div>
+        </div>
       )}
 
       {/* <div dangerouslySetInnerHTML={{ __html: videoUrl }} /> */}
