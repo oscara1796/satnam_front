@@ -14,7 +14,10 @@ const formatTime = (time) => {
 };
 
 const CreateScheduleAdmin = () => {
-    const [events, setEvents] = useState({});
+    const [events, setEvents] = useState(() => {
+        const savedEvents = localStorage.getItem('events');
+        return savedEvents ? JSON.parse(savedEvents) : {};
+    });
     const [showEventForm, setShowEventForm] = useState(false);
     const [currentEvent, setCurrentEvent] = useState({ day: '', time: '' });
 
@@ -38,6 +41,15 @@ const CreateScheduleAdmin = () => {
         setShowEventForm(false);
     };
 
+    const handleEventDelete = (eventToDelete) => {
+        const eventKey = `${eventToDelete.day}-${eventToDelete.startTime}`;
+        setEvents(prevEvents => {
+            const updatedEvents = { ...prevEvents };
+            delete updatedEvents[eventKey];
+            return updatedEvents;
+        });
+    };
+
     const isEventInCell = (event, day, time) => {
         if (!event || event.day !== day) return false;
     
@@ -57,8 +69,9 @@ const CreateScheduleAdmin = () => {
             const response = await axios.post('your-api-endpoint', eventData);
     
             // Handle the response
-            console.log('Schedule saved successfully:', response.data);
+            toast.success("Se Guardo tu horario correctamente ");
         } catch (error) {
+            toast.error("Hubo un error al guardar el horario")
             console.error('Error saving schedule:', error.response ? error.response.data : error.message);
         }
     };
@@ -66,7 +79,7 @@ const CreateScheduleAdmin = () => {
 
     useEffect(() => {
 
-       console.log(events);
+        localStorage.setItem('events', JSON.stringify(events));
     }, [events]);
 
     
@@ -76,13 +89,13 @@ const CreateScheduleAdmin = () => {
             <div className="schedule-container">
                 <div className="schedule-header">
                     <h1>Horarios Sat Nam Escuela</h1>
-                    <button type="button" class="btn btn-primary" onClick={handleSaveSchedule}>Guarda Horario</button> {/* Save Button */}
+                    <button type="button" className="btn btn-primary" onClick={handleSaveSchedule}>Guarda Horario</button> {/* Save Button */}
                     
                 </div>
                 <table className="schedule-table">
                     <thead>
                         <tr>
-                            <th>Hour</th>
+                            <th>Horas</th>
                             {days.map(day => <th key={day}>{day}</th>)}
                         </tr>
                     </thead>
@@ -118,6 +131,7 @@ const CreateScheduleAdmin = () => {
                         defaultDescription={currentEvent.description}
                         defaultEndTime={currentEvent.endTime}
                         onSave={handleEventSave}
+                        onDelete={() => handleEventDelete(currentEvent)}
                         onCancel={() => setShowEventForm(false)}
                     />
                 )}
@@ -129,7 +143,7 @@ const CreateScheduleAdmin = () => {
     );
 };
 
-const EventForm = ({ defaultTitle = '' ,defaultDay, defaultTime, defaultEndTime='', defaultDescription = '', onSave, onCancel }) => {
+const EventForm = ({ defaultTitle = '' ,defaultDay, defaultTime, defaultEndTime='', defaultDescription = '', onSave, onDelete, onCancel }) => {
     const [day, setDay] = useState(defaultDay);
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState(''); // Initialize endTime state
@@ -214,8 +228,9 @@ const EventForm = ({ defaultTitle = '' ,defaultDay, defaultTime, defaultEndTime=
                         <input type="text" value={description} onChange={e => setDescription(e.target.value)} />
                         {errors.description && <div className="error">{errors.description}</div>}
                     </label>
-                    <button type="submit">Save Event</button>
-                    <button type="button" onClick={onCancel}>Cancel</button>
+                    <button type="submit">Guardar Clase</button>
+                    {defaultTitle && <button type="button" className="button_delete" onClick={onDelete}>Eliminar Clase</button>}
+                    <button type="button" className="button_cancel"  onClick={onCancel}>Cancel</button>
                 </form>
             </div>
         </div>

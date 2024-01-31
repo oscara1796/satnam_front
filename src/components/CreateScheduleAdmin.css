@@ -102,9 +102,30 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
+
+  .button_delete{
+    background-color: red !important;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .button_cancel{
+    background-color: #525252 !important;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
   
   .event-form button:hover {
     background-color: #0056b3;
+  }
+
+  .button_delete:hover{
+    background-color: red !important;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
   }
 
 /* Responsive Design */
