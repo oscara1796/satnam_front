@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap'
+import React, { useEffect, useState, useContext } from 'react';
+import { Navigate } from 'react-router-dom'
 import * as Yup from 'yup';
 import { toast } from 'react-toastify'
 import axios from 'axios';
@@ -13,13 +13,14 @@ const formatTime = (time) => {
     return `${hours.padStart(2, '0')}:${minutes}`;
 };
 
-const CreateScheduleAdmin = () => {
+const CreateScheduleAdmin = ({props}) => {
     const [events, setEvents] = useState(() => {
         const savedEvents = localStorage.getItem('events');
         return savedEvents ? JSON.parse(savedEvents) : {};
     });
     const [showEventForm, setShowEventForm] = useState(false);
     const [currentEvent, setCurrentEvent] = useState({ day: '', time: '' });
+    const [state, setState] = useContext(UserContext)
 
     const handleCellClick = (day, time, event = null) => {
         console.log("time", time);
@@ -81,6 +82,10 @@ const CreateScheduleAdmin = () => {
 
         localStorage.setItem('events', JSON.stringify(events));
     }, [events]);
+
+    if (!props.isLoggedIn || (state.user && !state.user.is_staff)) {
+        return <Navigate to='/log-in' />
+      }
 
     
 
