@@ -21,6 +21,7 @@ import UpdateVideoAdmin from './components/UpdateVideoAdmin'
 import ContactForm from './components/ContactForm'
 import ContactAdminList from './components/ContactAdminList'
 import TrialDaysForm from './components/TrialDaysForm'
+import CreateScheduleAdmin from './components/CreateScheduleAdmin'
 import axios from 'axios'
 import { getUser, getAccessToken, isTokenExpired, setTokenExpirationTimeout } from './services/AuthService'
 // import { getSubscription, SubStatus } from './services/SubsService';
@@ -137,6 +138,10 @@ function App() {
           path='trial-days-create'
           element={<TrialDaysForm isLoggedIn={isLoggedIn}  trialDays={trialDays}  setTrialDays={setTrialDays}/>}
         />
+        <Route
+          path='schedule-create'
+          element={<CreateScheduleAdmin isLoggedIn={isLoggedIn} />}
+        />
         <Route path='sign-up' element={<SignUp isLoggedIn={isLoggedIn} />} />
         <Route
           path='log-in'
@@ -236,6 +241,11 @@ function Layout({ isLoggedIn, logOut }) {
                     <LinkContainer to='/trial-days-create'>
                       <NavDropdown.Item className='custom-item-navbar-admin'>
                         Días de prueba 
+                      </NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to='/schedule-create'>
+                      <NavDropdown.Item className='custom-item-navbar-admin'>
+                        Horario Escuela
                       </NavDropdown.Item>
                     </LinkContainer>
                   </NavDropdown>

@@ -1,86 +1,225 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Button } from 'react-bootstrap'
+import * as Yup from 'yup';
+import { toast } from 'react-toastify'
+import axios from 'axios';
+import './CreateScheduleAdmin.css';
 
-const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const days = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
 const hours = Array.from({ length: 24 }, (_, i) => `${i}:00`);
 
-const CreateSchedule = () => {
-    const [events, setEvents] = useState([]);
+const formatTime = (time) => {
+    const [hours, minutes] = time.split(':');
+    return `${hours.padStart(2, '0')}:${minutes}`;
+};
+
+const CreateScheduleAdmin = () => {
+    const [events, setEvents] = useState({});
     const [showEventForm, setShowEventForm] = useState(false);
     const [currentEvent, setCurrentEvent] = useState({ day: '', time: '' });
 
-    const handleCellClick = (day, time) => {
+    const handleCellClick = (day, time, event = null) => {
+        console.log("time", time);
+        if (event) {
+            setCurrentEvent({ day, time: event.startTime, ...event });
+        } else {
+            setCurrentEvent({ day, time });
+        }
         setShowEventForm(true);
-        setCurrentEvent({ day, time });
     };
 
     const handleEventSave = (eventDetails) => {
-        setEvents([...events, eventDetails]);
+        const eventKey = `${eventDetails.day}-${eventDetails.startTime}`;
+        setEvents({
+            ...events,
+            [eventKey]: eventDetails
+        });
+       
         setShowEventForm(false);
     };
 
+    const isEventInCell = (event, day, time) => {
+        if (!event || event.day !== day) return false;
+    
+        const startTime = new Date(`01/01/2000 ${event.startTime}`);
+        const endTime = new Date(`01/01/2000 ${event.endTime}`);
+        const cellTime = new Date(`01/01/2000 ${time}`);
+    
+        return cellTime >= startTime && cellTime < endTime;
+    };
+
+    const handleSaveSchedule = async () => {
+        // Prepare your event data for the API
+        const eventData = Object.values(events);
+    
+        try {
+            // Example API call using axios
+            const response = await axios.post('your-api-endpoint', eventData);
+    
+            // Handle the response
+            console.log('Schedule saved successfully:', response.data);
+        } catch (error) {
+            console.error('Error saving schedule:', error.response ? error.response.data : error.message);
+        }
+    };
+    
+
+    useEffect(() => {
+
+       console.log(events);
+    }, [events]);
+
+    
+
     return (
         <div>
-            <table>
-                <thead>
-                    <tr>
-                        {days.map(day => <th key={day}>{day}</th>)}
-                    </tr>
-                </thead>
-                <tbody>
-                    {hours.map(time => (
-                        <tr key={time}>
-                            {days.map(day => (
-                                <td key={day} onClick={() => handleCellClick(day, time)}>
-                                    {/* Display events here if they match the day and time */}
-                                </td>
-                            ))}
+            <div className="schedule-container">
+                <div className="schedule-header">
+                    <h1>Horarios Sat Nam Escuela</h1>
+                    <button type="button" class="btn btn-primary" onClick={handleSaveSchedule}>Guarda Horario</button> {/* Save Button */}
+                    
+                </div>
+                <table className="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Hour</th>
+                            {days.map(day => <th key={day}>{day}</th>)}
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {hours.map(time => (
+                            <tr key={time}>
+                                <td>{time}</td>
+                                {days.map(day => {
+                                    let eventExists = null;
+                                        Object.values(events).forEach(event => {
+                                            if (isEventInCell(event, day, time)) {
+                                                eventExists = event;
+                                            }
+                                        });
+                                    return (
+                                        <td key={day} 
+                                            onClick={() => handleCellClick(day, time, eventExists)}
+                                            style={{ backgroundColor: eventExists ? '#add8e6' : 'transparent' }}>
+                                            {eventExists ? eventExists.title : ''}
+                                        </td>
+                                    );
+                                })}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
 
-            {showEventForm && (
-                <EventForm
-                    defaultDay={currentEvent.day}
-                    defaultTime={currentEvent.time}
-                    onSave={handleEventSave}
-                    onCancel={() => setShowEventForm(false)}
-                />
-            )}
+                {showEventForm && (
+                    <EventForm
+                        defaultTitle={currentEvent.title}
+                        defaultDay={currentEvent.day}
+                        defaultTime={currentEvent.time}
+                        defaultDescription={currentEvent.description}
+                        defaultEndTime={currentEvent.endTime}
+                        onSave={handleEventSave}
+                        onCancel={() => setShowEventForm(false)}
+                    />
+                )}
+            </div>
+            <div>
+                 {/* Display school location */}
+            </div>
         </div>
     );
 };
 
-const EventForm = ({ defaultDay, defaultTime, onSave, onCancel }) => {
+const EventForm = ({ defaultTitle = '' ,defaultDay, defaultTime, defaultEndTime='', defaultDescription = '', onSave, onCancel }) => {
     const [day, setDay] = useState(defaultDay);
-    const [time, setTime] = useState(defaultTime);
+    const [startTime, setStartTime] = useState('');
+    const [endTime, setEndTime] = useState(''); // Initialize endTime state
     const [description, setDescription] = useState('');
+    const [title, setTitle] = useState('');
+    const [errors, setErrors] = useState({});
 
-    const handleSubmit = (e) => {
+    const eventSchema = Yup.object().shape({
+        title: Yup.string().required('Title is required'),
+        day: Yup.string().required('Day is required'),
+        startTime: Yup.string().required('Start time is required'),
+        endTime: Yup.string().required('End time is required'),
+        description: Yup.string().required('Description is required'),
+    });
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        onSave({ day, time, description });
+        try {
+            // Validate form data
+            const formData = { title, day, startTime, endTime, description };
+            await eventSchema.validate(formData, { abortEarly: false });
+
+            // If validation is successful, call onSave
+            onSave(formData);
+            setErrors({}); 
+            toast.success("Se agrego tu clase");
+        } catch (err) {
+            // Handle validation errors
+            if (err.inner) {
+                const formErrors = err.inner.reduce((acc, error) => {
+                    acc[error.path] = error.message;
+                    return acc;
+                }, {});
+                setErrors(formErrors);
+            }
+
+            console.log(err.inner);
+            // Here you can set some state to display the validation errors on the form
+        }
     };
 
+    useEffect(() => {
+
+        setDay(defaultDay);
+        setStartTime(formatTime(defaultTime));
+        setDescription(defaultDescription);
+        setEndTime(defaultEndTime);
+        setTitle(defaultTitle);
+    }, [defaultTitle, defaultDay, defaultTime, defaultDescription]);
+
+    
+
     return (
-        <form onSubmit={handleSubmit}>
-            <label>
-                Day:
-                <select value={day} onChange={e => setDay(e.target.value)}>
-                    {days.map(d => <option key={d} value={d}>{d}</option>)}
-                </select>
-            </label>
-            <label>
-                Time:
-                <input type="time" value={time} onChange={e => setTime(e.target.value)} />
-            </label>
-            <label>
-                Description:
-                <input type="text" value={description} onChange={e => setDescription(e.target.value)} />
-            </label>
-            <button type="submit">Save Event</button>
-            <button type="button" onClick={onCancel}>Cancel</button>
-        </form>
+        <div className="overlay">
+            <div className="event-form-modal">
+                <h2>Agregar Clase</h2>
+                <form className="event-form" onSubmit={handleSubmit}>
+                    <label>
+                        Título:
+                        <input value={title} onChange={e => setTitle(e.target.value)} />
+                        {errors.title && <div className="error">{errors.title}</div>}
+                    </label>
+                    <label>
+                        Día:
+                        <select value={day} onChange={e => setDay(e.target.value)}>
+                            {days.map(d => <option key={d} value={d}>{d}</option>)}
+                        </select>
+                        {errors.day && <div className="error">{errors.day}</div>}
+                    </label>
+                    <label>
+                        Start Time:
+                        <input type="time" value={startTime} onChange={e => setStartTime(e.target.value)} />
+                        {errors.startTime && <div className="error">{errors.startTime}</div>}
+                    </label>
+                    <label>
+                        End Time:
+                        <input type="time" value={endTime} onChange={e => setEndTime(e.target.value)} />
+                        {errors.endTime && <div className="error">{errors.endTime}</div>}
+                    </label>
+                    <label>
+                        Descripción:
+                        <input type="text" value={description} onChange={e => setDescription(e.target.value)} />
+                        {errors.description && <div className="error">{errors.description}</div>}
+                    </label>
+                    <button type="submit">Save Event</button>
+                    <button type="button" onClick={onCancel}>Cancel</button>
+                </form>
+            </div>
+        </div>
     );
 };
 
-export default CreateSchedule;
+export default CreateScheduleAdmin;
