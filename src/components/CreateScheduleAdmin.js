@@ -1,8 +1,10 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { UserContext } from '../context'
 import { Navigate } from 'react-router-dom'
 import * as Yup from 'yup';
 import { toast } from 'react-toastify'
 import axios from 'axios';
+import { getUser, getAccessToken } from '../services/AuthService'
 import './CreateScheduleAdmin.css';
 
 const days = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
@@ -13,7 +15,7 @@ const formatTime = (time) => {
     return `${hours.padStart(2, '0')}:${minutes}`;
 };
 
-const CreateScheduleAdmin = ({props}) => {
+const CreateScheduleAdmin = (props) => {
     const [events, setEvents] = useState(() => {
         const savedEvents = localStorage.getItem('events');
         return savedEvents ? JSON.parse(savedEvents) : {};
@@ -64,15 +66,23 @@ const CreateScheduleAdmin = ({props}) => {
     const handleSaveSchedule = async () => {
         // Prepare your event data for the API
         const eventData = Object.values(events);
-    
+        console.log("eventData", eventData);
         try {
             // Example API call using axios
-            const response = await axios.post('your-api-endpoint', eventData);
+
+            const url = `${process.env.REACT_APP_BASE_URL}/api/events/`
+            const token = getAccessToken()
+            console.log("token, ", token);
+            const headers = { Authorization: `Bearer ${token}` }
+            const response = await axios.post(url, {
+                headers: headers,
+              }, eventData);
     
             // Handle the response
             toast.success("Se Guardo tu horario correctamente ");
         } catch (error) {
             toast.error("Hubo un error al guardar el horario")
+            console.log(error);
             console.error('Error saving schedule:', error.response ? error.response.data : error.message);
         }
     };
