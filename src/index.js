@@ -11,13 +11,11 @@ import { UserProvider } from './context'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 // changed
 root.render(
-  <React.StrictMode>
     <HashRouter>
       <UserProvider>
         <App />
       </UserProvider>
     </HashRouter>
-  </React.StrictMode>
 )
 
 // If you want to start measuring performance in your app, pass a function

@@ -35,13 +35,45 @@ const CreateScheduleAdmin = (props) => {
     };
 
     const handleEventSave = (eventDetails) => {
-        const eventKey = `${eventDetails.day}-${eventDetails.startTime}`;
-        setEvents({
-            ...events,
-            [eventKey]: eventDetails
+        // Convert times to comparable values
+        const newStartTime = new Date(`01/01/2000 ${eventDetails.startTime}`).getTime();
+        const newEndTime = new Date(`01/01/2000 ${eventDetails.endTime}`).getTime();
+
+        if (newStartTime == newEndTime) {
+            toast.error("Clase tiene misma hora  de comienzo y de finalización");
+            return;
+        }
+    
+        // Check for time conflicts
+        const conflict = Object.values(events).some(event => {
+            if (event.day !== eventDetails.day) return false; // Skip if it's a different day
+    
+            const existingStartTime = new Date(`01/01/2000 ${event.startTime}`).getTime();
+            const existingEndTime = new Date(`01/01/2000 ${event.endTime}`).getTime();
+    
+            // Check if new event starts or ends within an existing event
+            const startsDuringExisting = newStartTime >= existingStartTime && newStartTime < existingEndTime;
+            const endsDuringExisting = newEndTime > existingStartTime && newEndTime <= existingEndTime;
+            // Check if new event completely covers an existing event
+            const coversExisting = newStartTime <= existingStartTime && newEndTime >= existingEndTime;
+    
+            return startsDuringExisting || endsDuringExisting || coversExisting;
         });
-       
+    
+        if (conflict ) {
+            toast.error("No podemos añadir este evento por que genera conflicto con otro .");
+            return;
+        }
+    
+        // If no conflicts, proceed to add/update the event
+        const eventKey = `${eventDetails.day}-${eventDetails.startTime}`;
+        setEvents(prevEvents => ({
+            ...prevEvents,
+            [eventKey]: eventDetails
+        }));
+    
         setShowEventForm(false);
+        toast.success("Se agrego tu clase");
     };
 
     const handleEventDelete = (eventToDelete) => {
@@ -72,11 +104,10 @@ const CreateScheduleAdmin = (props) => {
 
             const url = `${process.env.REACT_APP_BASE_URL}/api/events/`
             const token = getAccessToken()
-            console.log("token, ", token);
             const headers = { Authorization: `Bearer ${token}` }
-            const response = await axios.post(url, {
+            const response = await axios.post(url, eventData, {
                 headers: headers,
-              }, eventData);
+              });
     
             // Handle the response
             toast.success("Se Guardo tu horario correctamente ");
@@ -86,6 +117,41 @@ const CreateScheduleAdmin = (props) => {
             console.error('Error saving schedule:', error.response ? error.response.data : error.message);
         }
     };
+
+
+    const fetchEvents = async () =>{
+        try {
+            // Example API call using axios
+
+            const url = `${process.env.REACT_APP_BASE_URL}/api/events/`
+            const token = getAccessToken()
+            const headers = { Authorization: `Bearer ${token}` }
+            const response = await axios.get(url, {
+                headers: headers,
+              });
+
+
+               console.log(response.data);
+              
+              let data = {}
+              response.data.forEach(event => {
+                const eventKey = `${event.day}-${event.startTime}`;
+                data[eventKey]= event;
+              });
+
+              console.log("events",data);
+              setEvents(data);
+            // Handle the response
+        } catch (error) {
+            console.log(error);
+            console.error('Error saving schedule:', error.response ? error.response.data : error.message);
+        }
+    }
+
+    useEffect(() => {
+        fetchEvents();
+       
+    }, []);
     
 
     useEffect(() => {
@@ -151,9 +217,7 @@ const CreateScheduleAdmin = (props) => {
                     />
                 )}
             </div>
-            <div>
-                 {/* Display school location */}
-            </div>
+            
         </div>
     );
 };
@@ -184,7 +248,7 @@ const EventForm = ({ defaultTitle = '' ,defaultDay, defaultTime, defaultEndTime=
             // If validation is successful, call onSave
             onSave(formData);
             setErrors({}); 
-            toast.success("Se agrego tu clase");
+            
         } catch (err) {
             // Handle validation errors
             if (err.inner) {

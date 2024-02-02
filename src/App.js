@@ -22,6 +22,7 @@ import ContactForm from './components/ContactForm'
 import ContactAdminList from './components/ContactAdminList'
 import TrialDaysForm from './components/TrialDaysForm'
 import CreateScheduleAdmin from './components/CreateScheduleAdmin'
+import CalendarComponent from './components/CalendarComponent'
 import axios from 'axios'
 import { getUser, getAccessToken, isTokenExpired, setTokenExpirationTimeout } from './services/AuthService'
 // import { getSubscription, SubStatus } from './services/SubsService';
@@ -154,6 +155,10 @@ function App() {
         <Route
           path='contact-form'
           element={<ContactForm isLoggedIn={isLoggedIn}  />}
+        /> 
+        <Route
+          path='calendar'
+          element={<CalendarComponent isLoggedIn={isLoggedIn}  />}
         />
         {/* <Route
           path='sub-form'
@@ -212,8 +217,8 @@ function Layout({ isLoggedIn, logOut }) {
           <Navbar.Collapse className='justify-content-end'>
             <Nav className=''>
               <div className='navbar_links'>
-                <LinkContainer to='/'>
-                  <a className='nav_link'>Posts</a>
+                <LinkContainer to='/calendar'>
+                  <a className='nav_link'>Horarios Escuela</a>
                 </LinkContainer>
 
                 <LinkContainer to='/videos'>
