@@ -25,7 +25,6 @@ import CreateScheduleAdmin from './components/CreateScheduleAdmin'
 import CalendarComponent from './components/CalendarComponent'
 import axios from 'axios'
 import { getUser, getAccessToken, isTokenExpired, setTokenExpirationTimeout } from './services/AuthService'
-// import { getSubscription, SubStatus } from './services/SubsService';
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { UserContext } from './context'
@@ -43,6 +42,7 @@ function App() {
   )
 
   const [trialDays, setTrialDays] = useState([]);
+
 
   const isLoggedInRef = useRef(isLoggedIn);
 
@@ -66,13 +66,12 @@ function App() {
 
     const url = `${process.env.REACT_APP_BASE_URL}/api/log_in/`
     try {
-      const response = await axios.post(url, { username, password })
+      const response = await axios.post(url, { username, password },{ timeout: 5000 })
       window.localStorage.setItem('satnam.auth', JSON.stringify(response.data))
       window.localStorage.setItem('satnam.user', JSON.stringify(getUser()))
       return { response, isError: false }
     } catch (error) {
-      console.error(error)
-
+      
       return { response: error, isError: true }
     }
   }
@@ -180,6 +179,7 @@ function App() {
 function Layout({ isLoggedIn, logOut }) {
   const [isSticky, setIsSticky] = useState(false)
   const [state, setState] = useContext(UserContext)
+  const [isOffline, setIsOffline] = useState(!navigator.onLine);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -199,8 +199,29 @@ function Layout({ isLoggedIn, logOut }) {
     }
   }, [])
 
+  useEffect(() => {
+    const goOnline = () => setIsOffline(false);
+    const goOffline = () => setIsOffline(true);
+
+    window.addEventListener('online', goOnline);
+    window.addEventListener('offline', goOffline);
+
+    // Cleanup on component unmount
+    return () => {
+      window.removeEventListener('online', goOnline);
+      window.removeEventListener('offline', goOffline);
+    };
+  }, []);
+
   return (
     <>
+
+          {isOffline && (
+            <div style={{ color: 'red', textAlign: 'center', padding: '10px', backgroundColor: 'lightyellow' }}>
+              Estas offline. Algunas opciones pueden no funcionar correctamente.
+            </div>
+          )}
+          
       <Navbar
         bg='light'
         expand='lg'
@@ -290,7 +311,7 @@ function Layout({ isLoggedIn, logOut }) {
         </Container>
       </Navbar>
       {/* <!-- Alert container --> */}
-      <ToastContainer position='top-center' theme="colored"/>
+      <ToastContainer position='top-center' theme="colored" autoClose={10000}/>
       {/* <Container className='pt-3'> */}
       <Outlet />
       {/* </Container> */}

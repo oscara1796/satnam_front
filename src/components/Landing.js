@@ -78,7 +78,8 @@ function VideoPresentation(props) {
   return (
     <>
       <div className='video-container'>
-        <h1>Bienvenido a Sat Nam Yoga Estudio</h1>
+        <h1>Escuela de yoga en línea</h1>
+        <h2>Bienvenido a Sat Nam Yoga Estudio</h2>
         <video controls id='video_presentation'>
           <source src={video_presentation} type='video/mp4' />
           Your browser does not support the video tag.
