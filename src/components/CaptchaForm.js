@@ -55,7 +55,7 @@ const CaptchaForm = (props) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className='mt-3'>
+        <form onSubmit={handleSubmit} className='my-3'>
             <div className='mb-3 mr-2'>
                 {isLoading ? (
                     <Spinner /> // Render the Spinner here

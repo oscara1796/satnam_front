@@ -11,6 +11,7 @@ import video_presentation from '../assets/img/Benvenida.m4v'
 import benefits_pose_sandra from '../assets/img/benefits_pose_sandra.jpeg'
 import { getUser, getAccessToken } from '../services/AuthService'
 import { UserContext } from '../context'
+import './Landing.css'
 
 function Landing(props) {
   return (
@@ -18,6 +19,7 @@ function Landing(props) {
       
       <CarouselItem isLoggedIn={props.isLoggedIn} trialDays={props.trialDays}/>
       <VideoPresentation />
+      <YogaSchoolInfo />
       <Benefits />
     </>
   )
@@ -136,6 +138,30 @@ function Benefits(props) {
       </Container>
     </>
   )
+}
+
+function YogaSchoolInfo() {
+  return (
+    <div className="yoga-school-info mt-4">
+      <Container>
+        <h2 className="yoga-school-title">Únete a Nuestra Escuela de Yoga en Guadalajara o Desde Casa</h2>
+        <p className="yoga-school-description">
+          En el corazón de Guadalajara, México, nuestra escuela de yoga ofrece un espacio sereno donde la tradición y la modernidad se encuentran. 
+          Para aquellos que buscan una experiencia presencial, nuestras puertas están abiertas para clases que conectan mente, cuerpo y espíritu. 
+          Y si prefieres la flexibilidad de practicar desde casa, nuestra suscripción en línea te permite acceder a clases de yoga en video dirigidas por nuestros experimentados instructores. 
+          Explora nuestro horario y encuentra el equilibrio perfecto para tu vida en nuestra escuela de yoga en Guadalajara.
+        </p>
+        <div className="yoga-school-call-to-action">
+          <LinkContainer to='/contact-form'>
+            <Button variant="outline-primary">Contacta para Más Información</Button>
+          </LinkContainer>
+          <LinkContainer to='/payment-methods'>
+            <Button variant="primary">Suscríbete Ahora</Button>
+          </LinkContainer>
+        </div>
+      </Container>
+    </div>
+  );
 }
 
 export default Landing

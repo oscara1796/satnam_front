@@ -8,6 +8,7 @@ import { isValidCVC, isValidMonth, isCreditCardValid, card_format, AddExpiration
 import { UserContext } from '../context'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCcVisa, faCcMastercard, faCcAmex, faCcDiscover } from '@fortawesome/free-brands-svg-icons';
+import { showErrorNotification } from '../services/notificationService'
 
 
 const PaymentMethodsForm = ({ setShowForm, setFetchPaymentMethods, fetchPaymentMethods}) => {
@@ -45,7 +46,7 @@ const PaymentMethodsForm = ({ setShowForm, setFetchPaymentMethods, fetchPaymentM
       console.log(formData)
       let response = await axios.post(url, formData, {
         headers: headers,
-      })
+      }, {timeout:5000})
       console.log('Payment method added:', response.data)
       
       setFetchPaymentMethods(!fetchPaymentMethods)
@@ -53,14 +54,12 @@ const PaymentMethodsForm = ({ setShowForm, setFetchPaymentMethods, fetchPaymentM
     } catch (error) {
       console.error('Error adding  payment method:')
       console.log(error)
+      showErrorNotification(error)
     }
   }
 
 
 
-  if (isSubmitted) {
-    
-  }
 
   const handleCreditCardChange = (e, setFieldValue) => {
     const { name, value } = e.target

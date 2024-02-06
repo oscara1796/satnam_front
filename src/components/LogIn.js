@@ -22,6 +22,7 @@ function LogIn({ isLoggedIn, logIn, setLoggedIn}) {
   const [isSubmitted, setSubmitted] = useState(false)
   const [state, setState] = useContext(UserContext)
   const [isLoading, setLoading] = useState(false);
+  const [showRecoverPass, setShowRecoverPass] = useState(false);
 
   const onSubmit = async (values, actions) => {
     setLoading(true);
@@ -34,7 +35,7 @@ function LogIn({ isLoggedIn, logIn, setLoggedIn}) {
       if (isError) {
         showErrorNotification(response);
         
-        
+        setShowRecoverPass(true)
       } else {
         setLoggedIn(true)
         setState({
@@ -144,6 +145,13 @@ function LogIn({ isLoggedIn, logIn, setLoggedIn}) {
           <Card.Text className='text-center'>
             No tienes cuenta? <Link to='/sign-up'>Sign up!</Link>
           </Card.Text>
+          
+          {showRecoverPass && (
+             <Card.Text className='text-center'>
+                Se te olvidó tu contraseña ? <Link to='/password-recovery'>Recupera contraseña</Link>
+              </Card.Text>
+          ) }
+         
         </Card.Body>
       </Card>
     </Container>

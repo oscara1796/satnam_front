@@ -6,6 +6,8 @@ import { toast } from 'react-toastify'
 import axios from 'axios';
 import { getUser, getAccessToken } from '../services/AuthService'
 import './CreateScheduleAdmin.css';
+import { showErrorNotification } from '../services/notificationService'
+import { parse, differenceInMinutes } from 'date-fns';
 
 const days = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
 const hours = Array.from({ length: 24 }, (_, i) => `${i}:00`);
@@ -73,7 +75,7 @@ const CreateScheduleAdmin = (props) => {
         }));
     
         setShowEventForm(false);
-        toast.success("Se agrego tu clase");
+        toast.info("Se agrego tu clase, dale guardar para guardar horario correctamente");
     };
 
     const handleEventDelete = (eventToDelete) => {
@@ -107,12 +109,12 @@ const CreateScheduleAdmin = (props) => {
             const headers = { Authorization: `Bearer ${token}` }
             const response = await axios.post(url, eventData, {
                 headers: headers,
-              });
+              }, {timeout: 5000});
     
             // Handle the response
             toast.success("Se Guardo tu horario correctamente ");
         } catch (error) {
-            toast.error("Hubo un error al guardar el horario")
+            showErrorNotification(error)
             console.log(error);
             console.error('Error saving schedule:', error.response ? error.response.data : error.message);
         }
@@ -128,7 +130,7 @@ const CreateScheduleAdmin = (props) => {
             const headers = { Authorization: `Bearer ${token}` }
             const response = await axios.get(url, {
                 headers: headers,
-              });
+              }, {timeout: 5000});
 
 
                console.log(response.data);
@@ -143,6 +145,7 @@ const CreateScheduleAdmin = (props) => {
               setEvents(data);
             // Handle the response
         } catch (error) {
+            showErrorNotification(error);
             console.log(error);
             console.error('Error saving schedule:', error.response ? error.response.data : error.message);
         }
@@ -231,11 +234,18 @@ const EventForm = ({ defaultTitle = '' ,defaultDay, defaultTime, defaultEndTime=
     const [errors, setErrors] = useState({});
 
     const eventSchema = Yup.object().shape({
-        title: Yup.string().required('Title is required'),
-        day: Yup.string().required('Day is required'),
-        startTime: Yup.string().required('Start time is required'),
-        endTime: Yup.string().required('End time is required'),
-        description: Yup.string().required('Description is required'),
+        title: Yup.string().required('El título es obligatorio'),
+        day: Yup.string().required('El día es obligatorio'),
+        startTime: Yup.string().required('La hora de inicio es obligatoria'),
+        endTime: Yup.string().required('La hora de fin es obligatoria')
+          .test('is-greater', 'La clase debe durar al menos una hora', function(value) {
+            const { startTime } = this.parent;
+            const format = 'HH:mm';
+            const start = parse(startTime, format, new Date());
+            const end = parse(value, format, new Date());
+            return differenceInMinutes(end, start) >= 60;
+          }),
+        description: Yup.string().required('La descripción es obligatoria'),
     });
 
     const handleSubmit = async (e) => {
@@ -246,7 +256,11 @@ const EventForm = ({ defaultTitle = '' ,defaultDay, defaultTime, defaultEndTime=
             await eventSchema.validate(formData, { abortEarly: false });
 
             // If validation is successful, call onSave
-            onSave(formData);
+            onSave({
+                ...formData,
+                startTime: formatTime(startTime), // Ensure times are formatted correctly
+                endTime: formatTime(endTime),
+            });
             setErrors({}); 
             
         } catch (err) {
@@ -259,7 +273,6 @@ const EventForm = ({ defaultTitle = '' ,defaultDay, defaultTime, defaultEndTime=
                 setErrors(formErrors);
             }
 
-            console.log(err.inner);
             // Here you can set some state to display the validation errors on the form
         }
     };

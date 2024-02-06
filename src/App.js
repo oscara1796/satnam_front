@@ -23,6 +23,9 @@ import ContactAdminList from './components/ContactAdminList'
 import TrialDaysForm from './components/TrialDaysForm'
 import CreateScheduleAdmin from './components/CreateScheduleAdmin'
 import CalendarComponent from './components/CalendarComponent'
+import PasswordRecovery from './components/PasswordRecovery'
+import ResetPassword from './components/ResetPassword'
+import Footer from './components/Footer'
 import axios from 'axios'
 import { getUser, getAccessToken, isTokenExpired, setTokenExpirationTimeout } from './services/AuthService'
 import { ToastContainer, toast } from 'react-toastify'
@@ -125,6 +128,15 @@ function App() {
           path='admin-contact-list'
           element={<ContactAdminList isLoggedIn={isLoggedIn} logIn={logIn} />}
         />
+        
+        <Route
+          path='password-recovery'
+          element={<PasswordRecovery  isLoggedIn={isLoggedIn}  />}
+        />
+        <Route 
+          path="/reset-password/:uid/:token" 
+          element={<ResetPassword isLoggedIn={isLoggedIn}  />} 
+          />
 
         <Route
           path='payment-methods'
@@ -315,6 +327,7 @@ function Layout({ isLoggedIn, logOut }) {
       {/* <Container className='pt-3'> */}
       <Outlet />
       {/* </Container> */}
+      <Footer />
     </>
   )
 }

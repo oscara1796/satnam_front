@@ -3,6 +3,7 @@ import './CalendarComponent.css';
 import 'animate.css/animate.min.css';
 import { motion } from 'framer-motion';
 import axios from 'axios'
+import { showErrorNotification } from '../services/notificationService'
 
 const formatTime12Hour = (time24) => {
     const [hours, minutes] = time24.split(':');
@@ -34,7 +35,7 @@ const CalendarComponent = () => {
 
             const url = `${process.env.REACT_APP_BASE_URL}/api/events/`
             
-            const response = await axios.get(url);
+            const response = await axios.get(url, {timeout: 5000});
 
 
                console.log(response.data);
@@ -45,6 +46,7 @@ const CalendarComponent = () => {
             // Handle the response
         } catch (error) {
             console.log(error);
+            showErrorNotification(error)
             setIsLoading(false);
         }
     }
@@ -61,6 +63,7 @@ const CalendarComponent = () => {
 
             <div className="container my-5">
                 <h2 className="text-center text-primary mb-3">Horarios - Clases</h2>
+                <p className='my-4'>En nuestra escuela de yoga física ubicada en Guadalajara, México, ofrecemos a todas las personas la oportunidad de asistir y participar en clases presenciales en estos horarios:</p>
                 {isLoading ? (
                     // Display spinner while loading
                     <div className="d-flex justify-content-center">
@@ -70,7 +73,7 @@ const CalendarComponent = () => {
                     </div>
                 ) : (
                     <div className="row">
-                        {eventData && eventData.lenght > 0 ? 
+                        {eventData && eventData.length > 0 ? 
                             ( eventData.map((event) => (
                                 <div key={event.id} className="col-md-6 col-lg-4 mb-4 animate__animated animate__fadeIn">
                                     <div className="card h-100 shadow-sm">

@@ -6,12 +6,15 @@ import PaymentMethodsForm from './PaymentMethodsForm'
 import './PaymentMethodsList.css';
 import { faCcVisa, faCcMastercard, faCcAmex, faCcDiscover } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { showErrorNotification } from '../services/notificationService'
+
 
 
 
 const PaymentMethodsList = () => {
     const [paymentMethods, setPaymentMethods] = useState({ default_payment_method: null, all_payment_methods: [] })
     const [fetchPaymentMethods, setFetchPaymentMethods] = useState(false);
+    const [paymentMethodToUpdate, setpaymentMethodToUpdate] = useState({});
     const [showForm, setShowForm] = useState(false);
 
     const getPaymentMethods = async () => {
@@ -25,10 +28,11 @@ const PaymentMethodsList = () => {
         try{
             let response = await axios.get(url,  {
                 headers: headers,
-              })
+              }, {timeout:5000})
               console.log(response.data);
               setPaymentMethods(response.data)
         } catch(error){
+            showErrorNotification(error);
             console.log(error);
         }
     }
@@ -54,6 +58,38 @@ const PaymentMethodsList = () => {
                 return null; // Or a default icon
         }
     };
+
+    const deletePaymentMethod = async (methodId) => {
+        console.log(methodId);
+        let user = getUser();
+        // Adjusted URL to include methodId if your API requires it in the URL
+        let url = `${process.env.REACT_APP_BASE_URL}/api/payment_method/${user.id}/`;
+
+        const token = getAccessToken();
+        const config = {
+            headers: { Authorization: `Bearer ${token}` },
+            timeout: 5000,
+            data: { payment_method_id: methodId } // Including data in config if needed
+        };
+      
+        try {
+          await axios.delete(url, config);
+          console.log(`Deleted payment method with ID: ${methodId}`);
+          setFetchPaymentMethods(prevState => !prevState); // Trigger re-fetch of payment methods
+        } catch (error) {
+          showErrorNotification(error);
+          console.error(error);
+        }
+      };
+
+      const updatePaymentMethod = async (methodId) => {
+        // Placeholder for update logic
+        console.log(`Updating payment method with ID: ${methodId}`);
+        // You would typically show a form to collect new payment details here
+        // and then send a PUT or PATCH request to your backend
+      };
+      
+      
     
 
    
@@ -73,8 +109,8 @@ const PaymentMethodsList = () => {
                                 {/* Add more details as needed */}
                             </div>
                             <div className="payment-method-actions">
-                                <Button variant="secondary" size="sm">Actualizar</Button>
-                                <Button variant="danger" size="sm">Eliminar</Button>
+                            <Button variant="secondary" size="sm" onClick={() => updatePaymentMethod(method)}>Actualizar</Button>
+                            <Button variant="danger" size="sm" onClick={() => deletePaymentMethod(method.id)}>Eliminar</Button>
                             </div>
                         </div>
                     ))}
