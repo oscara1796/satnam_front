@@ -12,16 +12,19 @@
 html{
   scroll-behavior: smooth;
   scroll-padding-top: 75px;
+  
 }
 
 body{
- display: block;
- height: 100vh ;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
 main{
-  height: 100vh !important;
-  display: block !important;
+  margin-bottom: 3rem;
+  flex: 1;
+  overflow: auto;
 }
 
 .success-message{
@@ -345,6 +348,8 @@ main{
 .user_form {
   /* margin: 1em 0px 0px 0px; */
   padding-top: 1rem;
+  display: block;
+  margin-bottom: 1rem;
 }
 
 .user_form button{
