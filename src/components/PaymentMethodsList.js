@@ -14,7 +14,7 @@ import { showErrorNotification } from '../services/notificationService'
 const PaymentMethodsList = () => {
     const [paymentMethods, setPaymentMethods] = useState({ default_payment_method: null, all_payment_methods: [] })
     const [fetchPaymentMethods, setFetchPaymentMethods] = useState(false);
-    const [paymentMethodToUpdate, setpaymentMethodToUpdate] = useState({});
+    const [paymentMethodToUpdate, setpaymentMethodToUpdate] = useState(null);
     const [showForm, setShowForm] = useState(false);
 
     const getPaymentMethods = async () => {
@@ -61,6 +61,8 @@ const PaymentMethodsList = () => {
 
     const deletePaymentMethod = async (methodId) => {
         console.log(methodId);
+        setpaymentMethodToUpdate(null);
+        setShowForm(false)
         let user = getUser();
         // Adjusted URL to include methodId if your API requires it in the URL
         let url = `${process.env.REACT_APP_BASE_URL}/api/payment_method/${user.id}/`;
@@ -82,12 +84,19 @@ const PaymentMethodsList = () => {
         }
       };
 
-      const updatePaymentMethod = async (methodId) => {
+      const updatePaymentMethod = async (method) => {
         // Placeholder for update logic
-        console.log(`Updating payment method with ID: ${methodId}`);
+        setpaymentMethodToUpdate(method)
+        setShowForm(true)
+        console.log(`Updating payment method with ID: ${method}`);
         // You would typically show a form to collect new payment details here
         // and then send a PUT or PATCH request to your backend
       };
+
+      const addMethodsButton = () =>{
+        setShowForm(!showForm)
+        setpaymentMethodToUpdate(null)
+      }
       
       
     
@@ -100,7 +109,7 @@ const PaymentMethodsList = () => {
             {paymentMethods.all_payment_methods.length > 0 && (
                 <div className="payment-methods-list">
                     {paymentMethods.all_payment_methods.map((method) => (
-                        <div key={method.id} className="payment-method-box">
+                        <div key={method.id} className={`payment-method-box  ${paymentMethodToUpdate && paymentMethodToUpdate.id === method.id ? 'payment-method-selected' : ''}`}>
                             <div className="payment-method-details">
                                 <FontAwesomeIcon icon={getCardBrandIcon(method.card.brand)} />
                                 <p>Brand: {method.card.brand.toUpperCase()}</p>
@@ -119,9 +128,15 @@ const PaymentMethodsList = () => {
 
 
 
-            <Button onClick={() => setShowForm(!showForm)}>Agregar metodo de pago</Button>
+            <Button onClick={addMethodsButton}>Agregar metodo de pago</Button>
 
-            {showForm && <PaymentMethodsForm setShowForm={setShowForm} setFetchPaymentMethods={setFetchPaymentMethods} fetchPaymentMethods={fetchPaymentMethods} />}
+            {showForm && <PaymentMethodsForm 
+                            setShowForm={setShowForm} 
+                            setFetchPaymentMethods={setFetchPaymentMethods} 
+                            fetchPaymentMethods={fetchPaymentMethods} 
+                            paymentMethodToUpdate={paymentMethodToUpdate}
+                            setpaymentMethodToUpdate={setpaymentMethodToUpdate}
+                            />}
 
         </div>
     )

@@ -325,7 +325,10 @@ function Layout({ isLoggedIn, logOut }) {
       {/* <!-- Alert container --> */}
       <ToastContainer position='top-center' theme="colored" autoClose={10000}/>
       {/* <Container className='pt-3'> */}
-      <Outlet />
+
+      <main>
+        <Outlet />
+      </main>
       {/* </Container> */}
       <Footer />
     </>

@@ -11,16 +11,16 @@ import { faCcVisa, faCcMastercard, faCcAmex, faCcDiscover } from '@fortawesome/f
 import { showErrorNotification } from '../services/notificationService'
 
 
-const PaymentMethodsForm = ({ setShowForm, setFetchPaymentMethods, fetchPaymentMethods}) => {
+const PaymentMethodsForm = ({ setShowForm, setFetchPaymentMethods, fetchPaymentMethods, paymentMethodToUpdate, setpaymentMethodToUpdate}) => {
   const [isSubmitted, setSubmitted] = useState(false)
   const [priceError, setPriceError] = useState(''); 
   const [state, setState] = useContext(UserContext)
 
   const initialValues = {
-    card_number: '',
-    exp_month: '',
-    exp_year: '',
-    cvc: '',
+    card_number: paymentMethodToUpdate != null ? '**** **** **** '+paymentMethodToUpdate.card.last4 : '',
+    exp_month: paymentMethodToUpdate != null ? paymentMethodToUpdate.card.exp_month : '',
+    exp_year: paymentMethodToUpdate != null ? paymentMethodToUpdate.card.exp_year : '',
+    cvc: paymentMethodToUpdate != null ? '***' : '',
   }
 
   // card expiration years options
@@ -47,7 +47,6 @@ const PaymentMethodsForm = ({ setShowForm, setFetchPaymentMethods, fetchPaymentM
       let response = await axios.post(url, formData, {
         headers: headers,
       }, {timeout:5000})
-      console.log('Payment method added:', response.data)
       
       setFetchPaymentMethods(!fetchPaymentMethods)
       setShowForm(false)

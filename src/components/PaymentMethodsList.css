@@ -58,3 +58,9 @@
         color: #000; /* Change text color if needed */
     }
 }
+
+.payment-method-selected {
+    background-color: #f0f0f0; /* Example light gray background */
+    border: 3px solid #007bff; /* Example blue border */
+  }
+  
