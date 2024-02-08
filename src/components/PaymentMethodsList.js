@@ -84,10 +84,8 @@ const PaymentMethodsList = () => {
         }
       };
 
-      const updatePaymentMethod = async (method) => {
+      const setDefaultPaymentMethod = async (method) => {
         // Placeholder for update logic
-        setpaymentMethodToUpdate(method)
-        setShowForm(true)
         console.log(`Updating payment method with ID: ${method}`);
         // You would typically show a form to collect new payment details here
         // and then send a PUT or PATCH request to your backend
@@ -106,6 +104,10 @@ const PaymentMethodsList = () => {
     return (
         <div>
             <h4>Metodos de pago</h4>
+            <div class="instructions-container">
+                <h5>Instrucciones para la Gestión de Métodos de Pago</h5>
+                <p>Añade, configura y elimina métodos de pago fácilmente desde tu perfil. Selecciona tu metodo principal para transacciones futuras. Gestiona tus pagos con seguridad y conveniencia.</p>
+            </div>
             {paymentMethods.all_payment_methods.length > 0 && (
                 <div className="payment-methods-list">
                     {paymentMethods.all_payment_methods.map((method) => (
@@ -118,7 +120,9 @@ const PaymentMethodsList = () => {
                                 {/* Add more details as needed */}
                             </div>
                             <div className="payment-method-actions">
-                            <Button variant="secondary" size="sm" onClick={() => updatePaymentMethod(method)}>Actualizar</Button>
+                            
+                            <Button variant="secondary" size="sm" onClick={() => setDefaultPaymentMethod(method)}>Principal metodo de Pago</Button>
+                            
                             <Button variant="danger" size="sm" onClick={() => deletePaymentMethod(method.id)}>Eliminar</Button>
                             </div>
                         </div>
@@ -128,14 +132,13 @@ const PaymentMethodsList = () => {
 
 
 
-            <Button onClick={addMethodsButton}>Agregar metodo de pago</Button>
+            <Button onClick={addMethodsButton}>{showForm ? "Cerrar formulario" :"Agregar metodo de pago"}</Button>
 
             {showForm && <PaymentMethodsForm 
                             setShowForm={setShowForm} 
                             setFetchPaymentMethods={setFetchPaymentMethods} 
                             fetchPaymentMethods={fetchPaymentMethods} 
-                            paymentMethodToUpdate={paymentMethodToUpdate}
-                            setpaymentMethodToUpdate={setpaymentMethodToUpdate}
+                            
                             />}
 
         </div>

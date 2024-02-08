@@ -64,3 +64,24 @@
     border: 3px solid #007bff; /* Example blue border */
   }
   
+  .instructions-container {
+    font-family: 'Arial', sans-serif;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  .instructions-container h2 {
+    color: #333;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .instructions-container p {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.6;
+    text-align: justify;
+  }
