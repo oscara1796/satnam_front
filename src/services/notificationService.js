@@ -8,9 +8,14 @@ export const showErrorNotification = (error) => {
 
   if (error.response) {
     // Check if the errors are in a specific structure
-    if (error.response.data && error.response.data.message) {
+    if (error.response.data.message || error.response.data) {
 
       defaultMessage = error.response.data.message;
+
+      if (!defaultMessage) {
+        defaultMessage = error.response.data; // Fallback to 'data' if 'message' is not present
+      }
+
       if (typeof defaultMessage === 'object') {
           for (const key in defaultMessage) {
             if (defaultMessage.hasOwnProperty(key)) {
