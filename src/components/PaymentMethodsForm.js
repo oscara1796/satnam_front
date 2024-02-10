@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
-import { Container } from 'react-bootstrap'
+import { Container, Spinner } from 'react-bootstrap'
 import { Navigate } from 'react-router-dom'
 import axios from 'axios'
 import { getUser, getAccessToken } from '../services/AuthService'
@@ -16,15 +16,19 @@ const PaymentMethodsForm = ({ setShowForm, setFetchPaymentMethods, fetchPaymentM
   const [priceError, setPriceError] = useState(''); 
   const [state, setState] = useContext(UserContext)
 
+  const years = []
+
+  AddExpirationYears(years, 10)
+
   const initialValues = {
     card_number: '',
     exp_month: '',
-    exp_year:  '',
+    exp_year:  years[0],
     cvc: '',
   }
 
   // card expiration years options
-  const years = []
+  
 
   const handleSubmit = async (values) => {
 
@@ -66,7 +70,7 @@ const PaymentMethodsForm = ({ setShowForm, setFetchPaymentMethods, fetchPaymentM
     setFieldValue(name, formattedValue)
   }
 
-  AddExpirationYears(years, 10)
+  
 
   return (
     <Container className='mt-2  sub_form'>

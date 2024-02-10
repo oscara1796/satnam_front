@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCcVisa, faCcMastercard, faCcAmex, faCcDiscover } from '@fortawesome/free-brands-svg-icons';
 
 
-const SubscriptionForm = ({ isLoggedIn, selectedPriceId, trialDays}) => {
+const SubscriptionForm = ({ isLoggedIn, selectedPriceId, trialDays, selectDefaultPaymentMethod}) => {
   const [isSubmitted, setSubmitted] = useState(false)
   const [isSubSuccess, setSubSuccess] = useState(false)
   const [priceError, setPriceError] = useState(''); 
@@ -96,6 +96,13 @@ const SubscriptionForm = ({ isLoggedIn, selectedPriceId, trialDays}) => {
   return (
     <Container className='mt-2  sub_form'>
        {priceError && <p className='text-danger'>{priceError}</p>}
+
+       {selectDefaultPaymentMethod && (
+        <div className="alert alert-info" role="alert">
+         Ya has seleccionado un método de pago predeterminado para proceder al pago. Para agregar un nuevo método, primero deselecciona el método predeterminado y luego agrega la información en el formulario, o gestiona tus métodos de pago desde tu pestaña de "cuenta".       
+         </div>
+      )}
+
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
@@ -197,7 +204,7 @@ const SubscriptionForm = ({ isLoggedIn, selectedPriceId, trialDays}) => {
             <button
               type='submit'
               className='btn btn-primary'
-              disabled={isSubmitting}
+              disabled={isSubmitting || selectDefaultPaymentMethod !== null}
             >
               Subscribe
             </button>

@@ -4,9 +4,9 @@ import { Spinner, Button } from 'react-bootstrap'
 import axios from 'axios'
 import PaymentMethodsForm from './PaymentMethodsForm'
 import './PaymentMethodsList.css';
-import { faCcVisa, faCcMastercard, faCcAmex, faCcDiscover } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { showErrorNotification } from '../services/notificationService'
+import { getCardBrandIcon } from '../services/CardValidationService';
 
 
 
@@ -16,25 +16,31 @@ const PaymentMethodsList = () => {
     const [fetchPaymentMethods, setFetchPaymentMethods] = useState(false);
     const [defaultPaymentMethod, setDefaultPaymentMethod] = useState(null);
     const [showForm, setShowForm] = useState(false);
+    const [isLoading, setLoading] = useState(false);
 
     const getPaymentMethods = async () => {
+        setLoading(true);
         
         let user = getUser();
-        let url = `${process.env.REACT_APP_BASE_URL}/api/payment_method/${user.id}/`
+        if (user) {
+            let url = `${process.env.REACT_APP_BASE_URL}/api/payment_method/${user.id}/`
 
-        const token = getAccessToken()
-        const headers = { Authorization: `Bearer ${token}` }
+            const token = getAccessToken()
+            const headers = { Authorization: `Bearer ${token}` }
 
-        try{
-            let response = await axios.get(url,  {
-                headers: headers,
-              }, {timeout:5000})
-              console.log(response.data);
-              setPaymentMethods(response.data)
-              setDefaultPaymentMethod(response.data.default_payment_method)
-        } catch(error){
-            showErrorNotification(error);
-            console.log(error);
+            try{
+                let response = await axios.get(url,  {
+                    headers: headers,
+                }, {timeout:5000})
+                console.log(response.data);
+                setPaymentMethods(response.data)
+                setDefaultPaymentMethod(response.data.default_payment_method)
+            } catch(error){
+                showErrorNotification(error);
+                console.log(error);
+            } finally{
+                setLoading(false);
+            }
         }
     }
 
@@ -45,23 +51,10 @@ const PaymentMethodsList = () => {
 
 
     
-      const getCardBrandIcon = (brand) => {
-        switch (brand) {
-            case 'visa':
-                return faCcVisa;
-            case 'mastercard':
-                return faCcMastercard;
-            case 'amex':
-                return faCcAmex;
-            case 'discover':
-                return faCcDiscover;
-            default:
-                return null; // Or a default icon
-        }
-    };
 
     const deletePaymentMethod = async (methodId) => {
         console.log(methodId);
+        setLoading(true);
        
         setShowForm(false)
         let user = getUser();
@@ -82,10 +75,13 @@ const PaymentMethodsList = () => {
         } catch (error) {
           showErrorNotification(error);
           console.error(error);
+        } finally {
+            setLoading(false);
         }
       };
 
       const applyDefaultPaymentMethod = async (method) => {
+        setLoading(true);
         console.log(`Updating payment method with ID: ${method.id}`);
         let user = getUser();
         let url = `${process.env.REACT_APP_BASE_URL}/api/payment_method/${user.id}/`;
@@ -104,6 +100,8 @@ const PaymentMethodsList = () => {
         } catch (error) {
             showErrorNotification(error);
             console.error(error);
+        } finally{
+            setLoading(false);
         }
     };
 
@@ -124,8 +122,20 @@ const PaymentMethodsList = () => {
                 <h5>Instrucciones para la Gestión de Métodos de Pago</h5>
                 <p>Añade, configura y elimina métodos de pago fácilmente desde tu perfil. Selecciona tu metodo principal para transacciones futuras. Gestiona tus pagos con seguridad y conveniencia.</p>
             </div>
+
+            <div className='text-center font-weight-bold'>
+                {isLoading && (
+                    <>
+                    <Spinner animation="border" size="sm" role="status" aria-hidden="true" />
+                    {' Loading...'}
+                    </>
+                ) }
+            </div>
+            
+
             {paymentMethods.all_payment_methods.length > 0 && (
                 <div className="payment-methods-list">
+                    
                     {paymentMethods.all_payment_methods.map((method) => (
                         <div key={method.id} className={`payment-method-box  ${defaultPaymentMethod && defaultPaymentMethod.id === method.id ? 'payment-method-selected' : ''}`}>
                             <div className="payment-method-details">

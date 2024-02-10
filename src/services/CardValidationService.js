@@ -1,4 +1,4 @@
-
+import { faCcVisa, faCcMastercard, faCcAmex, faCcDiscover } from '@fortawesome/free-brands-svg-icons';
 
 // Validate cvc of card
 export const isValidCVC = (cvc) => {
@@ -75,3 +75,18 @@ export function isCreditCardValid(cardNumber) {
         years_array.push(currentYear + i)
     }
   }
+
+  export const getCardBrandIcon = (brand) => {
+    switch (brand) {
+        case 'visa':
+            return faCcVisa;
+        case 'mastercard':
+            return faCcMastercard;
+        case 'amex':
+            return faCcAmex;
+        case 'discover':
+            return faCcDiscover;
+        default:
+            return null; // Or a default icon
+    }
+};

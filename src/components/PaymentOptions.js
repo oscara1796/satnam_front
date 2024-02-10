@@ -4,8 +4,12 @@ import { Navigate } from 'react-router-dom'
 import { UserContext } from '../context'
 import { getUser, getAccessToken } from '../services/AuthService'
 import axios from 'axios';
-import { toast } from 'react-toastify'
+import './PaymentOptions.css'
+import './PaymentMethodsList.css'
 import TrialBanner from './TrialBanner';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { getCardBrandIcon } from '../services/CardValidationService';
+import { Button } from 'react-bootstrap'
 
 const TotalCheckoutBox = ({setSelectedPriceId, selectedPriceId}) => {
   const [prices, setPrices] = useState([]);
@@ -46,6 +50,8 @@ const TotalCheckoutBox = ({setSelectedPriceId, selectedPriceId}) => {
         setLoading(false);
       }
     };
+
+    
 
     fetchPrices();
   }, []);
@@ -88,15 +94,52 @@ const TotalCheckoutBox = ({setSelectedPriceId, selectedPriceId}) => {
 };
 
 const PaymentOptions = ({ isLoggedIn, trialDays}) => {
+  const [fetchPaymentMethods, setFetchPaymentMethods] = useState(false);
+  const [defaultPaymentMethod, setDefaultPaymentMethod] = useState(null);
+  const [selectDefaultPaymentMethod, setSelectDefaultPaymentMethod ] = useState(null);
   const [selectedOption, setSelectedOption] = useState(null)
   const [selectedPriceId, setSelectedPriceId] = useState(null);
   const [state, setState] = useContext(UserContext)
+  const [isLoading, setLoading] = useState(false);
+
+
+  const getPaymentMethods = async () => {
+    setLoading(true);
+    
+    let user = getUser();
+    if (user) {
+      let url = `${process.env.REACT_APP_BASE_URL}/api/payment_method/${user.id}/`
+
+      const token = getAccessToken()
+      const headers = { Authorization: `Bearer ${token}` }
+
+      try{
+          let response = await axios.get(url,  {
+              headers: headers,
+            }, {timeout:5000})
+            console.log(response.data.default_payment_method);
+            setDefaultPaymentMethod(response.data.default_payment_method)
+      } catch(error){
+          showErrorNotification(error);
+          console.log(error);
+      } finally{
+          setLoading(false);
+      }
+      
+    }
+    
+}
+
+useEffect(() => {
+
+    getPaymentMethods()
+  }, [fetchPaymentMethods])
 
   const paymentOptions = [
     {
       id: 1,
       label: 'Tarjeta credito/debito',
-      component: <SubscriptionForm isLoggedIn={isLoggedIn} selectedPriceId={selectedPriceId} trialDays={trialDays} />,
+      component: <SubscriptionForm isLoggedIn={isLoggedIn} selectedPriceId={selectedPriceId} trialDays={trialDays} selectDefaultPaymentMethod={selectDefaultPaymentMethod} />,
     },
     // { id: 2, label: 'PayPal' },
     // { id: 3, label: 'Google Pay' },
@@ -113,6 +156,17 @@ const PaymentOptions = ({ isLoggedIn, trialDays}) => {
   if (state.user && state.user.active) {
     return <Navigate to='/' />
   }
+
+  useEffect(() => {
+
+
+    const selectFirtsOption = () => {
+      if (paymentOptions.length > 0) {
+        setSelectedOption(paymentOptions[0].id);
+      }
+    }
+    selectFirtsOption();
+  }, []);
 
   return (
 
@@ -151,6 +205,12 @@ const PaymentOptions = ({ isLoggedIn, trialDays}) => {
         </div>
         {selectedOption && (
           <div className='selected-option'>
+            <DefaultPaymentMethod 
+              defaultPaymentMethod={defaultPaymentMethod}
+              selectDefaultPaymentMethod={selectDefaultPaymentMethod}
+              selectedPriceId={selectedPriceId}
+              trialDays={trialDays}   
+              setSelectDefaultPaymentMethod={setSelectDefaultPaymentMethod} />
             {
               paymentOptions.find((option) => option.id === selectedOption)
                 .component
@@ -161,6 +221,113 @@ const PaymentOptions = ({ isLoggedIn, trialDays}) => {
       <TotalCheckoutBox setSelectedPriceId={setSelectedPriceId} selectedPriceId={selectedPriceId}/>
     </div>
   )
+}
+
+const DefaultPaymentMethod = ({defaultPaymentMethod, setSelectDefaultPaymentMethod, selectedPriceId,trialDays, selectDefaultPaymentMethod}) =>{
+
+  const [isSubmitted, setSubmitted] = useState(false)
+  const [isSubSuccess, setSubSuccess] = useState(false)
+  const [priceError, setPriceError] = useState(''); 
+
+  const selectPaymentMethod = (methodId) =>{
+    if (selectDefaultPaymentMethod == null) {
+      
+      setSelectDefaultPaymentMethod(methodId);
+    } else{
+      setSelectDefaultPaymentMethod(null);
+    }
+  }
+
+
+  const handleSubmit = async () => {
+
+    if (!selectedPriceId) {
+      setPriceError('Por favor selecciona un plan ');
+      return; // Stop the submission if no price is selected
+    }
+    let user = getUser()
+    let url = `${process.env.REACT_APP_BASE_URL}/api/create_subscription/${user.id}/`
+
+    const formData = new FormData()
+    formData.append("payment_method_id", selectDefaultPaymentMethod)
+    formData.append('price_id', selectedPriceId)
+
+    if (trialDays.length > 0) {
+      formData.append('trial', trialDays[0].days)
+    }
+
+    const token = getAccessToken()
+    const headers = { Authorization: `Bearer ${token}` }
+
+    try {
+      console.log(formData)
+      let response = await axios.post(url, formData, {
+        headers: headers,
+      })
+      console.log('Subscription created:', response.data)
+      if (response.data.status === 'incomplete') {
+        throw new Error('Subscription was not able to complete')
+      }
+      console.log('navigate to success')
+      setSubSuccess(true)
+    } catch (error) {
+      console.error('Error creating subscription:')
+      console.log(error)
+      console.log('navigate to cancel')
+      setSubSuccess(false)
+    }
+    setSubmitted(true)
+    // setSubscriptionFormSubmitted(true);
+  }
+
+  if (isSubmitted) {
+    if (isSubSuccess) {
+      return <Navigate to='/sub-success' />
+    }
+    return <Navigate to='/sub-cancel' />
+  }
+
+
+  return (
+    <div>
+      <h3>Metodos de pagos guardados: </h3>
+      {defaultPaymentMethod ? (
+        <>
+          {priceError && <p className='text-danger'>{priceError}</p>}
+          <div key={defaultPaymentMethod.id} onClick={() => selectPaymentMethod(defaultPaymentMethod.id)} className={`payment-method-box  ${selectDefaultPaymentMethod == defaultPaymentMethod.id ? "payment-method-selected" : ''}`}>
+              <div className="payment-method-details">
+                  <FontAwesomeIcon icon={getCardBrandIcon(defaultPaymentMethod.card.brand)} />
+                  <p>Brand: {defaultPaymentMethod.card.brand.toUpperCase()}</p>
+                  <p>Last 4 Digits: **** **** **** {defaultPaymentMethod.card.last4}</p>
+                  <p>Expires: {defaultPaymentMethod.card.exp_month}/{defaultPaymentMethod.card.exp_year}</p>
+                  {/* Add more details as needed */}
+              </div>
+              
+          </div>
+          {
+            selectDefaultPaymentMethod == defaultPaymentMethod.id &&(
+
+              <Button className="mt-3" onClick={handleSubmit}>Subcribete</Button>
+            )
+          }
+        </>
+      )
+        :
+        <>
+          <div className='mt-3 text-center'>
+            <p> No hay metodos guardados </p>
+          </div>
+        </>
+      }
+
+
+
+      <div className='mt-3'>
+        <p>Usar/agregar nuevo metodo: </p>
+      </div>
+
+    </div>
+  );
 }
 
 
