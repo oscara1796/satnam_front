@@ -1,0 +1,87 @@
+/* ContactAdminList.module.css */
+.container {
+    padding: 20px;
+    background-color: #f0f4f8;
+    height: 80vh;
+  }
+  
+  .title {
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .messageList {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .messageItem {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .messageItem:hover {
+    border-color: #007bff;
+  }
+  
+  .messageInfo {
+    margin-bottom: 5px;
+  }
+  
+  .viewButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .viewButton:hover {
+    background-color: #0056b3;
+  }
+  
+  .downloadButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    display: block;
+    width: max-content;
+    margin-top: 20px;
+  }
+  
+  .downloadButton:hover {
+    background-color: #0056b3;
+  }
+
+
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .navButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .navButton:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  

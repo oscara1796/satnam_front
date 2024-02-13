@@ -9,7 +9,8 @@ import './PaymentMethodsList.css'
 import TrialBanner from './TrialBanner';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getCardBrandIcon } from '../services/CardValidationService';
-import { Button } from 'react-bootstrap'
+import { Button, Spinner } from 'react-bootstrap'
+import { showErrorNotification } from '../services/notificationService'
 
 const TotalCheckoutBox = ({setSelectedPriceId, selectedPriceId}) => {
   const [prices, setPrices] = useState([]);
@@ -52,7 +53,7 @@ const TotalCheckoutBox = ({setSelectedPriceId, selectedPriceId}) => {
     };
 
     
-
+    
     fetchPrices();
   }, []);
 
@@ -132,7 +133,10 @@ const PaymentOptions = ({ isLoggedIn, trialDays}) => {
 
 useEffect(() => {
 
-    getPaymentMethods()
+  if ( isLoggedIn && state &&  !state.user.is_staff) {
+      console.log( "state", state);
+      getPaymentMethods()
+  }
   }, [fetchPaymentMethods])
 
   const paymentOptions = [
@@ -227,6 +231,7 @@ const DefaultPaymentMethod = ({defaultPaymentMethod, setSelectDefaultPaymentMeth
 
   const [isSubmitted, setSubmitted] = useState(false)
   const [isSubSuccess, setSubSuccess] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [priceError, setPriceError] = useState(''); 
 
   const selectPaymentMethod = (methodId) =>{
@@ -240,8 +245,10 @@ const DefaultPaymentMethod = ({defaultPaymentMethod, setSelectDefaultPaymentMeth
 
 
   const handleSubmit = async () => {
+    setIsLoading(true)
 
     if (!selectedPriceId) {
+      setIsLoading(false)
       setPriceError('Por favor selecciona un plan ');
       return; // Stop the submission if no price is selected
     }
@@ -263,7 +270,7 @@ const DefaultPaymentMethod = ({defaultPaymentMethod, setSelectDefaultPaymentMeth
       console.log(formData)
       let response = await axios.post(url, formData, {
         headers: headers,
-      })
+      }, {timeout: 5000})
       console.log('Subscription created:', response.data)
       if (response.data.status === 'incomplete') {
         throw new Error('Subscription was not able to complete')
@@ -275,6 +282,8 @@ const DefaultPaymentMethod = ({defaultPaymentMethod, setSelectDefaultPaymentMeth
       console.log(error)
       console.log('navigate to cancel')
       setSubSuccess(false)
+    } finally {
+      setIsLoading(false)
     }
     setSubmitted(true)
     // setSubscriptionFormSubmitted(true);
@@ -307,7 +316,15 @@ const DefaultPaymentMethod = ({defaultPaymentMethod, setSelectDefaultPaymentMeth
           {
             selectDefaultPaymentMethod == defaultPaymentMethod.id &&(
 
-              <Button className="mt-3" onClick={handleSubmit}>Subcribete</Button>
+              <Button className="mt-3" onClick={handleSubmit}> {isLoading ? (
+                <>
+                  <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+                  {' Loading...'}
+                </>
+                ) : (
+                  'Proceder al pago'
+                )
+              }</Button>
             )
           }
         </>

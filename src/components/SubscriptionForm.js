@@ -52,7 +52,7 @@ const SubscriptionForm = ({ isLoggedIn, selectedPriceId, trialDays, selectDefaul
       console.log(formData)
       let response = await axios.post(url, formData, {
         headers: headers,
-      })
+      },{timeout: 5000})
       console.log('Subscription created:', response.data)
       if (response.data.status === 'incomplete') {
         throw new Error('Subscription was not able to complete')

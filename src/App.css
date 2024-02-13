@@ -18,13 +18,12 @@ html{
 body{
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 main{
   margin-bottom: 3rem;
   flex: 1;
-  overflow: auto;
 }
 
 .success-message{
@@ -328,9 +327,8 @@ main{
 
 /* USER ACCOUNT COMPONENT  */
 
-.user_info_container {
-  height: 100vh;
-}
+/* .user_info_container {
+} */
 
 .user-info {
   text-align: center;
@@ -882,7 +880,6 @@ input[type="checkbox"]:checked + .checkbox-circle {
 
 .video-detail-container {
   display: block;
-  height: 100vh;
 }
 
 .video-card {

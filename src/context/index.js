@@ -7,25 +7,18 @@ import {
 
 const UserContext = createContext()
 
+
 const UserProvider = ({ children }) => {
   const [state, setState] = useState({
-    user: {},
-    auth: '',
-  })
-
-  useEffect(() => {
-    var tempState = {
-      user: JSON.parse(localStorage.getItem('satnam.user')),
-      auth: getAccessToken(),
-    }
-    setState(tempState)
-  }, [])
+    user: JSON.parse(localStorage.getItem('satnam.user')),
+    auth: getAccessToken(),
+  });
 
   return (
     <UserContext.Provider value={[state, setState]}>
       {children}
     </UserContext.Provider>
-  )
+  );
 }
 
-export { UserContext, UserProvider }
+export { UserContext, UserProvider };

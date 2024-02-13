@@ -11,7 +11,7 @@ import { faCcVisa, faCcMastercard, faCcAmex, faCcDiscover } from '@fortawesome/f
 import { showErrorNotification } from '../services/notificationService'
 
 
-const PaymentMethodsForm = ({ setShowForm, setFetchPaymentMethods, fetchPaymentMethods}) => {
+const PaymentMethodsForm = ({ setShowForm, setFetchPaymentMethods, fetchPaymentMethods, setNewMethodAdded}) => {
   const [isSubmitted, setSubmitted] = useState(false)
   const [priceError, setPriceError] = useState(''); 
   const [state, setState] = useContext(UserContext)
@@ -51,7 +51,6 @@ const PaymentMethodsForm = ({ setShowForm, setFetchPaymentMethods, fetchPaymentM
       let response = await axios.post(url, formData, {
         headers: headers,
       }, {timeout:5000})
-      
       setFetchPaymentMethods(!fetchPaymentMethods)
       setShowForm(false)
     } catch (error) {

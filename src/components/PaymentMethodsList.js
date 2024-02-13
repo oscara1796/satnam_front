@@ -7,16 +7,18 @@ import './PaymentMethodsList.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { showErrorNotification } from '../services/notificationService'
 import { getCardBrandIcon } from '../services/CardValidationService';
+import { UserContext } from '../context'
 
 
 
 
-const PaymentMethodsList = () => {
+const PaymentMethodsList = (props) => {
     const [paymentMethods, setPaymentMethods] = useState({ default_payment_method: null, all_payment_methods: [] })
     const [fetchPaymentMethods, setFetchPaymentMethods] = useState(false);
     const [defaultPaymentMethod, setDefaultPaymentMethod] = useState(null);
     const [showForm, setShowForm] = useState(false);
     const [isLoading, setLoading] = useState(false);
+    const [state, setState] = useContext(UserContext)
 
     const getPaymentMethods = async () => {
         setLoading(true);
@@ -45,8 +47,11 @@ const PaymentMethodsList = () => {
     }
 
     useEffect(() => {
-
-        getPaymentMethods()
+        if (props.isLoggedIn && state &&  !state.user.is_staff) {
+            console.log( "state", state);
+            getPaymentMethods()
+            
+        }
       }, [fetchPaymentMethods])
 
 
@@ -170,7 +175,6 @@ const PaymentMethodsList = () => {
                             setShowForm={setShowForm} 
                             setFetchPaymentMethods={setFetchPaymentMethods} 
                             fetchPaymentMethods={fetchPaymentMethods} 
-                            
                             />}
 
         </div>

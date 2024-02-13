@@ -126,7 +126,7 @@ function UserAccount({ isLoggedIn, logIn }) {
       </Container>
 
       <Container>
-         <PaymentMethodsList />
+         <PaymentMethodsList isLoggedIn={isLoggedIn} />
       </Container>
 
       <Container className='mt-2  user_form'>
