@@ -4,6 +4,7 @@ import { UserContext } from '../context'
 import axios from 'axios';
 import { getUser, getAccessToken } from '../services/AuthService'
 import styles from './ContactAdminList.module.css';
+import { showErrorNotification } from '../services/notificationService'
 
 const ContactAdminList = ({ isLoggedIn }) => {
   const [messages, setMessages] = useState([]);
@@ -23,7 +24,7 @@ const ContactAdminList = ({ isLoggedIn }) => {
       const headers = { Authorization: `Bearer ${token}` };
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/contact/?page=${page}`, {
         headers: headers,
-      });
+      }, {timeout: 5000});
       console.log(response.data);
       setMessages(response.data.results);
       setNextPageUrl(response.data.next); // Update with actual API response
@@ -31,6 +32,7 @@ const ContactAdminList = ({ isLoggedIn }) => {
       // Calculate total pages if you have total items count and items per page
       // setTotalPages(Math.ceil(response.data.count / itemsPerPage));
     } catch (error) {
+      showErrorNotification(error);
       console.error('Error fetching messages:', error);
       // Handle error (show error message)
     }
