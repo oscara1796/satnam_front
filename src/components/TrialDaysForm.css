@@ -1,5 +1,9 @@
 /* TrialDaysForm.css */
 
+.trialDaysContainer{
+  height: 65vh;
+}
+
 .trialDaysForm {
     display: flex;
     flex-direction: column;

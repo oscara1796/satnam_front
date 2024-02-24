@@ -91,7 +91,7 @@ function TrialDaysForm({ isLoggedIn, trialDays , setTrialDays}) {
   }
 
   return (
-    <div>
+    <div className='trialDaysContainer container'>
       {trialDays.length > 0 && !isFormEnabled ? (
         <div className="trialDaysForm">
           <h3>Trial Days: {trialDays[0].days}</h3>
