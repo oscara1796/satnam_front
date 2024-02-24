@@ -23,7 +23,7 @@ const termsSections = [
     quejas y reclamaciones del SERVICIO con Sat Nam Yoga Estudio® utilizando los medios que indican en estos términos y condiciones y, en caso de no obtener una respuesta satisfactoria, 
     el Usuario puede utilizar los mecanismos establecidos en la Ley ante la Procuraduría Federal del Consumidor.
 
-    Si usted es un Usuario no establecido en México, deberá consultar los Términos y Condiciones que Sat Nam Yoga Estudio pone a disposición para Usuarios que radiquen en países distintos a México.
+    Si usted es un Usuario no establecido en México, deberá consultar los Términos y Condiciones que Sat Nam Yoga Estudio®  pone a disposición para Usuarios que radiquen en países distintos a México.
 
     .`
   },
