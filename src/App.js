@@ -25,6 +25,7 @@ import CreateScheduleAdmin from './components/CreateScheduleAdmin'
 import CalendarComponent from './components/CalendarComponent'
 import PasswordRecovery from './components/PasswordRecovery'
 import ResetPassword from './components/ResetPassword'
+import TermsOfService from './components/TermsOfService'
 import Footer from './components/Footer'
 import axios from 'axios'
 import { getUser, getAccessToken, isTokenExpired, setTokenExpirationTimeout } from './services/AuthService'
@@ -145,6 +146,10 @@ function App() {
         <Route
           path='videos-create'
           element={<CreateVideoAdmin isLoggedIn={isLoggedIn} />}
+        />
+        <Route
+          path='terms-sections'
+          element={<TermsOfService isLoggedIn={isLoggedIn} />}
         />
         <Route
           path='trial-days-create'

@@ -20,6 +20,7 @@ function Footer() {
               <li><Link to="/classes">Clases</Link></li>
               <li><Link to="/schedule">Horario</Link></li>
               <li><Link to="/schedule">Politicas de privacidad </Link></li>
+              <li><Link to="/terms-sections">Terminos y condiciones </Link></li>
             </ul>
           </Col>
           <Col className="footer-column" md={4}>

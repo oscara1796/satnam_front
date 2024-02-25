@@ -1,6 +1,6 @@
 .termsOfService {
-    font-family: Arial, sans-serif;
-    max-width: 800px;
+    font-family: monospace;
+    max-width: 80vw;
     margin: 20px auto;
     padding: 20px;
     background-color: #f9f9f9;
@@ -8,7 +8,7 @@
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
   }
   
-  .termsSection h2 {
+  .termsSection h3 {
     cursor: pointer;
     background-color: #007bff;
     color: #ffffff;
@@ -17,15 +17,19 @@
     border-radius: 4px;
   }
   
-  .termsSection h2:hover {
+  .termsSection h3:hover {
     background-color: #0056b3;
   }
   
-  .termsSection p {
-    padding: 10px;
+  .termsSection pre {
+    white-space: pre-wrap; /* Permite que el contenido se ajuste según el contenedor */
+    word-wrap: break-word; 
+    overflow-wrap: break-word; 
+    max-width: 100%; /* Asegura que el contenido no desborde el contenedor */
+    font-size: 0.9em;
     background-color: #ffffff;
     border-left: 3px solid #007bff;
-    margin: 0;
     border-radius: 0 0 4px 4px;
+    padding: 10px;
   }
   

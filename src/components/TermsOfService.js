@@ -1,38 +1,263 @@
 import React, { useState } from 'react';
+import './TermsOfService.css'
 
 const termsSections = [
   {
     title: 'Acuerdo Legal',
-    content: `Le informamos que es importante y obligatorio 
-    que, en su carácter de Usuario y/o Visitante, en adelante el “USUARIO”, 
-    lea, entienda y acepte de manera total el contenido de este documento, dicho consentimiento se considera como otorgado a favor de SANDRA LOPEZ GONZALEZ, PERSONA FÍSICA CON ACTIVIDAD EMPRESARIAL,
-    en adelante “Sat Nam Yoga Estudio®”.
+    content: `
+Le informamos que es importante y obligatorio que, en su carácter de Usuario y/o Visitante, en adelante el “USUARIO”, lea, entienda y acepte de manera total el contenido de este documento, dicho consentimiento se considera como otorgado a favor de SANDRA LOPEZ GONZALEZ, PERSONA FÍSICA CON ACTIVIDAD EMPRESARIAL, en adelante “Sat Nam Yoga Estudio®”.
+Al consultar, registrarse, solicitar y/o usar los servicios (aun gratuitamente), denominado en lo subsecuente como el “SERVICIO”, que se presentan a través del sitio web 
+www.satnamyogaestudio.com, denominados en lo subsecuente como “LA PLATAFORMA”, implica la adhesión a estos Términos y Condiciones de Uso y del Servicio.
 
-    Al consultar, registrarse, solicitar y/o usar los servicios (aun gratuitamente), denominado en lo subsecuente como el “SERVICIO”, que se presentan a través del sitio web 
-    www.satnamyogaestudio.com, denominados en lo subsecuente como “LA PLATAFORMA”, implica la adhesión a estos Términos y Condiciones de Uso y del Servicio.
+La importancia de que el Usuario conozca el contenido de estos términos y condiciones radica en que estos disponen las reglas establecidas por Sat Nam yoga Estudio®, 
+para el uso de LA PLATAFORMA en los Estados Unidos Mexicanos, así como los derechos y obligaciones que tiene el Usuario como consumidor, 
+salvo las excepciones previstas en diversas cláusulas.
 
-    La importancia de que el Usuario conozca el contenido de estos términos y condiciones radica en que estos disponen las reglas establecidas por Sat Nam yoga Estudio®, 
-    para el uso de LA PLATAFORMA en los Estados Unidos Mexicanos, así como los derechos y obligaciones que tiene el Usuario como consumidor, 
-    salvo las excepciones previstas en diversas cláusulas.
+El marco jurídico que en los Estados Unidos Mexicanos protege los derechos y obligaciones tanto de Sat Nam Yoga Estudio® como del Usuario se rigen por la legislación mexicana, específicamente 
+la Ley Federal del Protección al Consumidor, el Código de Comercio, el Código Civil Federal, el Código Federal de Procedimientos Civiles y la Norma Mexicana ‘NMX-COE-001-SCFI-2018, 
+Comercio Electrónico - Disposiciones a las que se sujetarán aquellas personas que ofrezcan, comercialicen o vendan bienes, productos o servicios’, la legislación mexicana señalada en 
+su conjunto reglamenta el uso de servicios en línea para establecer tanto disposiciones normativas como sanciones en caso de que se realice la violación a los derechos de los 
+consumidores en línea, por lo cual si usted considera que sus derechos como Usuario no están siendo protegidos bajo dicho marco legal, deberá conciliar inicialmente las 
+quejas y reclamaciones del SERVICIO con Sat Nam Yoga Estudio® utilizando los medios que indican en estos términos y condiciones y, en caso de no obtener una respuesta satisfactoria, 
+el Usuario puede utilizar los mecanismos establecidos en la Ley ante la Procuraduría Federal del Consumidor.
 
-    El marco jurídico que en los Estados Unidos Mexicanos protege los derechos y obligaciones tanto de Sat Nam Yoga Estudio® como del Usuario se rigen por la legislación mexicana, específicamente 
-    la Ley Federal del Protección al Consumidor, el Código de Comercio, el Código Civil Federal, el Código Federal de Procedimientos Civiles y la Norma Mexicana ‘NMX-COE-001-SCFI-2018, 
-    Comercio Electrónico - Disposiciones a las que se sujetarán aquellas personas que ofrezcan, comercialicen o vendan bienes, productos o servicios’, la legislación mexicana señalada en 
-    su conjunto reglamenta el uso de servicios en línea para establecer tanto disposiciones normativas como sanciones en caso de que se realice la violación a los derechos de los 
-    consumidores en línea, por lo cual si usted considera que sus derechos como Usuario no están siendo protegidos bajo dicho marco legal, deberá conciliar inicialmente las 
-    quejas y reclamaciones del SERVICIO con Sat Nam Yoga Estudio® utilizando los medios que indican en estos términos y condiciones y, en caso de no obtener una respuesta satisfactoria, 
-    el Usuario puede utilizar los mecanismos establecidos en la Ley ante la Procuraduría Federal del Consumidor.
-
-    Si usted es un Usuario no establecido en México, deberá consultar los Términos y Condiciones que Sat Nam Yoga Estudio®  pone a disposición para Usuarios que radiquen en países distintos a México.
+Si usted es un Usuario no establecido en México, deberá consultar los Términos y Condiciones que Sat Nam Yoga Estudio®  pone a disposición para Usuarios que radiquen en países distintos a México.
 
     .`
   },
   {
-    title: 'Identificación del Prestador del Servicio',
-    content: `Razón social: PLATZI, S.A.P.I. de C.V...`
+    title: 'CLÁUSULA A. IDENTIFICACIÓN DEL PRESTADOR DEL SERVICIO',
+    content: `
+Razón social    SANDRA LOPEZ GONZALEZ \n
+Nombre comercial    SAT NAM YOGA ESTUDIO\n
+RFC    LOGS6801132SA\n
+Sitio web    www.satnamyogaestudio.com\n
+Giro    "Servicios de Cursos en Línea" y "Servicios educativos y de enseñanza" \n
+Teléfono    (52) 3331722660 \n
+Domicilio    Plateros 2378, Jardines del Country, Guadalajara, Jalisco, México. \n
+Geolocalización    https://maps.app.goo.gl/yNaw3216tj3crjJv9 \n
+Contacto    Correo electrónico: satnamyogajal@gmail.com \n
+WhatsApp: (52) 3314183347 \n
+Horario de atención    Lunes a viernes de 8-20h \n
+Sábado de 10-14h \n
+    .`
   },
   {
-    title: 'Condiciones Generales',
+    title: 'CLÁUSULA B. CONDICIONES GENERALES',
+    content: `
+a. Capacidad legal para la contratación del servicio
+
+Previo a realizar cualquier uso en el LA PLATAFORMA de Sat Nam yoga Estudio®, el Usuario declara bajo protesta de decir verdad que tiene cumplidos al menos 18 años y está en pleno ejercicio de sus derechos y facultades para obligarse en términos de la legislación mexicana. Si aún no cuenta con esa edad, el Usuario deberá realizar el registro a través de su madre, padre o tutor, entendiéndose que este será responsable de las actividades realizadas en LA PLATAFORMA web.
+
+Cualquier uso o acceso realizado por personas menores de 13 años con o sin consentimiento de su madre, padre o tutor queda limitado a no ser sujeto de derechos, por lo cual en caso de que Sat Nam yoga Estudio® identifique que el Usuario es menor a esa edad cancelará en forma inmediata la cuenta de usuario y anulará cualquier documento emitido, como Constancias o Diplomas obtenidos de nuestros Cursos.
+
+En caso de no ser mayor de edad ni contar con la autorización de madre, padre o tutor, cualquier acción realizada en LA PLATAFORMA carece de validez legal y, por ende, Sat Nam yoga Estudio® se reserva el derecho de anular operaciones realizadas y ejercer todos sus derechos en contra de la persona no autorizada bajo los términos previstos en la legislación mexicana.
+b. Descripción del servicio y sus contenidos
+
+El servicio
+
+Sat Nam yoga Estudio® ofrece una plataforma educativa a través de la cual se ofrecen diversos servicios, disponibles para los Usuarios con un Plan de Suscripción Activo, los cuales se enlistan a continuación:
+
+  i. Capacitación a través de cursos individuales cuyo formato puede ser online en el sitio web 
+  ii. Capacitación en líneas de especialización de competencias en ramas específicas, principalmente bienestar y recreación
+  iii. Lectura y descarga de material educativo de apoyo para los cursos y líneas de especialización
+  iv. Mentoría personalizada en cursos seleccionados
+  v. Videoconferencias programadas en vivo para abordar temas de actualidad y generar la interacción en la comunidad Sat Nam yoga Estudio®
+
+Los servicios que se indican pueden ser modificados o retirados por Sat Nam yoga Estudio® en cualquier momento, siempre con el fin de mejorar nuestra oferta de servicios a nuestros estudiantes.
+
+Contenido
+
+El contenido que ofrece Sat Nam yoga Estudio® en sus cursos y líneas de especialización es generado por expertos en la industria, cada uno en su ramo, a través del cual se transmite conocimiento práctico al Usuario.
+
+Sat Nam yoga Estudio® junto con su equipo de trabajo y sus colaboradores externos realiza todos los esfuerzos necesarios para ofrecer contenido actualizado en LA PLATAFORMA, sin embargo, estamos sujetos a la disponibilidad de tiempo de nuestros expertos para realizar dicho proceso, bajo este entendido es probable que algunos cursos presenten contenido que aún no haya sido actualizado.
+
+El uso del contenido se ofrece bajo una licencia de uso, el detalle al respecto lo puedes consultar en la sección denominada ‘Propiedad Intelectual’.
+
+¿Qué no es Sat Nam yoga Estudio®?
+
+La capacitación ofrecida en Sat Nam yoga Estudio®, no implica:
+
+  i. La impartición personalizada de cursos en línea bajo un modelo de sistema escolarizado, esto es:
+      Sat Nam yoga Estudio® no tiene horarios definidos de clases ya que los cursos están disponibles en todo momento a excepción de la escuela física ubicada en el domicilio fiscal, cuyos horarios el Usuario puede encontrar en la sección [horarios escuela]
+      Sat Nam yoga Estudio® no ofrece ninguna cobertura de académica curricular oficial
+      Sat Nam yoga Estudio® no ofrece una metodología tradicional de enseñanza-aprendizaje que de retroalimentación en tiempo real de conocimientos adquiridos en forma individual al Usuario
+  ii. La impartición de cursos escolarizados con validez oficial en México ante la Secretaria de Educación Pública o cualquier otra Institución que tenga la autorización oficial para otorgar reconocimientos con validez oficial.
+  iii. La obtención de un título profesional o grado académico con Reconocimiento de Validez Oficial de Estudios en México (RVOE)
+
+c. Descripción de tipo de suscripciones
+
+Sat Nam yoga Estudio® ofrece distintos planes de suscripción, cada uno de ellos proporciona al Usuario servicios diferentes en LA PLATAFORMA, conforme a los siguientes planes:
+
+  Mensual
+  Anual
+
+Las características que tienen las suscripciones son distintas conforme al plan contratado por el Usuario, en términos generales, LA PLATAFORMA ofrece lo siguientes servicios:
+
+  Acceso a todos los cursos contenidos en LA PLATAFORMA
+  Mentorías semanales en grupo y en vivo
+  Clases en Full HD
+  Pago por Paypal® hasta en 12 meses sin intereses
+  Pago con depósito bancario y otros métodos
+  Precio de la suscripción sin incrementos durante su año de vigencia
+
+Algunos de los servicios y contenidos que se ofrecen a través de LA PLATAFORMA son gratuitos, por lo que el Usuario podrá acceder a los mismos con la única condición de realizar su alta como Usuario.
+
+El detalle de qué características tiene cada una de las suscripciones está disponible para su consulta en https://satnamyogaestudio.com/cursos/, es importante que el Usuario revise constantemente la descripción de los planes que Sat Nam yoga Estudio® ofrece para conocer cambios y nuevos beneficios.
+d. ALCANCE DEL SERVICIO CON RESPECTO A LA LICENCIA DE USO
+
+Sat Nam yoga Estudio® otorga una licencia de uso a favor del Usuario respecto a los contenidos de los cursos así como para el uso de la plataforma web , ésta licencia es de carácter gratuita, no exclusiva, revocable y no transferible, la cual queda sujeta y limitada al uso personal del Usuario, ya sea para tomar una decisión de adquisición de los servicios ofrecidos a través de LA PLATAFORMA o para compartir en sus redes sociales o a través de otros mecanismos la experiencia obtenida sólo con fines de recomendación.
+
+El alcance de la licencia en mención no autoriza al Usuario a obtener un beneficio económico derivado del uso del contenido proveído ni a realizar cualquier acción tecnológica que permita (ni apoyar los intentos de otros) eludir, aplicar ingeniería inversa, descifrar, descompilar, desmontar u obtener el código fuente de LA PLATAFORMA. Adicionalmente en la sección de Obligaciones del Usuario se establecen otras limitaciones a la licencia otorgada y a las acciones permitidas al Usuario.
+
+    `
+  },
+  {
+    title: 'CLÁUSULA C. REGLAS DE CONTRATACIÓN EN LA PLATAFORMA',
+    content: `
+a. ALTA DE CUENTA DE USUARIO
+
+Para el acceso a los servicios generales de Sat Nam yoga Estudio® no será necesario el registro de los visitantes a LA PLATAFORMA, sin embargo, para determinados servicios como inscribirse a cursos o interactuar con otros Usuarios, es necesaria la creación de un perfil de Usuario, para ello deberá realizar el siguiente procedimiento:
+
+  Indicar Nombre de Usuario, Nombre completo, una dirección de correo electrónico y un teléfono en la sección ‘Log in’
+  Confirmar la cuenta de correo electrónico señalada dando clic al enlace de validación que le enviaremos vía email
+  Una vez confirmado, el usuario deberá seleccionar la forma en que ingresará a la Plataforma, para ello está disponible la posibilidad de ingresar con su cuenta de Twitter®, con su cuenta de Facebook® o con la combinación de su cuenta de correo electrónico y contraseña asignada por el Usuario
+
+Si el usuario continúa con el proceso autenticándose con la asignación de un Usuario y contraseña
+
+  Indicar Nombre de Usuario y/o correo electrónico
+  Indicar Contraseña
+
+Una vez que Sat Nam yoga Estudio® haya realizado satisfactoriamente el proceso de registro, le brindará acceso automático al Usuario a LA PLATAFORMA en modalidad de suscripción tipo ‘Free’.
+
+Es importante que cuide el uso de sus datos de autenticación para acceder a LA PLATAFORMA, como son su ‘Usuario’, correo electrónico y contraseña que asigne al realizar su procedimiento de alta, así como las actualizaciones y/o modificaciones posteriores a dichos datos debido a que estos se reconocen en la legislación mexicana como una firma electrónica, por lo cual toda acción realizada en LA PLATAFORMA, le serán atribuidas a la persona relacionada con el Usuario registrado.
+
+Si comparte sus datos o credenciales para que otra persona inicie sesión en su perfil de Usuario, acepta que asumirá toda la responsabilidad de cualquier actividad que sea realizada en su cuenta. Si El Usuario descubre que otra persona está utilizando su cuenta sin su permiso o bien sospecha que se ha producido alguna otra infracción de seguridad, debe ponerse en contacto inmediatamente con Sat Nam yoga Estudio® para que tome las medidas necesarias.
+b. PROCESO DE COMPRA
+
+Compra
+
+La creación de la cuenta de Usuario permite consultar la lista de cursos que se ofrecen a través de LA PLATAFORMA, para que el Usuario esté en condiciones de acceder a algunos de los contenidos de LOS SERVICIOS que se ofrecen debe formalizar el proceso de suscripción a alguno de los perfiles de pago que se ofrecen.
+
+Dentro del proceso de compra, en el Apartado “Mi Suscripción” se exhibe al Usuario los tipos de plan de suscripción disponibles, así como las características específicas de cada uno de ellos, el monto total a pagar dependiendo la suscripción y su desglose previo a la formalización de la compra.
+
+Una vez confirmado por el Usuario el plan de suscripción que contratará, se le proporcionan las opciones actuales que Sat Nam yoga Estudio® ofrece para realizar el pago del servicio elegido.
+
+Precios de la suscripción
+
+Los precios que se indican en LA PLATAFORMA están expresados en pesos mexicanos e incluyen el Impuesto al Valor Agregado (IVA), en caso de que el Usuario no solicite su comprobante fiscal, el costo no tendrá disminución alguna en su monto total.
+
+Los precios están sujetos a cambio sin previo aviso (a la alta o baja), en caso que el precio por suscripción se reduzca las suscripciones previamente formalizadas con su pago se mantendrán en la misma cantidad y no quedan sujetas a devolución alguna a favor del usuario.
+
+Pago
+
+Los planes de suscripción que se contratan en Sat Nam yoga Estudio® como el plan Mensual o el plan Anual están sujetos a un plazo mínimo forzoso, por lo cual aún y cuando el costo mostrado en nuestro sitio esté parcializado a un monto mensual, el Usuario al momento de contratar le será cobrado el monto correspondiente al pago anual.
+
+Métodos de pago
+
+Sat Nam yoga Estudio® pone a su disposición los siguientes métodos de pago dependiendo del tipo de suscripción que desee contratar: 
+\`\`\`
++---------------------------+--------------+----------------------------------------------------------------------------------------------------------------+ 
+| Método de pago            | Plan         | Características                                                                                                | 
++---------------------------+--------------+----------------------------------------------------------------------------------------------------------------+ 
+| Tarjeta de crédito/débito | Mensual      | Formulario para datos de tarjeta. Opciones de pago a meses sin intereses disponibles según la institución.     | 
+|                           | Anual        |                                                                                                                | 
++---------------------------+--------------+----------------------------------------------------------------------------------------------------------------+ 
+| PayPal                    | Mensual      | Redirección a formulario de PayPal. Opciones de pago a meses sin intereses según la institución.               | 
+|                           | Anual        |                                                                                                                | 
++---------------------------+--------------+----------------------------------------------------------------------------------------------------------------+ 
+| Depósito bancario BANORTE |              |                                                                                                                | 
+| Pago en Oxxo              | Mensual      | Instrucciones detalladas para el pago. Fecha límite de pago importante para promociones. Comisiones adicionales| 
+| Bitcoins                  | Anual        | pueden aplicar.                                                                                                | 
++---------------------------+--------------+----------------------------------------------------------------------------------------------------------------+ 
+\`\`\`
+
+Sat Nam yoga Estudio® se deslinda de cualquier controversia que surja entre El Usuario y el Proveedor de Pago que haya seleccionado. El Usuario queda sujeto a las condiciones contractuales, transaccionales y de seguridad informática establecidas por cada uno de estos proveedores los cuales están disponibles, al momento en que se emiten los presentes Términos y condiciones en los siguientes links:
+
+PayPal - https://www.paypal.com/mx/webapps/mpp/ua/useragreement-full?locale.x=es_MX
+
+Banorte - https://www.banorte.com/wps/wcm/connect/gfb/12fcf44c-2c14-42a1-bb1a-03049085483c/Clausulado_Multiple.pdf?MOD=AJPERES&ContentCache=NONE
+
+Oxxo Pay - Este servicio es provisto por Conekta por lo cual aplican estos términos y condiciones https://conekta.com/legal/tos
+
+Pago con Bitcoin – El usuario deberá consultar los Términos y Condiciones del proveedor de wallet que utilizará para formalizar su pago
+
+Formalización de pago y activación de la cuenta
+
+El plazo de activación de la suscripción varía en función de la forma de pago utilizada:
+
+  Cuando el Usuario realiza su pago con cargo a su tarjeta de crédito o PayPal®, su servicio es activado de inmediato en forma posterior a recibir la confirmación de pago.
+  Si el Usuario opta por pagar mediante depósito bancario, deberá enviar al correo electrónico satnamyogajal@gmail.com o a cualquiera de los medios de contacto establecidos en el apartado de Identificación, el comprobante de pago realizado para que Sat Nam yoga Estudio® realice la validación en sus registros y proceda a la activación de los servicios contratados. Sat Nam yoga Estudio® realiza la validación de sus registros bancarios en los días 1 y 15 de cada mes, por lo que, si El Usuario realiza el pago durante días intermedios a ellos, deberá esperar al día natural siguiente a los señalados para que su suscripción sea activada.
+  Cuando el Usuario realiza su pago a través de Oxxo o Bitcoins deberá enviar al correo satnamyogajal@gmail.com o a cualquiera de los medios de contacto establecidos en el apartado de Identificación, el comprobante de pago realizado para que Sat Nam yoga Estudio® realice la validación en sus registros y proceda a la activación de los servicios contratados, una vez confirmado el servicio será activado en un plazo no mayor a 48 horas.
+
+En cualquiera de los casos anteriores, cuando Sat Nam yoga Estudio® realice la comprobación del pago, remitirá un correo electrónico de confirmación al correo electrónico proporcionado por el Usuario al momento de su registro. Aunado a lo anterior, en su cuenta de perfil, el Usuario encontrará el comprobante de pago correspondiente, mismo que podrá consultar y descargar las veces que sea necesario.
+
+Facturación
+
+En caso de requerir la emisión de un comprobante fiscal, el Usuario deberá enviar al correo satnamyogajal@gmail.com, o a cualquiera de los medios de contacto establecidos en el apartado de Identificación, su solicitud indicando nombre completo o razón social, su Registro Federal de Contribuyentes (RFC), correo electrónico y comprobante de su pago. La información de facturación que proporcione deberá ser exacta y completa a efecto de emitir correctamente su comprobante fiscal, de lo contrario, no podrá emitirse nuevamente una factura por el mismo pedido. Su comprobante fiscal será emitido en un plazo máximo de 30 días naturales y será enviado vía correo electrónico a la dirección electrónica que El Usuario indique. En caso de cancelación o devolución de su compra, el comprobante fiscal emitido será cancelado inmediatamente.
+
+Actualización de precios
+
+Sat Nam yoga Estudio® se reserva el derecho de realizar la actualización en los precios de los planes de suscripción que ofrece sin necesidad de dar previo aviso al Usuario, el Usuario se compromete a revisar periódicamente los precios vigentes los cuales se exhiben públicamente en LA PLATAFORMA dentro de la sección correspondiente a ‘Suscripciones’.
+
+Durante la vigencia de su suscripción esta no se verá afectada por las actualizaciones al precio de la suscripción, cuando sea aplicable la renovación de su suscripción, el Usuario deberá pagar el nuevo monto señalado en caso de que éste haya sido actualizado.
+c. Cancelación del pago automático de la suscripción
+
+La cancelación de la cuenta tiene como finalidad que el Usuario solicite la no renovación automática de su suscripción, eliminando el cargo automático a su tarjeta de crédito o la aplicación del cargo recurrente vía Paypal®.
+
+Para solicitar esta cancelación requerimos que el Usuario remita en un plazo máximo de quince (15) días naturales antes de la finalización de su suscripción vigente, un escrito libre al correo electrónico satnamyogajal@gmail.com con el asunto “Solicitud de cancelación”. Una vez recibida la solicitud, Sat Nam yoga Estudio® realizará la cancelación en veinticuatro (24) horas contadas a partir del día en el que recibió la solicitud, la cancelación efectiva será comunicada vía correo electrónico a la dirección registrada como Usuario en LA PLATAFORMA.
+
+La cancelación de la cuenta no implica que Sat Nam yoga Estudio® realizará la devolución de cualquier tipo de parcialidad al Usuario.
+d. Reembolso
+
+Para solicitar el reembolso de su pago requerimos que el Usuario envíe un escrito libre al correo electrónico satnamyogajal@gmail.com con el asunto “Solicitud de Reembolso”, indicando como mínimo su nombre completo, monto pagado y descripción detallada de su solicitud, en un plazo que no deberá exceder los cinco (5) días naturales después de que haya sucedido alguna de las siguientes situaciones:
+
+  Pagos dobles realizados por errores involuntarios del Usuario
+  Error en la contratación de alguno de los planes
+
+Una vez recibida su solicitud, el equipo de Sat Nam yoga Estudio® realizará la evaluación de la información enviada, la cual será informada al Usuario en un plazo no mayor a quince (15) días naturales posteriores a la recepción de la solicitud y en caso de ser procedente se solicitará información para llevar a cabo el reembolso (cuenta bancaria y número CLABE). La decisión final será remitida vía correo electrónico al Usuario.
+
+Para el caso de la suscripción a los planes Expert y Expert Duo, el Usuario tiene la opción de solicitar un reembolso parcial del valor de su suscripción anual a través de un escrito libre al correo electrónico satnamyogajal@gmail.com solo durante los primeros treinta (30) días naturales del uso de los servicios que se ofrecen en LA PLATAFORMA. Una vez que Sat Nam yoga Estudio® realice la evaluación y procedencia de su solicitud, informará en un plazo de quince (15) días naturales su decisión final al Usuario y en caso de ser procedente se solicitará información para llevar a cabo el reembolso (cuenta bancaria y número CLABE). La decisión final será remitida vía correo electrónico al Usuario.
+
+Sat Nam yoga Estudio® tiene la facultad de solicitar al Usuario los documentos necesarios para verificar su identidad previamente a realizar el reembolso.
+
+Solo por los motivos señalados Sat Nam yoga Estudio® realizará el reembolso del pago realizado por suscripción a LA PLATAFORMA.
+e. Renovación
+
+Derivado de la obligatoriedad de contratar un plazo mínimo en las suscripciones, Sat Nam yoga Estudio® generará con 30 días naturales de anticipación al vencimiento de su suscripción vigente, una orden de compra que le será enviada vía correo electrónico y estará vigente hasta el último día de vigencia de su suscripción, en caso de no realizar el pago de la orden de compra generada, el acceso a LA PLATAFORMA quedará bloqueado hasta que no sea formalizado el pago de renovación de su suscripción.
+
+El Usuario autoriza a Sat Nam yoga Estudio® a realizar la renovación automática de su plan de suscripción cuando este elija la modalidad de pago con tarjeta de crédito o PayPal. Sin embargo, el Usuario en cualquier momento tiene derecho a cancelar las renovaciones automáticas, en este caso tiene que notificar a Sat Nam yoga Estudio® dicha situación al correo satnamyogajal@gmail.com o a cualquiera de los medios de contacto señalados en el apartado de Identificación de los presentes Términos y Condiciones.
+f. Suspensión temporal de la cuenta a solicitud del usuario
+
+El Usuario tiene la opción de solicitar que los servicios contratados en LA PLATAFORMA sean pausados por un determinado tiempo de conformidad con las siguientes condiciones:
+
+  El Usuario deberá mediante el correo electrónico que el Usuario designó al realizar su registro en LA PLATAFORMA su solicitud para pausar los servicios al correo satnamyogajal@gmail.com o a cualquiera de los medios de contacto señalados en el apartado de Identificación de los presentes Términos y Condiciones, indicando su nombre completo y nombre de Usuario
+  La suspensión sólo procede por máximo 3 meses, al finalizar este periodo los servicios serán reactivados automáticamente
+  Una vez recibida su solicitud, Sat Nam yoga Estudio® procederá a pausar los servicios contratados por el Usuario y le notificará la procedencia a través de la dirección de correo electrónico registrada por el Usuario en nuestra plataforma.
+  Durante esta pausa el Usuario no podrá hacer uso de nuestros servicios, sin embargo, tiene la opción de solicitar la reactivación de su cuenta en cualquier momento
+  El Usuario acepta que al momento de que se realice la reactivación de su servicio contratado se realizará el ajuste de la vigencia de su plan según corresponda
+
+En caso de que el Usuario requiera que el plazo de suspensión sea extendido, deberá enviar un correo electrónico a satnamyogajal@gmail.com para que Sat Nam yoga Estudio® evalúe su solicitud y le notifique la procedencia de ésta.
+
+
+    `
+  },
+  {
+    title: 'CLÁUSULA D. GARANTÍA',
+    content: `
+Si por alguna razón el Usuario no está satisfecho con el servicio de suscripción del mensual o anual, durante el período de 30 días posteriores a la fecha de inicio de sus Servicios, deberá notificarlo a Sat Nam yoga Estudio® a través de correo electrónico satnamyogajal@gmail.com dentro del período señalado señalando los motivos por los cuales no está satisfecho con LOS SERVICIOS y/o LA PLATAFORMA.
+
+Sat Nam yoga Estudio® propondrá soluciones para subsanar los motivos con la finalidad de continuar con el servicio, si a pesar de ser aplicadas las soluciones propuestas por Sat Nam yoga Estudio® el Usuario quiere solicitar la cancelación de su suscripción, deberá solicitarlo enviando un correo electrónico en seguimiento al correo inicial relacionado con su queja.
+
+Cabe mencionar que LA PLATAFORMA y LOS SERVICIOS están disponibles bajo una modalidad 365/24/7, aun así derivado de la naturaleza de nuestros servicios, Sat Nam yoga Estudio® requiere generar ventanas de actualizaciones, modificaciones y reinstalaciones del software requeridas o automáticas en sus bases de datos y servidores, así como realizar la obtención de parches disponibles para, entre otras razones, resolver cuestiones de seguridad, interoperabilidad y/o funcionamiento en forma periódica o cuando sea necesario, sin previo aviso, en estos casos Sat Nam yoga Estudio® realizará todos los esfuerzos tecnológicos posibles para mantener la continuidad y disponibilidad de LA PLATAFORMA y LOS SERVICIOS.
+
+En el caso de proceder la cancelación del servicio por las razones previstas en esta cláusula, Sat Nam yoga Estudio® realizará la devolución proporcional a los meses calendario pendientes por usar dentro del plazo de suscripción anual inicialmente contratado.
+
+    
+    `
+  },
+  {
+    title: 'CLÁUSULA D. GARANTÍA',
     content: `a. Capacidad legal para la contratación del servicio...`
   },
   // Add more sections as needed
@@ -45,19 +270,36 @@ const TermsOfService = () => {
     setExpandedSection(expandedSection === index ? null : index);
   };
 
+  const renderContentWithBreaks = (content) => {
+    return content.split('\n').reduce((acc, text, index, array) => {
+      // Separar la tabla ASCII del resto del contenido
+      if (text.trim().startsWith('+---')) { // Suponiendo que todas las líneas de la tabla comienzan así
+        acc.push(<pre key={index}>{text}</pre>);
+      } else {
+        acc.push(
+          <React.Fragment key={index}>
+            {text}
+            {index !== array.length - 1 && <br />}
+          </React.Fragment>
+        );
+      }
+      return acc;
+    }, []);
+  };
+
   return (
     <div className="termsOfService">
       <h1>Términos de Servicio de Sat Nam Yoga Estudio.com</h1>
-      <h2>LOS TÉRMINOS Y CONDICIONES DE USO Y DEL SERVICIO APLICABLES A LOS ESTADOS UNIDOS MEXICANOS, QUE DETERMINAN LA FORMA 
+      <h3>LOS TÉRMINOS Y CONDICIONES DE USO Y DEL SERVICIO APLICABLES A LOS ESTADOS UNIDOS MEXICANOS, QUE DETERMINAN LA FORMA 
         EN QUE SE REALIZA EL USO DE LA PLATAFORMA DE CURSOS EN LÍNEA QUE OFRECE SANDRA LOPEZ GONZALEZ, PERSONA FÍSICA CON ACTIVIDAD EMPRESARIAL LOCALIZADA EN EL SITIO 
         WEB "WWW.SATNAMYOGAESTUDIO®.COM ”
         ACUERDO LEGAL
-      </h2>
+      </h3>
       {termsSections.map((section, index) => (
         <div key={index} className="termsSection">
-          <h2 onClick={() => toggleSection(index)}>{section.title}</h2>
+          <h3 onClick={() => toggleSection(index)}>{section.title}</h3>
           {expandedSection === index && (
-            <p>{section.content}</p>
+            <pre>{renderContentWithBreaks(section.content)}</pre>
           )}
         </div>
       ))}
