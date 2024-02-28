@@ -31,7 +31,7 @@ function Footer() {
                 <Link to='/calendar'>Horario</Link>
               </li>
               <li>
-                <Link to='/privacy-policy'>Politicas de privacidad </Link>
+                <Link to='/privacy-policy'>Politica de privacidad </Link>
               </li>
               <li>
                 <Link to='/terms-sections'>Terminos y condiciones </Link>

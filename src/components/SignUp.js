@@ -15,6 +15,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import * as Yup from 'yup'
 import { showErrorNotification } from '../services/notificationService'
+import './SignUp.css'
 
 const signupSchema = Yup.object().shape({
   username: Yup.string()
@@ -79,7 +80,15 @@ const signupSchema = Yup.object().shape({
 function SignUp({ isLoggedIn }) {
   const [isSubmitted, setSubmitted] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [termsAccepted, setTermsAccepted] = useState(false);
+
   const onSubmit = async (values, actions) => {
+    if (!termsAccepted) {
+      toast.error('Debes aceptar los términos del servicio y la política de privacidad.');
+      return;
+    }
+
+
     setIsLoading(true)
     // const url ='/api/sign_up/';
     const url = `${process.env.REACT_APP_BASE_URL}/api/sign_up/`
@@ -284,6 +293,26 @@ function SignUp({ isLoggedIn }) {
                       {errors.telephone}
                     </Form.Control.Feedback>
                   )}
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="termsCheckbox">
+                  <Form.Check
+                    type="checkbox"
+                    label={
+                      <span>
+                        Acepto los <Link to='/terms-sections'>Terminos y condiciones </Link> y la <Link to='/privacy-policy'>Politica de privacidad </Link>
+                      </span>
+                    }
+                    checked={termsAccepted}
+                    onChange={() => setTermsAccepted(!termsAccepted)}
+                    isInvalid={!termsAccepted}
+                    feedback="Debes aceptar los términos del servicio y la política de privacidad."
+                    required
+                    style={{ // CSS styles for the checkbox
+                      marginRight: '5px', // Add some margin to separate the checkbox from the label
+                      verticalAlign: 'middle', // Align the checkbox vertically with the label text
+                    }}
+                  />
                 </Form.Group>
 
                 <div className='d-grid mb-3'>

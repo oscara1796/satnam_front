@@ -1,0 +1,31 @@
+#termsCheckbox {
+   display: block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #555; /* Color del borde del checkbox */
+    border-radius: 5px;
+    position: relative;
+    outline: none;
+    cursor: pointer;
+  }
+  
+#termsCheckbox:checked {
+    background-color: #555; /* Color de fondo cuando está marcado */
+  }
+  
+#termsCheckbox:after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 7px;
+    width: 5px;
+    height: 10px;
+    border: solid white; /* Color del tick del checkbox */
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+    display: none; /* Por defecto oculto */
+  }
+  
+#termsCheckbox:checked:after {
+    display: block; /* Mostrar el tick cuando está marcado */
+  }
