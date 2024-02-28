@@ -1,21 +1,21 @@
 import 'bootswatch/dist/lumen/bootstrap.css'
 
 import React from 'react'
-import ReactDOM from 'react-dom/client'; 
+import ReactDOM from 'react-dom/client'
 import { HashRouter } from 'react-router-dom' // changed
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { UserProvider } from './context'
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root'))
 // changed
 root.render(
-    <HashRouter>
-      <UserProvider>
-        <App />
-      </UserProvider>
-    </HashRouter>
+  <HashRouter>
+    <UserProvider>
+      <App />
+    </UserProvider>
+  </HashRouter>
 )
 
 // If you want to start measuring performance in your app, pass a function

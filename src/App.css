@@ -2,31 +2,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300&display=swap');
 
-
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html{
+html {
   scroll-behavior: smooth;
   scroll-padding-top: 75px;
-  
 }
 
-body{
+body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-main{
+main {
   margin-bottom: 3rem;
   flex: 1;
 }
 
-.success-message{
+.success-message {
   color: green;
   font-weight: bolder;
   font-size: 1rem;
@@ -38,43 +36,42 @@ main{
   justify-content: space-between !important;
 } */
 
-.logo img{
+.logo img {
   width: 5vw;
 }
-.navbar-nav{
+.navbar-nav {
   display: flex;
   justify-content: space-between;
   width: 100%;
 }
-.navbar-nav .auth_buttons a{
+.navbar-nav .auth_buttons a {
   margin-left: 1% !important;
   margin-right: 1% !important;
   width: 8vw;
-  background-color: #137ea7!important;
+  background-color: #137ea7 !important;
 }
 
-.navbar-nav button{
-  background-color: #137ea7!important;
+.navbar-nav button {
+  background-color: #137ea7 !important;
 }
-.navbar-nav .auth_buttons{
+.navbar-nav .auth_buttons {
   width: 50%;
   display: flex;
   justify-content: flex-end;
 }
 
-.navbar-nav .navbar_links{
+.navbar-nav .navbar_links {
   width: 50%;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  
 }
 
-.navbar-nav .navbar_links .nav_link{
+.navbar-nav .navbar_links .nav_link {
   width: 10%;
   margin-left: 3% !important;
   margin-right: 3% !important;
-  font-family: 'Roboto Slab', serif;;
+  font-family: 'Roboto Slab', serif;
   font-weight: bold;
   text-decoration: none;
   width: 5vw;
@@ -98,7 +95,6 @@ main{
   /* Add any desired styles */
 }
 
-
 /* Style of Admin part of navbar  */
 .navbar .nav-item .nav-link {
   /* Add your custom styles here */
@@ -116,26 +112,25 @@ main{
   margin-right: 0px !important;
 }
 
-
 @media (max-width: 991px) {
   /* CSS rules for elements before 992px */
 
-  .navbar-nav .auth_buttons a{
+  .navbar-nav .auth_buttons a {
     width: 45%;
   }
-  .navbar-nav .navbar_links{
+  .navbar-nav .navbar_links {
     justify-content: space-around;
     width: 100%;
     margin-bottom: 3%;
     margin-top: 3%;
   }
 
-  .navbar-nav .auth_buttons{
+  .navbar-nav .auth_buttons {
     width: 100%;
     justify-content: center;
   }
 
-  .navbar-nav{
+  .navbar-nav {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -143,7 +138,7 @@ main{
     width: 100%;
   }
 
-  .logo img{
+  .logo img {
     width: 25vw;
   }
 }
@@ -158,7 +153,7 @@ main{
   height: 80vh; /* Use the full height of the viewport */
 }
 
-.centered-container .card{
+.centered-container .card {
   width: 100%;
 }
 
@@ -176,7 +171,6 @@ main{
 
 .carousel-item {
   height: 80vh; /* Adjust as needed */
-  
 }
 
 .carousel-item img {
@@ -185,8 +179,6 @@ main{
   height: 100%;
   filter: brightness(60%);
 }
-
-
 
 .carousel-image-container {
   position: relative;
@@ -204,67 +196,64 @@ main{
   text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.5);
   color: white;
   margin: 0;
- 
 }
 
-.carousel-caption h1{
+.carousel-caption h1 {
   font-size: 5rem;
 }
 
-.carousel-caption a{
+.carousel-caption a {
   font-size: 2em;
 }
 
 @media (max-width: 991px) {
   /* CSS rules for elements before 992px */
-  .carousel-caption h1{
+  .carousel-caption h1 {
     font-size: 2rem;
   }
-  .carousel-caption a{
+  .carousel-caption a {
     font-size: 2rem;
   }
-  
 }
 
 /* ------- VIDEO PRESENTATION */
 
-
-#video_presentation{
+#video_presentation {
   margin: 1em 1em 1em 1em;
   width: 50%;
 }
 
-.video-container{
+.video-container {
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
 }
 
-.video-container h1{
+.video-container h1 {
   margin-top: 1em;
   margin-bottom: 1em;
 }
 
 @media (max-width: 991px) {
-  #video_presentation{
+  #video_presentation {
     width: 90%;
   }
 }
 
 /* ---- BENEFITS */
 
-.benefits{
+.benefits {
   display: flex;
   justify-content: space-around;
 }
 
-.benefits *{
+.benefits * {
   margin: 2% 1em 2% 1em;
 }
 
-.benefits-image img{
-  width: 50vw;;
+.benefits-image img {
+  width: 50vw;
   border-radius: 10px;
 }
 
@@ -302,28 +291,25 @@ main{
 }
 
 @media (max-width: 991px) {
-  .benefits{
+  .benefits {
     flex-direction: column;
     justify-content: center;
     align-items: center;
   }
 
   .benefit-item {
-
     flex-direction: column;
     align-items: center;
     justify-content: center;
   }
 
-  .benefit-item img{
+  .benefit-item img {
     width: 20vw !important;
     margin: 1em 0 1em 0;
   }
 }
 
-
 /* END OF LANDING PAGE */
-
 
 /* USER ACCOUNT COMPONENT  */
 
@@ -350,13 +336,11 @@ main{
   margin-bottom: 1rem;
 }
 
-.user_form button{
+.user_form button {
   margin: 0px 1em 0px 0px;
 }
 
-
 /* END OF USER ACCOUNT INFO */
-
 
 /* SUBSCRIPTION FORM  */
 
@@ -366,7 +350,7 @@ main{
   color: #fff !important; /* White text color */
 }
 
-.sub_form{
+.sub_form {
   border-radius: 10px;
   margin-top: 2rem !important;
   border: 1px solid gray;
@@ -387,12 +371,9 @@ main{
   margin-right: 10px;
 }
 
-
 /* SUBSCRIPTION END */
 
 /* CREATE VIDEO  ADMIN CSS */
-
-
 
 .wrapper-class {
   border: 1px solid #ccc;
@@ -420,7 +401,12 @@ main{
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(255, 255, 255, 0.9); /* Adjust the background color and opacity as needed */
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.9
+  ); /* Adjust the background color and opacity as needed */
   z-index: 1000; /* Set a high z-index to make sure it's above all other content */
   display: flex;
   justify-content: center;
@@ -441,24 +427,22 @@ main{
   padding: 5px;
 }
 
-.expanded-editor-button{
+.expanded-editor-button {
   width: 20%;
 }
-
 
 .toolbar-class {
   border: 1px solid #ccc;
 }
 
-.create_video_form{
+.create_video_form {
 }
 
-.create-video-checkbox input{
+.create-video-checkbox input {
   display: block !important;
 }
 
 /* END OF CREATE VIDEO ADMIN  */
-
 
 /* VIDEO CARD */
 
@@ -484,9 +468,7 @@ main{
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15); /* Enhances shadow on hover for a "lifting" effect */
 }
 
-
 .video-card-search {
-  
   border-radius: 10px;
   border: 1px solid #ccc;
   margin: 1rem;
@@ -502,31 +484,30 @@ main{
   }
 }
 
-
 /* Media query for screens smaller than 768px */
 @media screen and (max-width: 1000px) {
-  .video-card-search{
+  .video-card-search {
     width: 40vw;
   }
 }
 
 /* Media query for screens smaller than 480px */
 @media screen and (max-width: 480px) {
-  .video-card-search{
+  .video-card-search {
     width: 90vw;
   }
 }
 
 .video-image-container img {
-  width: 100%;       /* Makes the image fill the container */
-  height: auto;      /* Maintains the aspect ratio of the image */
+  width: 100%; /* Makes the image fill the container */
+  height: auto; /* Maintains the aspect ratio of the image */
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-.video-image-container{
+.video-image-container {
   position: relative;
   overflow: hidden;
   border-radius: 10px;
@@ -539,9 +520,7 @@ main{
   object-fit: cover;
   border-radius: 10px;
   position: relative; /* Add relative positioning to the image container */
-  
 }
-
 
 .play-icon {
   position: absolute;
@@ -555,13 +534,10 @@ main{
   transition: opacity 0.3s ease-in-out;
 }
 
-
-
 .video-card-search h2 {
   text-align: center;
   margin: 1rem 0; /* Add some margin to the heading */
 }
-
 
 .video-card-search:hover .play-icon {
   opacity: 1;
@@ -582,7 +558,6 @@ main{
     background-color: #0e5a77 !important; /* Adjusted color on hover */
     color: white;
   }
- 
 }
 
 .videos-grid {
@@ -607,17 +582,17 @@ main{
   }
 }
 
-.video_free{
-  font-weight: 600 ;
+.video_free {
+  font-weight: 600;
   text-align: center;
 }
 
-.video-list{
+.video-list {
   display: flex;
   flex-direction: column;
   height: 100vh;
 }
-.video_search_container  {
+.video_search_container {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -641,7 +616,7 @@ main{
 }
 
 .video_search_container button {
-  background-color: #137ea7!important;
+  background-color: #137ea7 !important;
   padding: 1rem;
   text-align: center;
   color: white;
@@ -661,13 +636,13 @@ main{
   margin-top: 1rem;
 }
 
-.categories_container > * { /* Selects all direct children of .categories_container */
+.categories_container > * {
+  /* Selects all direct children of .categories_container */
   margin: 5px; /* Adds 5px margin to all sides */
 }
 
-
 @media screen and (max-width: 768px) {
-  .categories_container  {
+  .categories_container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem; /* Adjust the gap between items */
@@ -678,7 +653,7 @@ main{
 
 /* Media query for screens smaller than 480px */
 @media screen and (max-width: 480px) {
-  .categories_container   {
+  .categories_container {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     gap: 1rem; /* Adjust the gap between items */
@@ -698,7 +673,6 @@ main{
   transition: background-color 0.3s ease;
   border: 1px solid black;
   margin-right: 1rem;
-  
 }
 
 .categories_container button:hover {
@@ -708,9 +682,7 @@ main{
 /* 
 PAYMENT OPTIONS CSS */
 
-
-
-.checkout_page{
+.checkout_page {
   display: flex;
   width: 100vw;
   justify-content: space-around;
@@ -745,7 +717,7 @@ PAYMENT OPTIONS CSS */
   align-items: center;
   cursor: pointer;
   width: 100%;
-  height: 100%;;
+  height: 100%;
   font-size: 1rem;
   font-weight: bold;
   padding: 10px;
@@ -753,9 +725,8 @@ PAYMENT OPTIONS CSS */
   height: 100%;
 }
 
-input[type="checkbox"] {
+input[type='checkbox'] {
   display: none;
-  
 }
 
 .checkbox-circle {
@@ -766,13 +737,17 @@ input[type="checkbox"] {
   display: inline-block;
   margin-right: 10px;
   cursor: pointer;
-  transition: background-color 0.3s, border-color 0.3s;
+  transition:
+    background-color 0.3s,
+    border-color 0.3s;
 }
 
-input[type="checkbox"]:checked + .checkbox-circle {
+input[type='checkbox']:checked + .checkbox-circle {
   background-color: #333;
   border-color: #333;
-  transition: background-color 0.3s, border-color 0.3s;
+  transition:
+    background-color 0.3s,
+    border-color 0.3s;
 }
 
 .selected-option {
@@ -786,19 +761,19 @@ input[type="checkbox"]:checked + .checkbox-circle {
   color: white;
 }
 
-.payments-box{
+.payments-box {
   /* height: 100vh; */
   display: flex;
   flex-direction: column;
   width: 40vw;
 }
 
-.payments-box h2{
+.payments-box h2 {
   text-align: center;
   margin-top: 0px !important;
 }
 
-.total-amount-box{
+.total-amount-box {
   width: 40vw;
 }
 
@@ -817,7 +792,7 @@ input[type="checkbox"]:checked + .checkbox-circle {
 .price-option {
   display: block; /* Ensure the label behaves as a container */
   border: 1px solid #ccc; /* Border for the box */
-   /* Padding inside the box */
+  /* Padding inside the box */
   background-color: #f9f9f9; /* Light background for the box */
   cursor: pointer; /* Indicate the entire box is clickable */
   user-select: none; /* Prevent text selection */
@@ -826,7 +801,7 @@ input[type="checkbox"]:checked + .checkbox-circle {
   margin-bottom: 1rem;
 }
 
-.price-option input[type="checkbox"] {
+.price-option input[type='checkbox'] {
   display: none; /* Hide the actual checkbox */
 }
 
@@ -835,31 +810,27 @@ input[type="checkbox"]:checked + .checkbox-circle {
   display: flex; /* Ensure the span behaves as a container */
   flex-direction: column;
   padding: 10px;
-  
 }
 
 .price-option:hover,
-.price-option input[type="checkbox"]:checked + .price-label {
-  transform: scale(1.1); 
+.price-option input[type='checkbox']:checked + .price-label {
+  transform: scale(1.1);
   background-color: #055d9c; /* Change background on hover/select */
   color: white;
 }
 
-
-.product_image{
+.product_image {
   width: 10vw;
   align-self: center;
 }
 
-
 /* END OF TOTAL AMOUNT CHECKOUT BOX STYLE  */
-
 
 /* VIDEO CARD STYLE */
 
 .free-icon {
   /* Modern blue background */
-  background-color: #2D8CFF;
+  background-color: #2d8cff;
   color: #fff;
   padding: 5px 10px;
   border-radius: 5px;
@@ -874,9 +845,7 @@ input[type="checkbox"]:checked + .checkbox-circle {
 
 /* END OF VIDEO CARD STYLE  */
 
-
 /* VIDEO DETAILS  */
-
 
 .video-detail-container {
   display: block;
@@ -893,7 +862,6 @@ input[type="checkbox"]:checked + .checkbox-circle {
   text-align: center;
   margin-top: 10px;
 }
-
 
 @media screen and (max-width: 768px) {
   .video-card {
@@ -928,26 +896,23 @@ input[type="checkbox"]:checked + .checkbox-circle {
   color: #888;
 }
 
-
 .custom-video-container {
-
   width: 100%;
-  
+
   background-color: #333;
   height: 50vh;
 }
 
 .video-overlay {
   display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 100%;
 }
 
 .play-button {
-
   width: 0;
   height: 0;
   border-style: solid;
@@ -962,8 +927,6 @@ input[type="checkbox"]:checked + .checkbox-circle {
 }
 
 /* Add more styles as needed */
-
-
 
 /* END OF VIDEO DETAILS  */
 
@@ -999,7 +962,4 @@ input[type="checkbox"]:checked + .checkbox-circle {
   font-size: 1rem;
 }
 
-
 /* END OF PAGE INDEX STYLE */
-
-

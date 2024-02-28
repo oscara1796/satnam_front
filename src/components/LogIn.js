@@ -9,23 +9,23 @@ import {
   Card,
   Form,
   Container,
-  Spinner
+  Spinner,
 } from 'react-bootstrap'
 import { Link, Navigate } from 'react-router-dom'
 import { UserContext } from '../context'
 import { getAccessToken } from '../services/AuthService'
 import { showErrorNotification } from '../services/notificationService'
-import * as Yup from 'yup';
+import * as Yup from 'yup'
 
 // changed
-function LogIn({ isLoggedIn, logIn, setLoggedIn}) {
+function LogIn({ isLoggedIn, logIn, setLoggedIn }) {
   const [isSubmitted, setSubmitted] = useState(false)
   const [state, setState] = useContext(UserContext)
-  const [isLoading, setLoading] = useState(false);
-  const [showRecoverPass, setShowRecoverPass] = useState(false);
+  const [isLoading, setLoading] = useState(false)
+  const [showRecoverPass, setShowRecoverPass] = useState(false)
 
   const onSubmit = async (values, actions) => {
-    setLoading(true);
+    setLoading(true)
     try {
       const { response, isError } = await logIn(
         values.username,
@@ -33,8 +33,8 @@ function LogIn({ isLoggedIn, logIn, setLoggedIn}) {
       )
 
       if (isError) {
-        showErrorNotification(response);
-        
+        showErrorNotification(response)
+
         setShowRecoverPass(true)
       } else {
         setLoggedIn(true)
@@ -46,33 +46,33 @@ function LogIn({ isLoggedIn, logIn, setLoggedIn}) {
       }
     } catch (error) {
       console.error(error)
-      
-    }finally {
-      setLoading(false); // Stop loading regardless of outcome
+    } finally {
+      setLoading(false) // Stop loading regardless of outcome
     }
   }
 
-    // Regular expression for basic email validation
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // Regular expression for basic email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
   // Assuming a basic username rule: letters, numbers, dots, and underscores, 3 to 30 characters
   // Adjust the regex according to your username requirements
-  const usernameRegex = /^[a-zA-Z0-9._]{3,30}$/;
-
+  const usernameRegex = /^[a-zA-Z0-9._]{3,30}$/
 
   const loginSchema = Yup.object().shape({
     username: Yup.string()
       .trim()
-      .matches(/\S/, 'El campo no debe estar vacío o contener solo espacios en blanco')
+      .matches(
+        /\S/,
+        'El campo no debe estar vacío o contener solo espacios en blanco'
+      )
       .required('El campo de usuario/email es obligatorio')
       .test(
         'is-valid-username-or-email',
         'Ingrese un nombre de usuario o correo electrónico válido',
-        value => emailRegex.test(value) || usernameRegex.test(value) // Validate against both patterns
+        (value) => emailRegex.test(value) || usernameRegex.test(value) // Validate against both patterns
       ),
-    password: Yup.string()
-      .required('La contraseña es obligatoria'),
-  });
+    password: Yup.string().required('La contraseña es obligatoria'),
+  })
 
   if (isLoggedIn || isSubmitted) {
     return <Navigate to='/' />
@@ -91,9 +91,16 @@ function LogIn({ isLoggedIn, logIn, setLoggedIn}) {
             validationSchema={loginSchema}
             onSubmit={onSubmit}
           >
-            {({ errors, handleChange, handleSubmit,handleBlur,touched, isSubmitting, values }) => (
+            {({
+              errors,
+              handleChange,
+              handleSubmit,
+              handleBlur,
+              touched,
+              isSubmitting,
+              values,
+            }) => (
               <>
-                  
                 <Form noValidate onSubmit={handleSubmit}>
                   <Form.Group className='mb-3' controlId='username'>
                     <Form.Label>Usuario/Email:</Form.Label>
@@ -105,7 +112,7 @@ function LogIn({ isLoggedIn, logIn, setLoggedIn}) {
                       isInvalid={touched.username && !!errors.username}
                     />
                     {touched.username && errors.username && (
-                      <Form.Control.Feedback type="invalid">
+                      <Form.Control.Feedback type='invalid'>
                         {errors.username}
                       </Form.Control.Feedback>
                     )}
@@ -121,7 +128,7 @@ function LogIn({ isLoggedIn, logIn, setLoggedIn}) {
                       isInvalid={touched.password && !!errors.password}
                     />
                     {touched.password && errors.password && (
-                      <Form.Control.Feedback type="invalid">
+                      <Form.Control.Feedback type='invalid'>
                         {errors.password}
                       </Form.Control.Feedback>
                     )}
@@ -129,13 +136,19 @@ function LogIn({ isLoggedIn, logIn, setLoggedIn}) {
                   <div className='d-grid mb-3'>
                     <Button type='submit' variant='primary'>
                       {isLoading ? (
-                          <>
-                            <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
-                            {' Loading...'}
-                          </>
-                        ) : (
-                          'Log in'
-                        )}
+                        <>
+                          <Spinner
+                            as='span'
+                            animation='border'
+                            size='sm'
+                            role='status'
+                            aria-hidden='true'
+                          />
+                          {' Loading...'}
+                        </>
+                      ) : (
+                        'Log in'
+                      )}
                     </Button>
                   </div>
                 </Form>
@@ -145,13 +158,13 @@ function LogIn({ isLoggedIn, logIn, setLoggedIn}) {
           <Card.Text className='text-center'>
             No tienes cuenta? <Link to='/sign-up'>Sign up!</Link>
           </Card.Text>
-          
+
           {showRecoverPass && (
-             <Card.Text className='text-center'>
-                Se te olvidó tu contraseña ? <Link to='/password-recovery'>Recupera contraseña</Link>
-              </Card.Text>
-          ) }
-         
+            <Card.Text className='text-center'>
+              Se te olvidó tu contraseña ?{' '}
+              <Link to='/password-recovery'>Recupera contraseña</Link>
+            </Card.Text>
+          )}
         </Card.Body>
       </Card>
     </Container>

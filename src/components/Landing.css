@@ -1,39 +1,36 @@
 .yoga-school-info {
-    padding: 2rem 0;
-    background-color: #f0f0f0;
-    text-align: center;
-    animation: fadeIn 1.5s ease-out;
-  }
-  
-  .yoga-school-title {
-    margin-bottom: 1rem;
-    font-size: 1.75rem;
-    color: #333;
-  }
-  
-  .yoga-school-description {
-    margin-bottom: 2rem;
-    font-size: 1rem;
-    color: #666;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-  }
+  padding: 2rem 0;
+  background-color: #f0f0f0;
+  text-align: center;
+  animation: fadeIn 1.5s ease-out;
+}
 
+.yoga-school-title {
+  margin-bottom: 1rem;
+  font-size: 1.75rem;
+  color: #333;
+}
 
-  
-  .yoga-school-call-to-action a {
-    margin-left: 2rem;
+.yoga-school-description {
+  margin-bottom: 2rem;
+  font-size: 1rem;
+  color: #666;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.yoga-school-call-to-action a {
+  margin-left: 2rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
+}

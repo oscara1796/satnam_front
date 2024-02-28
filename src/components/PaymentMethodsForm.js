@@ -4,16 +4,31 @@ import { Container, Spinner } from 'react-bootstrap'
 import { Navigate } from 'react-router-dom'
 import axios from 'axios'
 import { getUser, getAccessToken } from '../services/AuthService'
-import { isValidCVC, isValidMonth, isCreditCardValid, card_format, AddExpirationYears } from '../services/CardValidationService'
+import {
+  isValidCVC,
+  isValidMonth,
+  isCreditCardValid,
+  card_format,
+  AddExpirationYears,
+} from '../services/CardValidationService'
 import { UserContext } from '../context'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCcVisa, faCcMastercard, faCcAmex, faCcDiscover } from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faCcVisa,
+  faCcMastercard,
+  faCcAmex,
+  faCcDiscover,
+} from '@fortawesome/free-brands-svg-icons'
 import { showErrorNotification } from '../services/notificationService'
 
-
-const PaymentMethodsForm = ({ setShowForm, setFetchPaymentMethods, fetchPaymentMethods, setNewMethodAdded}) => {
+const PaymentMethodsForm = ({
+  setShowForm,
+  setFetchPaymentMethods,
+  fetchPaymentMethods,
+  setNewMethodAdded,
+}) => {
   const [isSubmitted, setSubmitted] = useState(false)
-  const [priceError, setPriceError] = useState(''); 
+  const [priceError, setPriceError] = useState('')
   const [state, setState] = useContext(UserContext)
 
   const years = []
@@ -23,15 +38,13 @@ const PaymentMethodsForm = ({ setShowForm, setFetchPaymentMethods, fetchPaymentM
   const initialValues = {
     card_number: '',
     exp_month: '',
-    exp_year:  years[0],
+    exp_year: years[0],
     cvc: '',
   }
 
   // card expiration years options
-  
 
   const handleSubmit = async (values) => {
-
     let user = getUser()
     let url = `${process.env.REACT_APP_BASE_URL}/api/payment_method/${user.id}/`
 
@@ -41,16 +54,19 @@ const PaymentMethodsForm = ({ setShowForm, setFetchPaymentMethods, fetchPaymentM
     formData.append('exp_year', values.exp_year)
     formData.append('cvc', values.cvc)
 
-
-
     const token = getAccessToken()
     const headers = { Authorization: `Bearer ${token}` }
 
     try {
       console.log(formData)
-      let response = await axios.post(url, formData, {
-        headers: headers,
-      }, {timeout:5000})
+      let response = await axios.post(
+        url,
+        formData,
+        {
+          headers: headers,
+        },
+        { timeout: 5000 }
+      )
       setFetchPaymentMethods(!fetchPaymentMethods)
       setShowForm(false)
     } catch (error) {
@@ -60,20 +76,15 @@ const PaymentMethodsForm = ({ setShowForm, setFetchPaymentMethods, fetchPaymentM
     }
   }
 
-
-
-
   const handleCreditCardChange = (e, setFieldValue) => {
     const { name, value } = e.target
     const formattedValue = card_format(value) // Format the value using the card_format function
     setFieldValue(name, formattedValue)
   }
 
-  
-
   return (
     <Container className='mt-2  sub_form'>
-       {priceError && <p className='text-danger'>{priceError}</p>}
+      {priceError && <p className='text-danger'>{priceError}</p>}
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
@@ -109,12 +120,12 @@ const PaymentMethodsForm = ({ setShowForm, setFetchPaymentMethods, fetchPaymentM
                 component='div'
                 className='text-danger'
               />
-                {/* Card Brand Icons */}
-              <div className="card-icons">
-                <FontAwesomeIcon icon={faCcVisa} className="card-icon" />
-                <FontAwesomeIcon icon={faCcMastercard} className="card-icon" />
-                <FontAwesomeIcon icon={faCcAmex} className="card-icon" />
-                <FontAwesomeIcon icon={faCcDiscover} className="card-icon" />
+              {/* Card Brand Icons */}
+              <div className='card-icons'>
+                <FontAwesomeIcon icon={faCcVisa} className='card-icon' />
+                <FontAwesomeIcon icon={faCcMastercard} className='card-icon' />
+                <FontAwesomeIcon icon={faCcAmex} className='card-icon' />
+                <FontAwesomeIcon icon={faCcDiscover} className='card-icon' />
               </div>
             </div>
             <div className='row'>

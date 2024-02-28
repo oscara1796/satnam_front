@@ -149,7 +149,6 @@ const VideoList = ({ isLoggedIn }) => {
       </div>
       <h3 className='text-center'>Categorías</h3>
       <div className='categories_container'>
-      
         <Categories
           handleCategoryOption={handleCategoryOption}
           selectedCategory={category}

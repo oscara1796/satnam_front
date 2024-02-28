@@ -4,16 +4,31 @@ import { Container } from 'react-bootstrap'
 import { Navigate } from 'react-router-dom'
 import axios from 'axios'
 import { getUser, getAccessToken } from '../services/AuthService'
-import { isValidCVC, isValidMonth, isCreditCardValid, card_format, AddExpirationYears } from '../services/CardValidationService'
+import {
+  isValidCVC,
+  isValidMonth,
+  isCreditCardValid,
+  card_format,
+  AddExpirationYears,
+} from '../services/CardValidationService'
 import { UserContext } from '../context'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCcVisa, faCcMastercard, faCcAmex, faCcDiscover } from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faCcVisa,
+  faCcMastercard,
+  faCcAmex,
+  faCcDiscover,
+} from '@fortawesome/free-brands-svg-icons'
 
-
-const SubscriptionForm = ({ isLoggedIn, selectedPriceId, trialDays, selectDefaultPaymentMethod}) => {
+const SubscriptionForm = ({
+  isLoggedIn,
+  selectedPriceId,
+  trialDays,
+  selectDefaultPaymentMethod,
+}) => {
   const [isSubmitted, setSubmitted] = useState(false)
   const [isSubSuccess, setSubSuccess] = useState(false)
-  const [priceError, setPriceError] = useState(''); 
+  const [priceError, setPriceError] = useState('')
   const [state, setState] = useContext(UserContext)
 
   const initialValues = {
@@ -26,10 +41,9 @@ const SubscriptionForm = ({ isLoggedIn, selectedPriceId, trialDays, selectDefaul
   const years = []
 
   const handleSubmit = async (values) => {
-
     if (!selectedPriceId) {
-      setPriceError('Por favor selecciona un plan ');
-      return; // Stop the submission if no price is selected
+      setPriceError('Por favor selecciona un plan ')
+      return // Stop the submission if no price is selected
     }
     let user = getUser()
     let url = `${process.env.REACT_APP_BASE_URL}/api/create_subscription/${user.id}/`
@@ -50,9 +64,14 @@ const SubscriptionForm = ({ isLoggedIn, selectedPriceId, trialDays, selectDefaul
 
     try {
       console.log(formData)
-      let response = await axios.post(url, formData, {
-        headers: headers,
-      },{timeout: 5000})
+      let response = await axios.post(
+        url,
+        formData,
+        {
+          headers: headers,
+        },
+        { timeout: 5000 }
+      )
       console.log('Subscription created:', response.data)
       if (response.data.status === 'incomplete') {
         throw new Error('Subscription was not able to complete')
@@ -82,25 +101,25 @@ const SubscriptionForm = ({ isLoggedIn, selectedPriceId, trialDays, selectDefaul
 
   // format credit card number into fours and validate credit number
 
-
   const handleCreditCardChange = (e, setFieldValue) => {
     const { name, value } = e.target
     const formattedValue = card_format(value) // Format the value using the card_format function
     setFieldValue(name, formattedValue)
   }
 
-
   AddExpirationYears(years, 10)
-
 
   return (
     <Container className='mt-2  sub_form'>
-       {priceError && <p className='text-danger'>{priceError}</p>}
+      {priceError && <p className='text-danger'>{priceError}</p>}
 
-       {selectDefaultPaymentMethod && (
-        <div className="alert alert-info" role="alert">
-         Ya has seleccionado un método de pago predeterminado para proceder al pago. Para agregar un nuevo método, primero deselecciona el método predeterminado y luego agrega la información en el formulario, o gestiona tus métodos de pago desde tu pestaña de "cuenta".       
-         </div>
+      {selectDefaultPaymentMethod && (
+        <div className='alert alert-info' role='alert'>
+          Ya has seleccionado un método de pago predeterminado para proceder al
+          pago. Para agregar un nuevo método, primero deselecciona el método
+          predeterminado y luego agrega la información en el formulario, o
+          gestiona tus métodos de pago desde tu pestaña de "cuenta".
+        </div>
       )}
 
       <Formik
@@ -138,12 +157,12 @@ const SubscriptionForm = ({ isLoggedIn, selectedPriceId, trialDays, selectDefaul
                 component='div'
                 className='text-danger'
               />
-                {/* Card Brand Icons */}
-              <div className="card-icons">
-                <FontAwesomeIcon icon={faCcVisa} className="card-icon" />
-                <FontAwesomeIcon icon={faCcMastercard} className="card-icon" />
-                <FontAwesomeIcon icon={faCcAmex} className="card-icon" />
-                <FontAwesomeIcon icon={faCcDiscover} className="card-icon" />
+              {/* Card Brand Icons */}
+              <div className='card-icons'>
+                <FontAwesomeIcon icon={faCcVisa} className='card-icon' />
+                <FontAwesomeIcon icon={faCcMastercard} className='card-icon' />
+                <FontAwesomeIcon icon={faCcAmex} className='card-icon' />
+                <FontAwesomeIcon icon={faCcDiscover} className='card-icon' />
               </div>
             </div>
             <div className='row'>

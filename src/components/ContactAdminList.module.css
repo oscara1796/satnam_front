@@ -1,122 +1,122 @@
 /* ContactAdminList.module.css */
 .container {
-    padding: 20px;
-    background-color: #f0f4f8;
-    height: 80vh;
-  }
-  
-  .title {
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .messageList {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .messageItem {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .messageItem:hover {
-    border-color: #007bff;
-  }
-  
-  .messageInfo {
-    margin-bottom: 5px;
-  }
-  
-  .viewButton {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-  }
-  
-  .viewButton:hover {
-    background-color: #0056b3;
-  }
-  
-  .downloadButton {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    display: block;
-    width: max-content;
-    margin-top: 20px;
-  }
-  
-  .downloadButton:hover {
-    background-color: #0056b3;
-  }
+  padding: 20px;
+  background-color: #f0f4f8;
+  height: 80vh;
+}
 
+.title {
+  color: #333;
+  margin-bottom: 20px;
+}
 
-  .pagination {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-  }
-  
-  .navButton {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .navButton:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
+.messageList {
+  list-style: none;
+  padding: 0;
+}
 
-  .navButton:active {
-    transform: scale(0.95); /* Make the button slightly smaller */
-    opacity: 0.8; /* Dim the button a bit */
-    transition: transform 0.1s, opacity 0.1s; /* Smooth transition */
-  }
+.messageItem {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-  .modal {
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-  }
-  
-  .modalContent {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-  }
-  
-  .closeButton, .deleteButton {
-    cursor: pointer;
-    padding: 10px;
-    margin: 5px;
-  }
-  
-  /* Add more styling as needed */
-  
-  
+.messageItem:hover {
+  border-color: #007bff;
+}
+
+.messageInfo {
+  margin-bottom: 5px;
+}
+
+.viewButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.viewButton:hover {
+  background-color: #0056b3;
+}
+
+.downloadButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  display: block;
+  width: max-content;
+  margin-top: 20px;
+}
+
+.downloadButton:hover {
+  background-color: #0056b3;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.navButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.navButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.navButton:active {
+  transform: scale(0.95); /* Make the button slightly smaller */
+  opacity: 0.8; /* Dim the button a bit */
+  transition:
+    transform 0.1s,
+    opacity 0.1s; /* Smooth transition */
+}
+
+.modal {
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+.modalContent {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.closeButton,
+.deleteButton {
+  cursor: pointer;
+  padding: 10px;
+  margin: 5px;
+}
+
+/* Add more styling as needed */

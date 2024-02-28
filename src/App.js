@@ -27,8 +27,14 @@ import PasswordRecovery from './components/PasswordRecovery'
 import ResetPassword from './components/ResetPassword'
 import TermsOfService from './components/TermsOfService'
 import Footer from './components/Footer'
+import PrivacyPolicy from './components/PrivacyPolicy'
 import axios from 'axios'
-import { getUser, getAccessToken, isTokenExpired, setTokenExpirationTimeout } from './services/AuthService'
+import {
+  getUser,
+  getAccessToken,
+  isTokenExpired,
+  setTokenExpirationTimeout,
+} from './services/AuthService'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { UserContext } from './context'
@@ -39,43 +45,42 @@ import './App.css'
 function App() {
   var location = useLocation()
 
-  const [isLoggedIn, setLoggedIn] = useState(
-    () => {
-      return window.localStorage.getItem('satnam.auth') !== null;
-    }
-  )
+  const [isLoggedIn, setLoggedIn] = useState(() => {
+    return window.localStorage.getItem('satnam.auth') !== null
+  })
 
-  const [trialDays, setTrialDays] = useState([]);
+  const [trialDays, setTrialDays] = useState([])
 
+  const isLoggedInRef = useRef(isLoggedIn)
 
-  const isLoggedInRef = useRef(isLoggedIn);
-
-  
   useEffect(() => {
-    isLoggedInRef.current = isLoggedIn;
+    isLoggedInRef.current = isLoggedIn
 
-    const token = getAccessToken(); // Function to get the JWT token
+    const token = getAccessToken() // Function to get the JWT token
     const timeoutId = setTokenExpirationTimeout(token, () => {
       // Handle token expiration (e.g., log out the user)
       if (isLoggedInRef.current) {
-          logOut() 
-          console.log('token expired')
+        logOut()
+        console.log('token expired')
       }
-    });
-    return () => clearTimeout(timeoutId);
-  }, [isLoggedIn]);
+    })
+    return () => clearTimeout(timeoutId)
+  }, [isLoggedIn])
 
   const logIn = async (username, password) => {
     // const url = '/api/log_in/';
 
     const url = `${process.env.REACT_APP_BASE_URL}/api/log_in/`
     try {
-      const response = await axios.post(url, { username, password },{ timeout: 5000 })
+      const response = await axios.post(
+        url,
+        { username, password },
+        { timeout: 5000 }
+      )
       window.localStorage.setItem('satnam.auth', JSON.stringify(response.data))
       window.localStorage.setItem('satnam.user', JSON.stringify(getUser()))
       return { response, isError: false }
     } catch (error) {
-      
       return { response: error, isError: true }
     }
   }
@@ -89,23 +94,23 @@ function App() {
     window.location.reload()
   }
 
-
   useEffect(() => {
     const fetchTrialDays = async () => {
       try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}/api/trial-days/`
+        )
+        console.log('days ', response.data)
 
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/trial-days/`);
-        console.log("days ", response.data);
-        
-        setTrialDays(response.data); // Assuming the response has a 'days' field
+        setTrialDays(response.data) // Assuming the response has a 'days' field
       } catch (error) {
         // console.error("Error fetching trialDays data:", error);
         // Handle the error as needed, maybe set trialDays to some default or error value
       }
-    };
+    }
 
-    fetchTrialDays();
-  }, [isLoggedIn]);
+    fetchTrialDays()
+  }, [isLoggedIn])
 
   return (
     <Routes>
@@ -113,7 +118,10 @@ function App() {
         path='/'
         element={<Layout isLoggedIn={isLoggedIn} logOut={logOut} />}
       >
-        <Route index element={<Landing isLoggedIn={isLoggedIn} trialDays={trialDays}  />} />
+        <Route
+          index
+          element={<Landing isLoggedIn={isLoggedIn} trialDays={trialDays} />}
+        />
         <Route
           path='video-detailed/:video_id/:video_title'
           element={<VideoDetailed isLoggedIn={isLoggedIn} />}
@@ -129,19 +137,21 @@ function App() {
           path='admin-contact-list'
           element={<ContactAdminList isLoggedIn={isLoggedIn} logIn={logIn} />}
         />
-        
+
         <Route
           path='password-recovery'
-          element={<PasswordRecovery  isLoggedIn={isLoggedIn}  />}
+          element={<PasswordRecovery isLoggedIn={isLoggedIn} />}
         />
-        <Route 
-          path="/reset-password/:uid/:token" 
-          element={<ResetPassword isLoggedIn={isLoggedIn}  />} 
-          />
+        <Route
+          path='/reset-password/:uid/:token'
+          element={<ResetPassword isLoggedIn={isLoggedIn} />}
+        />
 
         <Route
           path='payment-methods'
-          element={<PaymentOptions isLoggedIn={isLoggedIn} trialDays={trialDays} />}
+          element={
+            <PaymentOptions isLoggedIn={isLoggedIn} trialDays={trialDays} />
+          }
         />
         <Route
           path='videos-create'
@@ -151,9 +161,21 @@ function App() {
           path='terms-sections'
           element={<TermsOfService isLoggedIn={isLoggedIn} />}
         />
+
+        <Route
+          path='privacy-policy'
+          element={<PrivacyPolicy isLoggedIn={isLoggedIn} />}
+        />
+
         <Route
           path='trial-days-create'
-          element={<TrialDaysForm isLoggedIn={isLoggedIn}  trialDays={trialDays}  setTrialDays={setTrialDays}/>}
+          element={
+            <TrialDaysForm
+              isLoggedIn={isLoggedIn}
+              trialDays={trialDays}
+              setTrialDays={setTrialDays}
+            />
+          }
         />
         <Route
           path='schedule-create'
@@ -162,7 +184,13 @@ function App() {
         <Route path='sign-up' element={<SignUp isLoggedIn={isLoggedIn} />} />
         <Route
           path='log-in'
-          element={<LogIn isLoggedIn={isLoggedIn} logIn={logIn} setLoggedIn={setLoggedIn} />}
+          element={
+            <LogIn
+              isLoggedIn={isLoggedIn}
+              logIn={logIn}
+              setLoggedIn={setLoggedIn}
+            />
+          }
         />
         <Route
           path='account'
@@ -170,11 +198,11 @@ function App() {
         />
         <Route
           path='contact-form'
-          element={<ContactForm isLoggedIn={isLoggedIn}  />}
-        /> 
+          element={<ContactForm isLoggedIn={isLoggedIn} />}
+        />
         <Route
           path='calendar'
-          element={<CalendarComponent isLoggedIn={isLoggedIn}  />}
+          element={<CalendarComponent isLoggedIn={isLoggedIn} />}
         />
         {/* <Route
           path='sub-form'
@@ -196,7 +224,7 @@ function App() {
 function Layout({ isLoggedIn, logOut }) {
   const [isSticky, setIsSticky] = useState(false)
   const [state, setState] = useContext(UserContext)
-  const [isOffline, setIsOffline] = useState(!navigator.onLine);
+  const [isOffline, setIsOffline] = useState(!navigator.onLine)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -217,28 +245,34 @@ function Layout({ isLoggedIn, logOut }) {
   }, [])
 
   useEffect(() => {
-    const goOnline = () => setIsOffline(false);
-    const goOffline = () => setIsOffline(true);
+    const goOnline = () => setIsOffline(false)
+    const goOffline = () => setIsOffline(true)
 
-    window.addEventListener('online', goOnline);
-    window.addEventListener('offline', goOffline);
+    window.addEventListener('online', goOnline)
+    window.addEventListener('offline', goOffline)
 
     // Cleanup on component unmount
     return () => {
-      window.removeEventListener('online', goOnline);
-      window.removeEventListener('offline', goOffline);
-    };
-  }, []);
+      window.removeEventListener('online', goOnline)
+      window.removeEventListener('offline', goOffline)
+    }
+  }, [])
 
   return (
     <>
+      {isOffline && (
+        <div
+          style={{
+            color: 'red',
+            textAlign: 'center',
+            padding: '10px',
+            backgroundColor: 'lightyellow',
+          }}
+        >
+          Estas offline. Algunas opciones pueden no funcionar correctamente.
+        </div>
+      )}
 
-          {isOffline && (
-            <div style={{ color: 'red', textAlign: 'center', padding: '10px', backgroundColor: 'lightyellow' }}>
-              Estas offline. Algunas opciones pueden no funcionar correctamente.
-            </div>
-          )}
-          
       <Navbar
         bg='light'
         expand='lg'
@@ -275,7 +309,7 @@ function Layout({ isLoggedIn, logOut }) {
                         Añade Video
                       </NavDropdown.Item>
                     </LinkContainer>
-                    
+
                     <LinkContainer to='/admin-contact-list'>
                       <NavDropdown.Item className='custom-item-navbar-admin'>
                         Mensajes de contacto
@@ -283,7 +317,7 @@ function Layout({ isLoggedIn, logOut }) {
                     </LinkContainer>
                     <LinkContainer to='/trial-days-create'>
                       <NavDropdown.Item className='custom-item-navbar-admin'>
-                        Días de prueba 
+                        Días de prueba
                       </NavDropdown.Item>
                     </LinkContainer>
                     <LinkContainer to='/schedule-create'>
@@ -328,7 +362,7 @@ function Layout({ isLoggedIn, logOut }) {
         </Container>
       </Navbar>
       {/* <!-- Alert container --> */}
-      <ToastContainer position='top-center' theme="colored" autoClose={10000}/>
+      <ToastContainer position='top-center' theme='colored' autoClose={10000} />
       {/* <Container className='pt-3'> */}
 
       <main>

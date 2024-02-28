@@ -16,8 +16,7 @@ import './Landing.css'
 function Landing(props) {
   return (
     <>
-      
-      <CarouselItem isLoggedIn={props.isLoggedIn} trialDays={props.trialDays}/>
+      <CarouselItem isLoggedIn={props.isLoggedIn} trialDays={props.trialDays} />
       <VideoPresentation />
       <YogaSchoolInfo />
       <Benefits />
@@ -25,7 +24,7 @@ function Landing(props) {
   )
 }
 
-function CarouselItem({trialDays}) {
+function CarouselItem({ trialDays }) {
   const [state, setState] = useContext(UserContext)
 
   const carouselItems = [
@@ -63,7 +62,11 @@ function CarouselItem({trialDays}) {
                   <></>
                 ) : (
                   <LinkContainer to='/payment-methods'>
-                    <Button variant='outline-light'>{trialDays.length > 0 ? `¡${trialDays[0].days} días de prueba! Inscríbite` : "Inscríbite"}</Button>
+                    <Button variant='outline-light'>
+                      {trialDays.length > 0
+                        ? `¡${trialDays[0].days} días de prueba! Inscríbite`
+                        : 'Inscríbite'}
+                    </Button>
                   </LinkContainer>
                 )}
               </div>
@@ -125,7 +128,7 @@ function Benefits(props) {
         </div>
         <div className='benefits-list'>
           {benefitItems.map((item) => (
-            <div key={item.id}  className='benefit-item'>
+            <div key={item.id} className='benefit-item'>
               <img
                 className='d-block w-100'
                 src={item.imageSrc}
@@ -142,26 +145,35 @@ function Benefits(props) {
 
 function YogaSchoolInfo() {
   return (
-    <div className="yoga-school-info mt-4">
+    <div className='yoga-school-info mt-4'>
       <Container>
-        <h2 className="yoga-school-title">Únete a Nuestra Escuela de Yoga en Guadalajara o Desde Casa</h2>
-        <p className="yoga-school-description">
-          En el corazón de Guadalajara, México, nuestra escuela de yoga ofrece un espacio sereno donde la tradición y la modernidad se encuentran. 
-          Para aquellos que buscan una experiencia presencial, nuestras puertas están abiertas para clases que conectan mente, cuerpo y espíritu. 
-          Y si prefieres la flexibilidad de practicar desde casa, nuestra suscripción en línea te permite acceder a clases de yoga en video dirigidas por nuestros experimentados instructores. 
-          Explora nuestro horario y encuentra el equilibrio perfecto para tu vida en nuestra escuela de yoga en Guadalajara.
+        <h2 className='yoga-school-title'>
+          Únete a Nuestra Escuela de Yoga en Guadalajara o Desde Casa
+        </h2>
+        <p className='yoga-school-description'>
+          En el corazón de Guadalajara, México, nuestra escuela de yoga ofrece
+          un espacio sereno donde la tradición y la modernidad se encuentran.
+          Para aquellos que buscan una experiencia presencial, nuestras puertas
+          están abiertas para clases que conectan mente, cuerpo y espíritu. Y si
+          prefieres la flexibilidad de practicar desde casa, nuestra suscripción
+          en línea te permite acceder a clases de yoga en video dirigidas por
+          nuestros experimentados instructores. Explora nuestro horario y
+          encuentra el equilibrio perfecto para tu vida en nuestra escuela de
+          yoga en Guadalajara.
         </p>
-        <div className="yoga-school-call-to-action">
+        <div className='yoga-school-call-to-action'>
           <LinkContainer to='/contact-form'>
-            <Button variant="outline-primary">Contacta para Más Información</Button>
+            <Button variant='outline-primary'>
+              Contacta para Más Información
+            </Button>
           </LinkContainer>
           <LinkContainer to='/payment-methods'>
-            <Button variant="primary">Suscríbete Ahora</Button>
+            <Button variant='primary'>Suscríbete Ahora</Button>
           </LinkContainer>
         </div>
       </Container>
     </div>
-  );
+  )
 }
 
 export default Landing

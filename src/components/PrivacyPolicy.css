@@ -1,0 +1,17 @@
+/* PrivacyPolicy.css */
+.privacy-policy {
+  font-family: Arial, sans-serif;
+  background-color: #f0f5ff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.privacy-policy h1 {
+  color: #2e5bff;
+}
+
+.privacy-policy p {
+  color: #444;
+  line-height: 1.6;
+}
