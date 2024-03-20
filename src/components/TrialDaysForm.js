@@ -30,13 +30,15 @@ function TrialDaysForm({ isLoggedIn, trialDays, setTrialDays }) {
         response = await axios.put(
           `${process.env.REACT_APP_BASE_URL}/api/trial-days/${trialDays[0].id}/`,
           { days: days },
-          { headers }
+          { headers }, 
+          { timeout: 5000 }
         )
       } else {
         response = await axios.post(
           `${process.env.REACT_APP_BASE_URL}/api/trial-days/`,
           { days: days },
-          { headers }
+          { headers }, 
+          { timeout: 5000 }
         )
       }
 
@@ -65,7 +67,8 @@ function TrialDaysForm({ isLoggedIn, trialDays, setTrialDays }) {
       const headers = { Authorization: `Bearer ${token}` }
       await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/trial-days/${trialDays[0].id}`,
-        { headers }
+        { headers }, 
+        { timeout: 5000 }
       )
       // Handle successful deletion, maybe refresh data or inform the parent component
       setFormEnabled(true)

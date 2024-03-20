@@ -40,7 +40,8 @@ const TotalCheckoutBox = ({ setSelectedPriceId, selectedPriceId }) => {
           `${process.env.REACT_APP_BASE_URL}/api/get_product_prices/`,
           {
             headers: headers,
-          }
+          },
+          { timeout: 5000 }
         )
 
         console.log('prices data', JSON.parse(response.data))

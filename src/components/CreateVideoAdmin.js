@@ -27,7 +27,7 @@ const CategoryList = ({ getCategory, field, form, ...props }) => {
       try {
         let response = await axios.get(url, {
           headers: headers,
-        })
+        },{ timeout: 5000 })
         setCategories(response.data)
       } catch (error) {
         toast.error(`Error obteniendo categorías: ${error.message}`)
@@ -107,7 +107,7 @@ const CreateVideoAdmin = ({ isLoggedIn, logIn }) => {
       // Make a POST request to submit the form data
       let response = await axios.post(url, formData, {
         headers: headers,
-      })
+      },{ timeout: 5000 })
       console.log(response.data)
       setSubmitted(true)
     } catch (error) {

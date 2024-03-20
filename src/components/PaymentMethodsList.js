@@ -74,7 +74,7 @@ const PaymentMethodsList = (props) => {
     }
 
     try {
-      await axios.delete(url, config)
+      await axios.delete(url, config, { timeout: 5000 })
       console.log(`Deleted payment method with ID: ${methodId}`)
       setFetchPaymentMethods((prevState) => !prevState) // Trigger re-fetch of payment methods
     } catch (error) {
@@ -99,7 +99,7 @@ const PaymentMethodsList = (props) => {
     }
 
     try {
-      await axios.put(url, data, config) // Note the corrected order: URL, data, config
+      await axios.put(url, data, config, { timeout: 5000 }) // Note the corrected order: URL, data, config
       console.log(`Set default payment method with ID: ${method.id}`)
       setFetchPaymentMethods((prevState) => !prevState) // Trigger re-fetch of payment methods
     } catch (error) {

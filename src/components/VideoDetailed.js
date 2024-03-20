@@ -27,7 +27,7 @@ const VideoDetailed = (props) => {
     try {
       let response = await axios.get(apiUrl, {
         headers: headers,
-      })
+      },{ timeout: 5000 })
 
       setVideo(response.data)
       console.log('videos', response.data)

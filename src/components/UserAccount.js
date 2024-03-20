@@ -296,7 +296,7 @@ function UserSubscription(props) {
       try {
         let response = await axios.get(url, {
           headers: headers,
-        })
+        },{ timeout: 5000 })
         console.log('Subscription :', response.data)
         setUserSub(response.data)
         if (response.data.cancel_at_period_end === true) {
@@ -327,7 +327,7 @@ function UserSubscription(props) {
     try {
       let response = await axios.delete(url, {
         headers: headers,
-      })
+      }, { timeout: 5000 })
       setRefreshSubData(!refreshSubData)
     } catch (error) {
       toast.error(
@@ -351,7 +351,8 @@ function UserSubscription(props) {
         {},
         {
           headers: headers,
-        }
+        }, 
+        { timeout: 5000 }
       )
 
       console.log(response.data)

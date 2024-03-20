@@ -28,7 +28,7 @@ const StripeSuccess = ({ isLoggedIn }) => {
       const headers = { Authorization: `Bearer ${token}` }
       const { data } = await axios.get(url, {
         headers: headers,
-      })
+      }, { timeout: 5000 })
 
       if (data && data.length != 0) {
         const tempState = { user: data, auth: getAccessToken() }

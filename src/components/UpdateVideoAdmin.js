@@ -26,7 +26,7 @@ const CategoryList = ({ getCategory, field, form, ...props }) => {
       try {
         let response = await axios.get(url, {
           headers: headers,
-        })
+        }, { timeout: 5000 })
         setCategories(response.data)
       } catch (error) {
         toast.error(`Error obteniendo categorías: ${error.message}`)
@@ -70,7 +70,7 @@ const UpdateVideoAdmin = (props) => {
     try {
       let response = await axios.get(apiUrl, {
         headers: headers,
-      })
+      }, { timeout: 5000 })
       console.log('videos', response.data)
       setVideo({
         ...response.data,
@@ -141,7 +141,7 @@ const UpdateVideoAdmin = (props) => {
       // Make a POST request to submit the form data
       let response = await axios.patch(url, formData, {
         headers: headers,
-      })
+      }, { timeout: 5000 })
       console.log(response.data)
       setSubmitted(true)
     } catch (error) {
@@ -178,7 +178,7 @@ const UpdateVideoAdmin = (props) => {
     const headers = { Authorization: `Bearer ${token}` }
 
     try {
-      await axios.delete(apiUrl, { headers: headers })
+      await axios.delete(apiUrl, { headers: headers }, { timeout: 5000 })
       toast.success('Video eliminado con éxito')
       // Redirect or update state after successful deletion
       // For example, redirect to the videos page

@@ -33,7 +33,7 @@ const ContactForm = () => {
     const apiUrl = `${process.env.REACT_APP_BASE_URL}/api/contact/`
 
     axios
-      .post(apiUrl, values)
+      .post(apiUrl, values, { timeout: 5000 })
       .then((response) => {
         // Handle success response
         toast.success(`Se ha mandado tu mensaje `)

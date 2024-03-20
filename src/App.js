@@ -4,12 +4,11 @@ import { Button, Container, Form, Navbar } from 'react-bootstrap'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import Nav from 'react-bootstrap/Nav'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Outlet, Route, Routes, useLocation, Navigate } from 'react-router-dom' // changed
+import { Outlet, Route, Routes } from 'react-router-dom' // changed
 import logo from './assets/img/logo.svg'
 import Landing from './components/Landing'
 import LogIn from './components/LogIn'
 import SignUp from './components/SignUp'
-import SubscriptionForm from './components/SubscriptionForm'
 import UserAccount from './components/UserAccount'
 import StripeCancel from './components/StripeCancel'
 import StripeSuccess from './components/StripeSuccess'
@@ -32,10 +31,9 @@ import axios from 'axios'
 import {
   getUser,
   getAccessToken,
-  isTokenExpired,
   setTokenExpirationTimeout,
 } from './services/AuthService'
-import { ToastContainer, toast } from 'react-toastify'
+import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { UserContext } from './context'
 
@@ -43,7 +41,6 @@ import './App.css'
 
 // changed
 function App() {
-  var location = useLocation()
 
   const [isLoggedIn, setLoggedIn] = useState(() => {
     return window.localStorage.getItem('satnam.auth') !== null
@@ -98,7 +95,7 @@ function App() {
     const fetchTrialDays = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_BASE_URL}/api/trial-days/`
+          `${process.env.REACT_APP_BASE_URL}/api/trial-days/`, { timeout: 5000 }
         )
         console.log('days ', response.data)
 

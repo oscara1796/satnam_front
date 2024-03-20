@@ -24,7 +24,7 @@ const CreateCategory = ({ onClose, setGetCategories }) => {
     try {
       let response = await axios.post(url, formData, {
         headers: headers,
-      })
+      }, { timeout: 5000 })
       console.log(response.data)
       setGetCategories(true)
       onClose()
