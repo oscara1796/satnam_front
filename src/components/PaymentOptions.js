@@ -162,6 +162,14 @@ const PaymentOptions = ({ isLoggedIn, trialDays }) => {
     // { id: 2, label: 'PayPal' },
     // { id: 3, label: 'Google Pay' },
   ]
+  useEffect(() => {
+    const selectFirtsOption = () => {
+      if (paymentOptions.length > 0) {
+        setSelectedOption(paymentOptions[0].id)
+      }
+    }
+    selectFirtsOption()
+  }, [])
 
   const handleOptionChange = (optionId) => {
     setSelectedOption(optionId)
@@ -175,14 +183,7 @@ const PaymentOptions = ({ isLoggedIn, trialDays }) => {
     return <Navigate to='/' />
   }
 
-  useEffect(() => {
-    const selectFirtsOption = () => {
-      if (paymentOptions.length > 0) {
-        setSelectedOption(paymentOptions[0].id)
-      }
-    }
-    selectFirtsOption()
-  }, [])
+  
 
   return (
     <div className='checkout_page'>

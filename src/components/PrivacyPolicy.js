@@ -8,9 +8,9 @@ const PrivacyPolicy = () => {
       {/* Add the class name */}
       <h1>Política para el Tratamiento de Datos Personales</h1>
       <p>
-        <div class='PrivacyGDPR-section'>
-          <div class='row u-row-wrapper'>
-            <div class='col-xs-12'>
+        <div className='PrivacyGDPR-section'>
+          <div className='row u-row-wrapper'>
+            <div className='col-xs-12'>
               <p>
                 <strong>
                   SANDRA LOPEZ GONZALEZ, PERSONA FÍSICA CON ACTIVIDAD
@@ -42,8 +42,8 @@ const PrivacyPolicy = () => {
                   <tr>
                     <td>Giro</td>
                     <td>
-                      "Servicios de Cursos en Línea" y "Servicios educativos y
-                      de enseñanza"{' '}
+                    &quot;Servicios de Cursos en Línea&quot; y &quot;Servicios educativos y
+                      de enseñanza&quot;{' '}
                     </td>
                   </tr>
                   <tr>

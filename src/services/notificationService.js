@@ -18,7 +18,7 @@ export const showErrorNotification = (error) => {
 
       if (typeof defaultMessage === 'object') {
         for (const key in defaultMessage) {
-          if (defaultMessage.hasOwnProperty(key)) {
+          if (Object.prototype.hasOwnProperty.call(defaultMessage, key)) {
             const fieldErrors = defaultMessage[key]
             // Assuming each field could have multiple errors
             fieldErrors.forEach((errMessage) => {

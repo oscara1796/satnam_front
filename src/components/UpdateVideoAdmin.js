@@ -13,6 +13,9 @@ import { toast } from 'react-toastify'
 import CreateCategory from './CreateCategory'
 // import { CategoryList } from './CreateVideoAdmin'
 
+
+
+
 const CategoryList = ({ getCategory, field, form, ...props }) => {
   const [categories, setCategories] = useState([])
 
@@ -40,12 +43,13 @@ const CategoryList = ({ getCategory, field, form, ...props }) => {
   return (
     <select {...field} {...props}>
       {categories.map((category) => (
+        // eslint-disable-next-line react/no-unknown-property
         <option key={category.id} data_key={category.id} value={category.title}>
           {category.title}
         </option>
       ))}
     </select>
-  )
+  ) // eslint-disable-line react/no-unknown-property
 }
 
 const UpdateVideoAdmin = (props) => {

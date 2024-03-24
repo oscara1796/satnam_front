@@ -13,6 +13,9 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import CreateCategory from './CreateCategory'
 
+// CategoryList.js
+
+
 // Component for displaying a dropdown list of categories
 const CategoryList = ({ getCategory, field, form, ...props }) => {
   const [categories, setCategories] = useState([])
@@ -41,12 +44,13 @@ const CategoryList = ({ getCategory, field, form, ...props }) => {
   return (
     <select {...field} {...props}>
       {categories.map((category) => (
+        // eslint-disable-next-line react/no-unknown-property
         <option key={category.id} data_key={category.id} value={category.title}>
           {category.title}
         </option>
       ))}
     </select>
-  )
+  ) // eslint-disable-line react/no-unknown-property
 }
 
 // Main component for creating a video admin interface

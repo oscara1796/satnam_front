@@ -118,7 +118,7 @@ const SubscriptionForm = ({
           Ya has seleccionado un método de pago predeterminado para proceder al
           pago. Para agregar un nuevo método, primero deselecciona el método
           predeterminado y luego agrega la información en el formulario, o
-          gestiona tus métodos de pago desde tu pestaña de "cuenta".
+          gestiona tus métodos de pago desde tu pestaña de &quot;cuenta&quot;.
         </div>
       )}
 
