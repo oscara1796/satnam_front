@@ -191,7 +191,7 @@ function App() {
         />
         <Route
           path='account'
-          element={<UserAccount isLoggedIn={isLoggedIn} logIn={logIn} />}
+          element={<UserAccount isLoggedIn={isLoggedIn} logIn={logIn} logOut={logOut} />}
         />
         <Route
           path='contact-form'

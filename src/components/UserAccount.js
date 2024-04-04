@@ -8,7 +8,7 @@ import {
   Spinner,
 } from 'react-bootstrap'
 import { Formik } from 'formik'
-import { Link, Navigate } from 'react-router-dom'
+import {  Navigate } from 'react-router-dom'
 
 import { UserContext } from '../context'
 import { getUser, getAccessToken } from '../services/AuthService'
@@ -17,9 +17,10 @@ import { toast } from 'react-toastify'
 import * as Yup from 'yup'
 import SubscribeBanner from './SubscribeBanner'
 import PaymentMethodsList from './PaymentMethodsList'
+import { showErrorNotification } from '../services/notificationService'
 
 // Main component for user account management
-function UserAccount({ isLoggedIn, logIn }) {
+function UserAccount({ isLoggedIn, logIn, logOut }) {
   const [state, setState] = useContext(UserContext)
   // Local state for user data and form control
   const [userData, setUserData] = useState({
@@ -82,12 +83,7 @@ function UserAccount({ isLoggedIn, logIn }) {
       setSubmitted(true)
       toast.success('Tu usuario se actualizo')
     } catch (response) {
-      const data = response.response.data
-      console.log('data ', data)
-      for (const value in data) {
-        actions.setFieldError(value, data[value].join(' '))
-      }
-      toast.error('No pudimos actualizar tu usuario, intenteló más tarde')
+      showErrorNotification(response)
     }
   }
 
@@ -120,7 +116,7 @@ function UserAccount({ isLoggedIn, logIn }) {
     <Container className='mt-2 user_info_container'>
       <Container>
         {state.user && state.user.active ? (
-          <UserSubscription />
+          <UserSubscription logOut={logOut} />
         ) : (
           <SubscribeBanner />
         )}
@@ -306,6 +302,8 @@ function UserSubscription(props) {
         }
       } catch (error) {
         console.error('Error getting subscription:', error.response.data)
+        setUserSub({})
+        props.logOut();
       } finally {
         setIsLoading(false) // Set loading to false after fetching is done
       }

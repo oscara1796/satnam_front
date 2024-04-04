@@ -590,7 +590,6 @@ main {
 .video-list {
   display: flex;
   flex-direction: column;
-  height: 100vh;
 }
 .video_search_container {
   width: 100%;
