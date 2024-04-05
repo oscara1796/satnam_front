@@ -1,0 +1,5 @@
+# Set the buildpack
+pack: {"build": "heroku-nodejs"}
+
+# Optional: Set a web process type
+web: ./yarn start
