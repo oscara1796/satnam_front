@@ -1,4 +1,5 @@
-pack: {"build": "heroku-nodejs"}  # Correct indentation, no dot
+build:
+  docker:
+    web: ./Dockerfile_client_prod
 
-# Optional: Set a web process type
-web: ./yarn start  # Optional, defines the start command
+

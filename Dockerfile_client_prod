@@ -1,28 +1,30 @@
-# Etapa de construcción
-FROM node:19.0-alpine as build-stage
+# client/Dockerfile
 
-WORKDIR /app
+# Pull the official base image
+FROM node:19.0-alpine
 
-# Copiar archivos de definición de dependencias
-COPY package.json yarn.lock ./
+# Set the working directory
+WORKDIR /usr/src/app
 
-# Instalar dependencias
-RUN yarn install
+# Add /usr/src/app/node_modules/.bin to the $PATH
+ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
-# Copiar el resto del código fuente de la aplicación
+# Install app dependencies
+COPY package.json .
+COPY yarn.lock .
+RUN yarn install --production
+
+# Copy project files
 COPY . .
 
-# Construir la aplicación
+# Build the React app
 RUN yarn build
 
-# Etapa de producción
-FROM nginx:alpine as production-stage
+# Install serve globally
+RUN yarn global add serve
 
-# Copiar la build desde la etapa de construcción a la ruta de servido de nginx
-COPY --from=build-stage /app/build /usr/share/nginx/html
+# Expose the port your app runs on
+EXPOSE 5000
 
-# Exponer el puerto 80 para el servidor nginx
-EXPOSE 80
-
-# Iniciar nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Serve the app
+CMD ["serve", "-s", "build"]
