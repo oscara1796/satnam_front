@@ -1,5 +1,4 @@
-# Set the buildpack
-pack: {"build": "heroku-nodejs"}
+pack: {"build": "heroku-nodejs"}  # Correct indentation, no dot
 
 # Optional: Set a web process type
-web: ./yarn start
+web: ./yarn start  # Optional, defines the start command
