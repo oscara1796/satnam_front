@@ -1,0 +1,28 @@
+# Etapa de construcción
+FROM node:19.0-alpine as build-stage
+
+WORKDIR /app
+
+# Copiar archivos de definición de dependencias
+COPY package.json yarn.lock ./
+
+# Instalar dependencias
+RUN yarn install
+
+# Copiar el resto del código fuente de la aplicación
+COPY . .
+
+# Construir la aplicación
+RUN yarn build
+
+# Etapa de producción
+FROM nginx:alpine as production-stage
+
+# Copiar la build desde la etapa de construcción a la ruta de servido de nginx
+COPY --from=build-stage /app/build /usr/share/nginx/html
+
+# Exponer el puerto 80 para el servidor nginx
+EXPOSE 80
+
+# Iniciar nginx
+CMD ["nginx", "-g", "daemon off;"]
