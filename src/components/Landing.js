@@ -85,10 +85,23 @@ function VideoPresentation(props) {
       <div className='video-container'>
         <h1>Escuela de yoga en línea</h1>
         <h2>Bienvenido a Sat Nam Yoga Estudio</h2>
-        <video controls id='video_presentation'>
+        {/* <video controls id='video_presentation'>
           <source src={video_presentation} type='video/mp4' />
           Your browser does not support the video tag.
-        </video>
+        </video> */}
+        <div
+          id="video_presentation"
+          style={{ padding: "56.25% 0 0 0", position: "relative" }}
+        >
+          <iframe
+            src="https://player.vimeo.com/video/931506664?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+            frameBorder="0"
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write"
+            style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
+            title="Bienvenida"
+          ></iframe>
+        </div>
+       
       </div>
     </>
   )

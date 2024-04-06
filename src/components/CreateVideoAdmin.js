@@ -15,7 +15,6 @@ import CreateCategory from './CreateCategory'
 
 // CategoryList.js
 
-
 // Component for displaying a dropdown list of categories
 const CategoryList = ({ getCategory, field, form, ...props }) => {
   const [categories, setCategories] = useState([])
@@ -28,9 +27,13 @@ const CategoryList = ({ getCategory, field, form, ...props }) => {
       const headers = { Authorization: `Bearer ${token}` }
 
       try {
-        let response = await axios.get(url, {
-          headers: headers,
-        },{ timeout: 5000 })
+        let response = await axios.get(
+          url,
+          {
+            headers: headers,
+          },
+          { timeout: 5000 }
+        )
         setCategories(response.data)
       } catch (error) {
         toast.error(`Error obteniendo categorías: ${error.message}`)
@@ -109,9 +112,14 @@ const CreateVideoAdmin = ({ isLoggedIn, logIn }) => {
 
     try {
       // Make a POST request to submit the form data
-      let response = await axios.post(url, formData, {
-        headers: headers,
-      },{ timeout: 5000 })
+      let response = await axios.post(
+        url,
+        formData,
+        {
+          headers: headers,
+        },
+        { timeout: 5000 }
+      )
       console.log(response.data)
       setSubmitted(true)
     } catch (error) {

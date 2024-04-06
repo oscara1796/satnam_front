@@ -42,8 +42,8 @@ const PrivacyPolicy = () => {
                   <tr>
                     <td>Giro</td>
                     <td>
-                    &quot;Servicios de Cursos en Línea&quot; y &quot;Servicios educativos y
-                      de enseñanza&quot;{' '}
+                      &quot;Servicios de Cursos en Línea&quot; y &quot;Servicios
+                      educativos y de enseñanza&quot;{' '}
                     </td>
                   </tr>
                   <tr>

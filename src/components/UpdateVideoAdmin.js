@@ -13,9 +13,6 @@ import { toast } from 'react-toastify'
 import CreateCategory from './CreateCategory'
 // import { CategoryList } from './CreateVideoAdmin'
 
-
-
-
 const CategoryList = ({ getCategory, field, form, ...props }) => {
   const [categories, setCategories] = useState([])
 
@@ -27,9 +24,13 @@ const CategoryList = ({ getCategory, field, form, ...props }) => {
       const headers = { Authorization: `Bearer ${token}` }
 
       try {
-        let response = await axios.get(url, {
-          headers: headers,
-        }, { timeout: 5000 })
+        let response = await axios.get(
+          url,
+          {
+            headers: headers,
+          },
+          { timeout: 5000 }
+        )
         setCategories(response.data)
       } catch (error) {
         toast.error(`Error obteniendo categorías: ${error.message}`)
@@ -72,9 +73,13 @@ const UpdateVideoAdmin = (props) => {
 
     // Make the GET request to retrieve the video
     try {
-      let response = await axios.get(apiUrl, {
-        headers: headers,
-      }, { timeout: 5000 })
+      let response = await axios.get(
+        apiUrl,
+        {
+          headers: headers,
+        },
+        { timeout: 5000 }
+      )
       console.log('videos', response.data)
       setVideo({
         ...response.data,
@@ -143,9 +148,14 @@ const UpdateVideoAdmin = (props) => {
 
     try {
       // Make a POST request to submit the form data
-      let response = await axios.patch(url, formData, {
-        headers: headers,
-      }, { timeout: 5000 })
+      let response = await axios.patch(
+        url,
+        formData,
+        {
+          headers: headers,
+        },
+        { timeout: 5000 }
+      )
       console.log(response.data)
       setSubmitted(true)
     } catch (error) {

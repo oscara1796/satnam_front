@@ -219,8 +219,7 @@ main {
 /* ------- VIDEO PRESENTATION */
 
 #video_presentation {
-  margin: 1em 1em 1em 1em;
-  width: 50%;
+  width: 80%;
 }
 
 .video-container {

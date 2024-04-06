@@ -8,7 +8,7 @@ import {
   Spinner,
 } from 'react-bootstrap'
 import { Formik } from 'formik'
-import {  Navigate } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 
 import { UserContext } from '../context'
 import { getUser, getAccessToken } from '../services/AuthService'
@@ -290,9 +290,13 @@ function UserSubscription(props) {
       const headers = { Authorization: `Bearer ${token}` }
 
       try {
-        let response = await axios.get(url, {
-          headers: headers,
-        },{ timeout: 5000 })
+        let response = await axios.get(
+          url,
+          {
+            headers: headers,
+          },
+          { timeout: 5000 }
+        )
         console.log('Subscription :', response.data)
         setUserSub(response.data)
         if (response.data.cancel_at_period_end === true) {
@@ -303,7 +307,7 @@ function UserSubscription(props) {
       } catch (error) {
         console.error('Error getting subscription:', error.response.data)
         setUserSub({})
-        props.logOut();
+        props.logOut()
       } finally {
         setIsLoading(false) // Set loading to false after fetching is done
       }
@@ -323,9 +327,13 @@ function UserSubscription(props) {
     const headers = { Authorization: `Bearer ${token}` }
 
     try {
-      let response = await axios.delete(url, {
-        headers: headers,
-      }, { timeout: 5000 })
+      let response = await axios.delete(
+        url,
+        {
+          headers: headers,
+        },
+        { timeout: 5000 }
+      )
       setRefreshSubData(!refreshSubData)
     } catch (error) {
       toast.error(
@@ -349,7 +357,7 @@ function UserSubscription(props) {
         {},
         {
           headers: headers,
-        }, 
+        },
         { timeout: 5000 }
       )
 

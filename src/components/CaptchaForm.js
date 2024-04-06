@@ -20,7 +20,6 @@ const CaptchaForm = (props) => {
           responseType: 'blob', // Important: this tells Axios to handle the response as a binary blob
         }
       )
-      
 
       // Convert blob to a data URL
       const dataUrl = URL.createObjectURL(response.data)

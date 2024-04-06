@@ -23,9 +23,13 @@ const Categories = ({ handleCategoryOption, selectedCategory }) => {
 
       // Fetch categories from the API
       try {
-        let response = await axios.get(url, {
-          headers: headers,
-        }, { timeout: 5000 })
+        let response = await axios.get(
+          url,
+          {
+            headers: headers,
+          },
+          { timeout: 5000 }
+        )
         setCategories(response.data)
         console.log('categories', response.data)
       } catch (error) {
@@ -107,9 +111,13 @@ const VideoList = ({ isLoggedIn }) => {
     }
 
     try {
-      let response = await axios.get(url, {
-        headers: headers,
-      }, { timeout: 5000 })
+      let response = await axios.get(
+        url,
+        {
+          headers: headers,
+        },
+        { timeout: 5000 }
+      )
       setTotalPages(
         Math.ceil(response.data.total_count / video_elements_per_page)
       )

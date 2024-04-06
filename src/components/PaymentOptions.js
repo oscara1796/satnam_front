@@ -183,8 +183,6 @@ const PaymentOptions = ({ isLoggedIn, trialDays }) => {
     return <Navigate to='/' />
   }
 
-  
-
   return (
     <div className='checkout_page'>
       <div className='container my-3 payments-box'>

@@ -80,14 +80,15 @@ const signupSchema = Yup.object().shape({
 function SignUp({ isLoggedIn }) {
   const [isSubmitted, setSubmitted] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false)
 
   const onSubmit = async (values, actions) => {
     if (!termsAccepted) {
-      toast.error('Debes aceptar los términos del servicio y la política de privacidad.');
-      return;
+      toast.error(
+        'Debes aceptar los términos del servicio y la política de privacidad.'
+      )
+      return
     }
-
 
     setIsLoading(true)
     // const url ='/api/sign_up/';
@@ -295,20 +296,28 @@ function SignUp({ isLoggedIn }) {
                   )}
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="termsCheckbox">
+                <Form.Group className='mb-3' controlId='termsCheckbox'>
                   <Form.Check
-                    type="checkbox"
+                    type='checkbox'
                     label={
                       <span>
-                        Acepto los <Link to='/terms-sections'>Terminos y condiciones </Link> y la <Link to='/privacy-policy'>Politica de privacidad </Link>
+                        Acepto los{' '}
+                        <Link to='/terms-sections'>
+                          Terminos y condiciones{' '}
+                        </Link>{' '}
+                        y la{' '}
+                        <Link to='/privacy-policy'>
+                          Politica de privacidad{' '}
+                        </Link>
                       </span>
                     }
                     checked={termsAccepted}
                     onChange={() => setTermsAccepted(!termsAccepted)}
                     isInvalid={!termsAccepted}
-                    feedback="Debes aceptar los términos del servicio y la política de privacidad."
+                    feedback='Debes aceptar los términos del servicio y la política de privacidad.'
                     required
-                    style={{ // CSS styles for the checkbox
+                    style={{
+                      // CSS styles for the checkbox
                       marginRight: '5px', // Add some margin to separate the checkbox from the label
                       verticalAlign: 'middle', // Align the checkbox vertically with the label text
                     }}

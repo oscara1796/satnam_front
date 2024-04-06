@@ -22,9 +22,14 @@ const CreateCategory = ({ onClose, setGetCategories }) => {
     formData.append('description', values.description)
 
     try {
-      let response = await axios.post(url, formData, {
-        headers: headers,
-      }, { timeout: 5000 })
+      let response = await axios.post(
+        url,
+        formData,
+        {
+          headers: headers,
+        },
+        { timeout: 5000 }
+      )
       console.log(response.data)
       setGetCategories(true)
       onClose()

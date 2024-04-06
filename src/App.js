@@ -41,7 +41,6 @@ import './App.css'
 
 // changed
 function App() {
-
   const [isLoggedIn, setLoggedIn] = useState(() => {
     return window.localStorage.getItem('satnam.auth') !== null
   })
@@ -95,7 +94,8 @@ function App() {
     const fetchTrialDays = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_BASE_URL}/api/trial-days/`, { timeout: 5000 }
+          `${process.env.REACT_APP_BASE_URL}/api/trial-days/`,
+          { timeout: 5000 }
         )
         console.log('days ', response.data)
 
@@ -191,7 +191,13 @@ function App() {
         />
         <Route
           path='account'
-          element={<UserAccount isLoggedIn={isLoggedIn} logIn={logIn} logOut={logOut} />}
+          element={
+            <UserAccount
+              isLoggedIn={isLoggedIn}
+              logIn={logIn}
+              logOut={logOut}
+            />
+          }
         />
         <Route
           path='contact-form'
