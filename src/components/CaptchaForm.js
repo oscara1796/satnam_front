@@ -35,7 +35,7 @@ const CaptchaForm = (props) => {
     fetchCaptcha()
   }, [])
 
-  const handleSubmit = async (e, { resetForm }) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     try {
       const response = await axios.post(
