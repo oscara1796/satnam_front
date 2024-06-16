@@ -1,0 +1,134 @@
+.plan-card {
+  background-color: #f0f0f0; /* light gray */
+  border-radius: 10px;
+  padding: 20px;
+  margin: 10px;
+  color: #333333; /* dark gray for text */
+  text-align: center;
+  width: 300px;
+  border: 1px solid transparent;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.plan-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.plan-card.recommended {
+  border: 1px solid #0068c9; /* blue for recommended border */
+}
+
+.plan-header {
+  margin-bottom: 20px;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.plan-price {
+  margin-bottom: 20px;
+  animation: fadeIn 1.2s ease-in-out;
+}
+
+.plan-price span {
+  font-size: 24px;
+}
+
+.plan-price h3 {
+  font-size: 36px;
+  margin: 0;
+}
+
+.plan-price p {
+  margin: 0;
+}
+
+.plan-features {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.plan-features li {
+  margin: 10px 0;
+  animation: fadeIn 1.4s ease-in-out;
+}
+
+.plan-features .included {
+  color: #0068c9; /* blue for included features */
+}
+
+.plan-features .not-included {
+  color: #ff5252; /* red for not included features */
+}
+
+.subscribe-button {
+  background-color: #4dabf7; /* blue for button */
+  color: #ffffff; /* white text */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  animation: fadeIn 1.6s ease-in-out;
+}
+
+.subscribe-button:hover {
+  background-color: #007bbd; /* darker blue on hover */
+}
+
+.plan-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: fadeInUp 0.8s ease-in-out;
+  margin-bottom: 3rem;
+  margin-top: 2rem;
+}
+
+/* Mobile Adaptability */
+@media (max-width: 768px) {
+  .plan-card {
+    width: 90%;
+    margin: 10px auto;
+  }
+  
+  .plan-price span {
+    font-size: 20px;
+  }
+  
+  .plan-price h3 {
+    font-size: 28px;
+  }
+  
+  .plan-features li {
+    font-size: 14px;
+  }
+  
+  .subscribe-button {
+    font-size: 14px;
+    padding: 10px 15px;
+  }
+}
+
+/* Keyframes for animations */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

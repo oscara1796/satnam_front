@@ -5,7 +5,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown'
 import Nav from 'react-bootstrap/Nav'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Outlet, Route, Routes } from 'react-router-dom' // changed
-import logo from './assets/img/logo.svg'
+import logo from './assets/img/logo.png'
 import Landing from './components/Landing'
 import LogIn from './components/LogIn'
 import SignUp from './components/SignUp'

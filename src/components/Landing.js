@@ -11,6 +11,7 @@ import video_presentation from '../assets/img/Benvenida.m4v'
 import benefits_pose_sandra from '../assets/img/benefits_pose_sandra.jpeg'
 import { getUser, getAccessToken } from '../services/AuthService'
 import { UserContext } from '../context'
+import PricePlans from './PricePlans'
 import './Landing.css'
 
 function Landing(props) {
@@ -18,6 +19,7 @@ function Landing(props) {
     <>
       <CarouselItem isLoggedIn={props.isLoggedIn} trialDays={props.trialDays} />
       <VideoPresentation />
+      <PricePlans />
       <YogaSchoolInfo />
       <Benefits />
     </>

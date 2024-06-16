@@ -34,13 +34,10 @@ const TotalCheckoutBox = ({ setSelectedPriceId, selectedPriceId }) => {
     const fetchPrices = async () => {
       try {
         const token = getAccessToken()
-        const headers = { Authorization: `Bearer ${token}` }
+        
 
         const response = await axios.get(
           `${process.env.REACT_APP_BASE_URL}/api/get_product_prices/`,
-          {
-            headers: headers,
-          },
           { timeout: 5000 }
         )
 
