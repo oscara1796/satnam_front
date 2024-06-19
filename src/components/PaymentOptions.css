@@ -1,7 +1,15 @@
+/* PaymentOptions.css */
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
 .card-container {
   background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.3s ease-in-out;
   max-width: 300px;
@@ -12,8 +20,7 @@
 .card-header,
 .card-body,
 .card-footer {
-  padding: 15px;
-  background-color: #f7f7f7;
+  padding: 20px;
 }
 
 .card-header {
@@ -22,22 +29,32 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: 1.2em;
+  font-weight: bold;
 }
 
 .card-body .card-info {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  margin: 10px 0;
+  margin: 1rem 0;
+  border-radius: 10px;
+  background-color: #f7f7f7;
+  padding: 10px;
 }
 
 .card-footer {
-  background-color: #006644;
+  background-color: #00449e;
   color: #fff;
   text-align: center;
+  font-weight: bold;
+  padding: 10px;
+  border-top: 1px solid #ddd;
 }
 
 .card-label {
   font-weight: bold;
+  color: #00449e;
 }
 
 .card-brand,
@@ -47,6 +64,90 @@
 .card-funding,
 .card-secure {
   display: block;
+  color: #555;
+  margin: 5px 0;
+}
+
+.price-option {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.price-option.selected {
+  border-color: #00449e;
+  transform: scale(1.02);
+  background-color: #e9f5ff;
+}
+
+.price-option:hover {
+  transform: scale(1.02);
+  background-color: #f1faff;
+}
+
+.price-details {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.price-details h3 {
+  margin: 0;
+  font-size: 1.2em;
+  color: #00449e;
+}
+
+.product-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.price-details p {
+  margin: 10px 0;
+  color: #666;
+}
+
+.price {
+  font-size: 1.1em;
+  color: #28a745;
+  font-weight: bold;
+}
+
+.total-checkout-box {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.total-amount {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+}
+
+.total-amount h3 {
+  margin: 0;
+  font-weight: bold;
+  color: #333;
+}
+
+.amount {
+  font-size: 1.5em;
+  color: #28a745;
+  font-weight: bold;
 }
 
 @keyframes slideIn {

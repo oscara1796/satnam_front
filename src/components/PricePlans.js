@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { LinkContainer } from 'react-router-bootstrap'
 import axios from 'axios';
 import './PricePlans.css';
 
@@ -69,7 +70,9 @@ const PricePlans = () => {
                             </li>
                         ))}
                     </ul>
+                    <LinkContainer to={{ pathname: '/log-in', search: '?redirect=/payment-methods' }}>
                     <button className="subscribe-button">{plan.buttonText}</button>
+                    </LinkContainer>
                 </div>
             ))}
         </div>

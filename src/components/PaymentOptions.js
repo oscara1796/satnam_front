@@ -66,7 +66,7 @@ const TotalCheckoutBox = ({ setSelectedPriceId, selectedPriceId }) => {
       <h3>Monto total: ${formatPrice(totalAmount) + ' ' + currency}</h3>
       {loading && <p>Loading prices...</p>}
       {error && <p>Could not load prices: {error.message}</p>}
-      <h5>Planes:</h5>
+      <h5>Escoge un plan:</h5>
       <div className='prices-container'>
         {prices.map((product, index) => (
           <label key={index} className='price-option'>
