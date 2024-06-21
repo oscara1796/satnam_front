@@ -15,7 +15,9 @@ body {
   max-width: 300px;
   margin: 20px;
   animation: slideIn 0.5s ease-out forwards;
-}
+} 
+
+
 
 .card-header,
 .card-body,
