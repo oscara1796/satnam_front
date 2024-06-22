@@ -11,63 +11,64 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { getCardBrandIcon } from '../services/CardValidationService'
 import { Button, Spinner } from 'react-bootstrap'
 import { showErrorNotification } from '../services/notificationService'
-
 const TotalCheckoutBox = ({ setSelectedPriceId, selectedPriceId }) => {
-  const [prices, setPrices] = useState([])
-  const [loading, setLoading] = useState(true)
-
-  const [totalAmount, setTotalAmount] = useState('')
-  const [currency, setCurrency] = useState('')
-  const [error, setError] = useState(null)
+  const [prices, setPrices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [totalAmount, setTotalAmount] = useState('');
+  const [currency, setCurrency] = useState('');
+  const [error, setError] = useState(null);
 
   function formatPrice(price) {
     if (!price) {
-      return ''
+      return '';
     }
-    var priceStr = price.toString()
-    var formattedPrice = priceStr.slice(0, -2) + '.' + priceStr.slice(-2)
-    return formattedPrice
+    var priceStr = price.toString();
+    var formattedPrice = priceStr.slice(0, -2) + '.' + priceStr.slice(-2);
+    return formattedPrice;
   }
 
   useEffect(() => {
-    // Fetch product prices from the API
-    const fetchPrices = async () => {
+    // Fetch product prices from the API with retry logic
+    const fetchPrices = async (retries = 3) => {
       try {
-        const token = getAccessToken()
-        
-
+        const token = getAccessToken();
         const response = await axios.get(
           `${process.env.REACT_APP_BASE_URL}/api/get_product_prices/`,
           { timeout: 5000 }
-        )
-
-        console.log('prices data', JSON.parse(response.data))
+        );
+        console.log('prices data', JSON.parse(response.data));
         // Assume the response is the array of product data
         setPrices(JSON.parse(response.data))
         setLoading(false)
       } catch (e) {
-        setError(e)
-        setLoading(false)
+        if (retries > 0) {
+          console.log(`Retrying... (${3 - retries + 1})`);
+          fetchPrices(retries - 1);
+        } else {
+          setError(e);
+          setLoading(false);
+        }
       }
     }
 
-    fetchPrices()
-  }, [])
+    fetchPrices();
+  }, []);
 
   const handleSelectionChange = (productId, productPrice, productCurrency) => {
-    setSelectedPriceId(productId)
-    setTotalAmount(productPrice)
-    setCurrency(productCurrency)
-  }
+    setSelectedPriceId(productId);
+    setTotalAmount(productPrice);
+    setCurrency(productCurrency);
+  };
 
   // Display loading, error, or the list of product prices
   return (
     <div className='total-amount-box'>
-      <h3>Monto total: ${formatPrice(totalAmount) + ' ' + currency}</h3>
-      {loading && <p>Loading prices...</p>}
+      <h3>Monto total: <span id='total-amount' >${formatPrice(totalAmount) + ' ' + currency}</span></h3>
+    
       {error && <p>Could not load prices: {error.message}</p>}
-      <h5>Escoge un plan:</h5>
+      <h5>Elige un plan:</h5>
       <div className='prices-container'>
+      {loading && <p>Cargando precios...</p>}
         {prices.map((product, index) => (
           <label key={index} className='price-option'>
             <input
@@ -84,7 +85,7 @@ const TotalCheckoutBox = ({ setSelectedPriceId, selectedPriceId }) => {
             />
             <span className='price-label'>
               <h3>{product.name} </h3>
-              <img className='product_image' src={product.images[0]}></img>
+              <img className='product_image' src={product.images[0]} alt={product.name}></img>
               <p>{product.description}</p>
               <span>
                 ${formatPrice(product.price) + ' ' + product.currency}

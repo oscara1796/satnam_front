@@ -15,7 +15,9 @@ body {
   max-width: 300px;
   margin: 20px;
   animation: slideIn 0.5s ease-out forwards;
-}
+} 
+
+
 
 .card-header,
 .card-body,
@@ -68,6 +70,13 @@ body {
   margin: 5px 0;
 }
 
+<<<<<<< HEAD
+=======
+.prices-container{
+  margin-top: 2rem;
+}
+
+>>>>>>> ad981a02de12cade48f21184d8ace42d57ff1e31
 .price-option {
   background-color: #fff;
   border: 1px solid #ddd;
@@ -76,6 +85,14 @@ body {
   margin-bottom: 15px;
   transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
   cursor: pointer;
+<<<<<<< HEAD
+=======
+  border-radius: 10px;
+}
+
+#total-amount{
+  color: #00449e;
+>>>>>>> ad981a02de12cade48f21184d8ace42d57ff1e31
 }
 
 .price-option.selected {
@@ -100,6 +117,18 @@ body {
   font-size: 1.2em;
   color: #00449e;
 }
+
+.total-amount-box h5,
+.total-amount-box h3 {
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+.price-label span {
+  font-weight: 600;
+  font-size: 2rem;
+}
+
 
 .product-image {
   width: 100px;
