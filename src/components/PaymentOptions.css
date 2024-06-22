@@ -70,13 +70,10 @@ body {
   margin: 5px 0;
 }
 
-<<<<<<< HEAD
-=======
 .prices-container{
   margin-top: 2rem;
 }
 
->>>>>>> ad981a02de12cade48f21184d8ace42d57ff1e31
 .price-option {
   background-color: #fff;
   border: 1px solid #ddd;
@@ -85,14 +82,11 @@ body {
   margin-bottom: 15px;
   transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
   cursor: pointer;
-<<<<<<< HEAD
-=======
   border-radius: 10px;
 }
 
 #total-amount{
   color: #00449e;
->>>>>>> ad981a02de12cade48f21184d8ace42d57ff1e31
 }
 
 .price-option.selected {
