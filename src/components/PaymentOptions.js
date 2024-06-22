@@ -12,65 +12,87 @@ import { getCardBrandIcon } from '../services/CardValidationService'
 import { Button, Spinner } from 'react-bootstrap'
 import { showErrorNotification } from '../services/notificationService'
 
-
 const TotalCheckoutBox = ({ setSelectedPriceId, selectedPriceId }) => {
-  const [prices, setPrices] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [totalAmount, setTotalAmount] = useState('');
-  const [currency, setCurrency] = useState('');
-  const [error, setError] = useState(null);
+  const [prices, setPrices] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [totalAmount, setTotalAmount] = useState('')
+  const [currency, setCurrency] = useState('')
+  const [error, setError] = useState(null)
 
   function formatPrice(price) {
     if (!price) {
-      return '';
+      return ''
     }
-    var priceStr = price.toString();
-    var formattedPrice = priceStr.slice(0, -2) + '.' + priceStr.slice(-2);
-    return formattedPrice;
+    var priceStr = price.toString()
+    var formattedPrice = priceStr.slice(0, -2) + '.' + priceStr.slice(-2)
+    return formattedPrice
   }
 
   useEffect(() => {
     // Fetch product prices from the API with retry logic
     const fetchPrices = async (retries = 3) => {
       try {
-        const token = getAccessToken();
+        const token = getAccessToken()
         const response = await axios.get(
           `${process.env.REACT_APP_BASE_URL}/api/get_product_prices/`,
           { timeout: 5000 }
-        );
-        console.log('prices data', JSON.parse(response.data));
+        )
+        const fetchedPlans = JSON.parse(response.data).map((plan) => ({
+          id: plan.id,
+          default_price: plan.default_price,
+          name: plan.name,
+          paymentType: plan.metadata.paymentType,
+          price: `$${plan.metadata.paymentType != 'Anual' ? formatPrice(plan.price) : formatPrice(plan.price / 12)}/mes`,
+          total_price: formatPrice(plan.price),
+          paymentFrequency: `Cobro ${plan.metadata.paymentType.toLowerCase()} de $${formatPrice(plan.price)} recurrente`,
+          currency: 'mxn',
+          features: plan.features.map((feature) => ({
+            name: feature.name,
+            included: true, // Assuming all fetched features are included
+          })),
+          buttonText: plan.metadata.buttonText,
+          recommended: plan.metadata.paymentType == 'Anual' ? true : false, // Defaulting to false, you can adjust based on your logic
+          images: plan.images,
+          description: plan.description
+        }))
+        
         // Assume the response is the array of product data
-        setPrices(JSON.parse(response.data))
+        setPrices(fetchedPlans)
         setLoading(false)
       } catch (e) {
         if (retries > 0) {
-          console.log(`Retrying... (${3 - retries + 1})`);
-          fetchPrices(retries - 1);
+          console.log(`Retrying... (${3 - retries + 1})`)
+          fetchPrices(retries - 1)
         } else {
-          setError(e);
-          setLoading(false);
+          setError(e)
+          setLoading(false)
         }
       }
     }
 
-    fetchPrices();
-  }, []);
+    fetchPrices()
+  }, [])
 
   const handleSelectionChange = (productId, productPrice, productCurrency) => {
-    setSelectedPriceId(productId);
-    setTotalAmount(productPrice);
-    setCurrency(productCurrency);
-  };
+    setSelectedPriceId(productId)
+    setTotalAmount(productPrice)
+    setCurrency(productCurrency)
+  }
 
   // Display loading, error, or the list of product prices
   return (
     <div className='total-amount-box'>
-      <h3>Monto total: <span id='total-amount' >${formatPrice(totalAmount) + ' ' + currency}</span></h3>
-    
+      <h3>
+        Monto total:{' '}
+        <span id='total-amount'>
+          ${totalAmount + ' ' + currency}
+        </span>
+      </h3>
+
       {error && <p>Could not load prices: {error.message}</p>}
       <h5>Elige un plan:</h5>
       <div className='prices-container'>
-      {loading && <p>Cargando precios...</p>}
+        {loading && <p>Cargando precios...</p>}
         {prices.map((product, index) => (
           <label key={index} className='price-option'>
             <input
@@ -80,17 +102,32 @@ const TotalCheckoutBox = ({ setSelectedPriceId, selectedPriceId }) => {
               onChange={() =>
                 handleSelectionChange(
                   product.default_price,
-                  product.price,
+                  product.total_price,
                   product.currency
                 )
               }
             />
             <span className='price-label'>
               <h3>{product.name} </h3>
-              <img className='product_image' src={product.images[0]} alt={product.name}></img>
+              <img
+                className='product_image'
+                src={product.images[0]}
+                alt={product.name}
+              ></img>
               <p>{product.description}</p>
+              <p className='product-payment-frequency'>*{product.paymentFrequency}</p>
+              <ul className='plan-features'>
+                {product.features.map((feature, index) => (
+                  <li
+                    key={index}
+                    className={feature.included ? 'included' : 'not-included'}
+                  >
+                    {feature.name}
+                  </li>
+                ))}
+              </ul>
               <span>
-                ${formatPrice(product.price) + ' ' + product.currency}
+                {product.price + ' ' + product.currency}
               </span>
             </span>
           </label>
@@ -318,7 +355,7 @@ const DefaultPaymentMethod = ({
 
   return (
     <div>
-      <h3>Metodos de pagos guardados: </h3>
+      <h3>Métodos de pago guardados:</h3>
       {defaultPaymentMethod ? (
         <>
           {priceError && <p className='text-danger'>{priceError}</p>}
@@ -365,13 +402,13 @@ const DefaultPaymentMethod = ({
       ) : (
         <>
           <div className='mt-3 text-center'>
-            <p> No hay metodos guardados </p>
+            <p>No hay métodos guardados</p>
           </div>
         </>
       )}
 
       <div className='mt-3'>
-        <p>Usar/agregar nuevo metodo: </p>
+        <p>Usar/agregar nuevo método:</p>
       </div>
     </div>
   )

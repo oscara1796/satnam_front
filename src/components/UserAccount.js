@@ -38,7 +38,6 @@ function UserAccount({ isLoggedIn, logIn, logOut }) {
   // Fetch user data on component mount
   useEffect(() => {
     const fetchUser = () => {
-      
       if (state.user !== undefined) {
         setUserData(state.user)
       }
@@ -63,30 +62,30 @@ function UserAccount({ isLoggedIn, logIn, logOut }) {
 
   // Handle form submission
   const handleSubmit = async (values, actions) => {
-    const url = `${process.env.REACT_APP_BASE_URL}/api/users/${userData.id}/`;
-    const token = getAccessToken();
-    const headers = { Authorization: `Bearer ${token}` };
-  
+    const url = `${process.env.REACT_APP_BASE_URL}/api/users/${userData.id}/`
+    const token = getAccessToken()
+    const headers = { Authorization: `Bearer ${token}` }
+
     // Create an object to hold only the changed fields
-    const updatedFields = {};
-    const fieldsToSend = { ...values }; // Include all values including passwords
-  
+    const updatedFields = {}
+    const fieldsToSend = { ...values } // Include all values including passwords
+
     // Filter out unchanged fields from updatedFields
     for (const key in values) {
       if (values[key] !== userData[key]) {
-        updatedFields[key] = values[key];
+        updatedFields[key] = values[key]
       }
     }
-  
+
     // Exclude passwords from updatedFields
-    const { password1, password2, ...fieldsToUpdate } = updatedFields;
-  
+    const { password1, password2, ...fieldsToUpdate } = updatedFields
+
     try {
       const res = await axios.patch(url, fieldsToSend, {
         headers: headers,
-      });
-      console.log("USER account form data ", fieldsToSend);
-      console.log(res);
+      })
+      console.log('USER account form data ', fieldsToSend)
+      console.log(res)
       // Update state without passwords
       setState((prevState) => ({
         ...prevState,
@@ -94,13 +93,13 @@ function UserAccount({ isLoggedIn, logIn, logOut }) {
           ...prevState.user,
           ...fieldsToUpdate,
         },
-      }));
-      setSubmitted(true);
-      toast.success('Tu usuario se actualizó');
+      }))
+      setSubmitted(true)
+      toast.success('Tu usuario se actualizó')
     } catch (response) {
-      showErrorNotification(response);
+      showErrorNotification(response)
     }
-  };
+  }
   // Yup validation schema
   const validationSchema = Yup.object().shape({
     username: Yup.string().required('Username es requerido'),

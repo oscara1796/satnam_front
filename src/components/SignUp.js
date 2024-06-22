@@ -10,13 +10,13 @@ import {
   Container,
   Spinner,
 } from 'react-bootstrap'
-import { Link, Navigate, useLocation} from 'react-router-dom'
+import { Link, Navigate, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import * as Yup from 'yup'
 import { showErrorNotification } from '../services/notificationService'
 import './SignUp.css'
-import queryString from 'query-string';
+import queryString from 'query-string'
 
 const signupSchema = Yup.object().shape({
   username: Yup.string()
@@ -81,9 +81,9 @@ function SignUp({ isLoggedIn }) {
   const [isSubmitted, setSubmitted] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [termsAccepted, setTermsAccepted] = useState(false)
-  const location = useLocation();
+  const location = useLocation()
 
-  const { redirect } = queryString.parse(location.search);
+  const { redirect } = queryString.parse(location.search)
 
   const onSubmit = async (values, actions) => {
     if (!termsAccepted) {

@@ -145,7 +145,7 @@ const SubscriptionForm = ({
           <Form>
             <div className='mb-3'>
               <label htmlFor='card_number' className='form-label'>
-                Card Number:
+                Número de Tarjeta:
               </label>
               <Field
                 type='text'
@@ -170,7 +170,7 @@ const SubscriptionForm = ({
             <div className='row'>
               <div className='col-md-6 mb-3'>
                 <label htmlFor='exp_month' className='form-label'>
-                  Expiration Month:
+                  Mes de expiración:
                 </label>
                 <Field
                   type='number'
@@ -189,7 +189,7 @@ const SubscriptionForm = ({
               </div>
               <div className='col-md-6 mb-3'>
                 <label htmlFor='exp_year' className='form-label'>
-                  Expiration Year:
+                  Año de expiración:
                 </label>
                 <Field
                   as='select'
@@ -212,7 +212,7 @@ const SubscriptionForm = ({
             </div>
             <div className='mb-3'>
               <label htmlFor='cvc' className='form-label'>
-                CVC:
+                CVC (Número de seguridad):
               </label>
               <Field type='text' name='cvc' className='form-control' required />
               <ErrorMessage

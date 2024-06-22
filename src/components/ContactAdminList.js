@@ -7,11 +7,10 @@ import styles from './ContactAdminList.module.css'
 import { showErrorNotification } from '../services/notificationService'
 import { toast } from 'react-toastify'
 
-
 const ContactAdminList = ({ isLoggedIn }) => {
   const [messages, setMessages] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(0) // Assuming you'll calculate or receive this from the API
+  const [totalPages, setTotalPages] = useState(0) 
   const [nextPageUrl, setNextPageUrl] = useState('')
   const [prevPageUrl, setPrevPageUrl] = useState('')
   const [state, setState] = useContext(UserContext)

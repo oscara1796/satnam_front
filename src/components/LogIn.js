@@ -11,21 +11,21 @@ import {
   Container,
   Spinner,
 } from 'react-bootstrap'
-import { Link, Navigate,  useLocation } from 'react-router-dom'
+import { Link, Navigate, useLocation } from 'react-router-dom'
 import { UserContext } from '../context'
 import { getAccessToken } from '../services/AuthService'
 import { showErrorNotification } from '../services/notificationService'
 import * as Yup from 'yup'
-import queryString from 'query-string';
+import queryString from 'query-string'
 
 function LogIn({ isLoggedIn, logIn, setLoggedIn }) {
   const [isSubmitted, setSubmitted] = useState(false)
   const [state, setState] = useContext(UserContext)
   const [isLoading, setLoading] = useState(false)
   const [showRecoverPass, setShowRecoverPass] = useState(false)
-  const location = useLocation();
+  const location = useLocation()
 
-  const { redirect } = queryString.parse(location.search);
+  const { redirect } = queryString.parse(location.search)
 
   const onSubmit = async (values, actions) => {
     setLoading(true)
@@ -78,7 +78,7 @@ function LogIn({ isLoggedIn, logIn, setLoggedIn }) {
   })
 
   if (isLoggedIn || isSubmitted) {
-    return <Navigate to={redirect || '/'} />;
+    return <Navigate to={redirect || '/'} />
   }
 
   return (
@@ -159,10 +159,17 @@ function LogIn({ isLoggedIn, logIn, setLoggedIn }) {
             )}
           </Formik>
           <Card.Text className='text-center'>
-            No tienes cuenta? 
+            No tienes cuenta?
             {redirect ? (
-              <Link to={{ pathname: '/sign-up', search: '?redirect=/payment-methods' }}>Sign up!</Link>
-            ): (
+              <Link
+                to={{
+                  pathname: '/sign-up',
+                  search: '?redirect=/payment-methods',
+                }}
+              >
+                Sign up!
+              </Link>
+            ) : (
               <Link to='/sign-up'>Sign up!</Link>
             )}
           </Card.Text>
