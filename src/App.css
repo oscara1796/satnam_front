@@ -358,6 +358,21 @@ main {
   width: 35vw;
 }
 
+/* Layout for tablets (screens smaller than 1000px) */
+@media (max-width: 1000px) {
+  .sub_form {
+    width: 70vw; /* Adjust width for tablets */
+  }
+}
+
+/* Layout for mobile devices (screens smaller than 480px) */
+@media (max-width: 480px) {
+  .sub_form {
+    width: 90vw; /* Adjust width for mobile devices */
+    padding: 0.5rem; /* Reduce padding for smaller screens */
+  }
+}
+
 .card-icons {
   margin-top: 10px;
   display: flex;
@@ -777,52 +792,7 @@ input[type='checkbox']:checked + .checkbox-circle {
 
 /* END OF PAYMENT OPTIONS */
 
-/* TOTAL AMOUNT CHECKOUT BOX STYLE  */
 
-.prices-container {
-  display: flex; /* Display prices inline */
-  flex-wrap: wrap; /* Wrap to the next line if needed */
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px; /* Add space between price boxes */
-}
-
-.price-option {
-  display: block; /* Ensure the label behaves as a container */
-  border: 1px solid #ccc; /* Border for the box */
-  /* Padding inside the box */
-  background-color: #f9f9f9; /* Light background for the box */
-  cursor: pointer; /* Indicate the entire box is clickable */
-  user-select: none; /* Prevent text selection */
-  border-radius: 10px;
-  transition: transform 0.3s ease;
-  margin-bottom: 1rem;
-}
-
-.price-option input[type='checkbox'] {
-  display: none; /* Hide the actual checkbox */
-}
-
-.price-option .price-label {
-  width: 25vw;
-  display: flex; /* Ensure the span behaves as a container */
-  flex-direction: column;
-  padding: 10px;
-}
-
-.price-option:hover,
-.price-option input[type='checkbox']:checked + .price-label {
-  transform: scale(1.1);
-  background-color: #055d9c; /* Change background on hover/select */
-  color: white;
-}
-
-.product_image {
-  width: 10vw;
-  align-self: center;
-}
-
-/* END OF TOTAL AMOUNT CHECKOUT BOX STYLE  */
 
 /* VIDEO CARD STYLE */
 

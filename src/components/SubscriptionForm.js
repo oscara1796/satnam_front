@@ -4,6 +4,7 @@ import { Container } from 'react-bootstrap'
 import { Navigate } from 'react-router-dom'
 import axios from 'axios'
 import { getUser, getAccessToken } from '../services/AuthService'
+import { showErrorNotification } from '../services/notificationService'
 import {
   isValidCVC,
   isValidMonth,
@@ -81,6 +82,7 @@ const SubscriptionForm = ({
     } catch (error) {
       console.error('Error creating subscription:')
       console.log(error)
+      showErrorNotification(error)
       console.log('navigate to cancel')
       setSubSuccess(false)
     }

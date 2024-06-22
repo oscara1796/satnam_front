@@ -11,6 +11,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { getCardBrandIcon } from '../services/CardValidationService'
 import { Button, Spinner } from 'react-bootstrap'
 import { showErrorNotification } from '../services/notificationService'
+
+
 const TotalCheckoutBox = ({ setSelectedPriceId, selectedPriceId }) => {
   const [prices, setPrices] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -183,7 +185,7 @@ const PaymentOptions = ({ isLoggedIn, trialDays }) => {
 
   return (
     <div className='checkout_page'>
-      <div className='container my-3 payments-box'>
+      <div className='container my-1 payments-box'>
         {trialDays.length > 0 ? (
           <TrialBanner trialDays={trialDays[0].days} />
         ) : (
