@@ -8,6 +8,19 @@ import {
 import { stateToHTML } from 'draft-js-export-html'
 import { LinkContainer } from 'react-router-bootstrap'
 
+const ImageComponent = ({ image, title }) => {
+  const imageUrl = image.startsWith('https://satnam-bucket') ? image : `${process.env.REACT_APP_BASE_URL}${image}`;
+
+  return (
+    <img
+      src={imageUrl}
+      alt={title}
+      className='play-icon'
+    />
+  );
+};
+
+
 const VideoCard = ({
   id,
   title,
@@ -65,11 +78,7 @@ const VideoCard = ({
       <h2>{title}</h2>
       <LinkContainer to={`/video-detailed/${id}/${title}`}>
         <div className='video-image-container'>
-          <img
-            src={`${process.env.REACT_APP_BASE_URL}${image}`}
-            alt={title}
-            className='play-icon'
-          />
+          <ImageComponent image={image} title={title} />
           <i className='play-icon'>▶️</i> {/* Add a play icon */}
         </div>
       </LinkContainer>
