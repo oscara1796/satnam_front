@@ -337,7 +337,7 @@ function Layout({ isLoggedIn, logOut }) {
                 {isLoggedIn ? (
                   <>
                     <LinkContainer to='/account'>
-                      <Button data-cy='account'>Account</Button>
+                      <Button data-cy='account'>Cuenta</Button>
                     </LinkContainer>
                     <Form>
                       <Button
@@ -345,7 +345,7 @@ function Layout({ isLoggedIn, logOut }) {
                         type='button'
                         onClick={() => logOut()}
                       >
-                        Log out
+                        Salir
                       </Button>
                     </Form>
                   </>

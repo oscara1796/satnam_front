@@ -348,7 +348,7 @@ function SignUp({ isLoggedIn }) {
                         {' Loading...'}
                       </>
                     ) : (
-                      'Sign up'
+                      'Crear Cuenta'
                     )}
                   </Button>
                 </div>
@@ -356,7 +356,7 @@ function SignUp({ isLoggedIn }) {
             )}
           </Formik>
           <Card.Text className='text-center'>
-            Ya tienes cuenta? <Link to='/log-in'>Log in!</Link>
+            Ya tienes cuenta? <Link to='/log-in'>Inicia Sesión!</Link>
           </Card.Text>
         </Card.Body>
       </Card>
