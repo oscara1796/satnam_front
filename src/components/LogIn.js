@@ -84,7 +84,7 @@ function LogIn({ isLoggedIn, logIn, setLoggedIn }) {
   return (
     <Container className='mt-2 centered-container'>
       <Card>
-        <Card.Header>Log in</Card.Header>
+        <Card.Header>Inicia Sesión</Card.Header>
         <Card.Body>
           <Formik
             initialValues={{
@@ -150,7 +150,7 @@ function LogIn({ isLoggedIn, logIn, setLoggedIn }) {
                           {' Loading...'}
                         </>
                       ) : (
-                        'Log in'
+                        'Inicia Sesión'
                       )}
                     </Button>
                   </div>
@@ -167,10 +167,10 @@ function LogIn({ isLoggedIn, logIn, setLoggedIn }) {
                   search: '?redirect=/payment-methods',
                 }}
               >
-                Sign up!
+                Crear Cuenta!
               </Link>
             ) : (
-              <Link to='/sign-up'>Sign up!</Link>
+              <Link to='/sign-up'>Crear Cuenta!</Link>
             )}
           </Card.Text>
 

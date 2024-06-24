@@ -352,10 +352,10 @@ function Layout({ isLoggedIn, logOut }) {
                 ) : (
                   <>
                     <LinkContainer to='/sign-up'>
-                      <Button data-cy='signUp'>Sign up</Button>
+                      <Button data-cy='signUp'>Crear cuenta</Button>
                     </LinkContainer>
                     <LinkContainer to='/log-in'>
-                      <Button data-cy='logIn'>Log in</Button>
+                      <Button data-cy='logIn'>Inicia Sesión</Button>
                     </LinkContainer>
                   </>
                 )}
