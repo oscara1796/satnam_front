@@ -641,6 +641,20 @@ main {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Adjusted box shadow on hover */
   }
 }
+
+.delete-category-button {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.delete-category-button:hover {
+  background-color: darkred;
+}
+
 .categories_container {
   width: 100%;
   display: flex;

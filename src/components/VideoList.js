@@ -12,54 +12,74 @@ const Spinner = () => {
 }
 
 const Categories = ({ handleCategoryOption, selectedCategory }) => {
-  const [categories, setCategories] = useState([])
+  const [categories, setCategories] = useState([]);
+  const [state, setState] = useContext(UserContext);
 
   useEffect(() => {
     async function getCategories() {
       // Define the URL of your Django API endpoint
-      const url = `${process.env.REACT_APP_BASE_URL}/api/category_list/`
-      const token = getAccessToken()
-      const headers = { Authorization: `Bearer ${token}` }
+      const url = `${process.env.REACT_APP_BASE_URL}/api/category_list/`;
+      const token = getAccessToken();
+      const headers = { Authorization: `Bearer ${token}` };
 
       // Fetch categories from the API
       try {
-        let response = await axios.get(
-          url,
-          {
-            headers: headers,
-          },
-          { timeout: 5000 }
-        )
-        setCategories(response.data)
-        console.log('categories', response.data)
+        let response = await axios.get(url, { headers: headers, timeout: 5000 });
+        setCategories(response.data);
+        console.log('categories', response.data);
       } catch (error) {
-        console.error('Error obtaining categories:')
-        console.log(error)
+        console.error('Error obtaining categories:');
+        console.log(error);
       }
     }
 
-    getCategories()
-  }, [])
+    getCategories();
+  }, []);
+
+  const handleDeleteCategory = async (categoryId) => {
+    const url = `${process.env.REACT_APP_BASE_URL}/api/category_detail/${categoryId}/`;
+    const token = getAccessToken();
+    const headers = { Authorization: `Bearer ${token}` };
+
+    try {
+      await axios.delete(url, { headers: headers });
+      setCategories(categories.filter(category => category.id !== categoryId));
+      console.log('Category deleted successfully');
+    } catch (error) {
+      console.error('Error deleting category:');
+      console.log(error);
+    }
+  };
 
   return (
     <>
       {categories.map((category) => (
-        <button
-          key={category.id}
-          onClick={handleCategoryOption}
-          value={category.id}
-          style={{
-            backgroundColor:
-              category.id == selectedCategory ? '#007bff' : 'initial',
-            color: category.id == selectedCategory ? 'white' : 'initial',
-          }}
-        >
-          {category.title}
-        </button>
+        <div key={category.id} style={{ marginBottom: '10px' }}>
+          {state.user && state.user.is_staff && (
+            <button
+              onClick={() => handleDeleteCategory(category.id)}
+              className='delete-category-button'
+              style={{ marginBottom: '5px', backgroundColor: 'red', color: 'white' }}
+            >
+              Delete Category
+            </button>
+          )}
+          <button
+            onClick={handleCategoryOption}
+            value={category.id}
+            style={{
+              backgroundColor: category.id == selectedCategory ? '#007bff' : 'initial',
+              color: category.id == selectedCategory ? 'white' : 'initial',
+            }}
+          >
+            {category.title}
+          </button>
+        </div>
       ))}
     </>
-  )
-}
+  );
+};
+
 
 const VideoList = ({ isLoggedIn }) => {
   const [videos, setVideos] = useState([])
