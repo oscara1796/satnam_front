@@ -9,6 +9,7 @@ import './CreateScheduleAdmin.css'
 import { showErrorNotification } from '../services/notificationService'
 import { parse, differenceInMinutes } from 'date-fns'
 
+// Define the days of the week
 const days = [
   'Lunes',
   'Martes',
@@ -18,24 +19,35 @@ const days = [
   'Sabado',
   'Domingo',
 ]
+
+// Generate an array of hours from 0:00 to 23:00
 const hours = Array.from({ length: 24 }, (_, i) => `${i}:00`)
 
+// Function to format time strings, ensuring two-digit hours and minutes
 const formatTime = (time) => {
-  const [hours, minutes] = time.split(':')
-  return `${hours.padStart(2, '0')}:${minutes}`
+  const [hour, minutes] = time.split(':')
+  return `${hour.padStart(2, '0')}:${minutes}`
 }
 
+// Main component for creating schedules
 const CreateScheduleAdmin = (props) => {
+  // State to store events, initializing from localStorage if available
   const [events, setEvents] = useState(() => {
     const savedEvents = localStorage.getItem('events')
     return savedEvents ? JSON.parse(savedEvents) : {}
   })
+
+  // State to control the visibility of the event form
   const [showEventForm, setShowEventForm] = useState(false)
+
+  // State to keep track of the current event being edited or created
   const [currentEvent, setCurrentEvent] = useState({ day: '', time: '' })
+
+  // Get the user context for authorization checks
   const [state, setState] = useContext(UserContext)
 
+  // Handle cell click to open the event form
   const handleCellClick = (day, time, event = null) => {
-    console.log('time', time)
     if (event) {
       setCurrentEvent({ day, time: event.startTime, ...event })
     } else {
@@ -44,47 +56,36 @@ const CreateScheduleAdmin = (props) => {
     setShowEventForm(true)
   }
 
+  // Handle saving an event, including conflict checks
   const handleEventSave = (eventDetails) => {
-    // Convert times to comparable values
-    const newStartTime = new Date(
-      `01/01/2000 ${eventDetails.startTime}`
-    ).getTime()
+    const newStartTime = new Date(`01/01/2000 ${eventDetails.startTime}`).getTime()
     const newEndTime = new Date(`01/01/2000 ${eventDetails.endTime}`).getTime()
 
-    if (newStartTime == newEndTime) {
-      toast.error('Clase tiene misma hora  de comienzo y de finalización')
+    if (newStartTime === newEndTime) {
+      toast.error('Clase tiene misma hora de comienzo y de finalización')
       return
     }
 
-    // Check for time conflicts
+    // Check for time conflicts with existing events
     const conflict = Object.values(events).some((event) => {
-      if (event.day !== eventDetails.day) return false // Skip if it's a different day
+      if (event.day !== eventDetails.day) return false
 
-      const existingStartTime = new Date(
-        `01/01/2000 ${event.startTime}`
-      ).getTime()
+      const existingStartTime = new Date(`01/01/2000 ${event.startTime}`).getTime()
       const existingEndTime = new Date(`01/01/2000 ${event.endTime}`).getTime()
 
-      // Check if new event starts or ends within an existing event
-      const startsDuringExisting =
-        newStartTime >= existingStartTime && newStartTime < existingEndTime
-      const endsDuringExisting =
-        newEndTime > existingStartTime && newEndTime <= existingEndTime
-      // Check if new event completely covers an existing event
-      const coversExisting =
-        newStartTime <= existingStartTime && newEndTime >= existingEndTime
+      const startsDuringExisting = newStartTime >= existingStartTime && newStartTime < existingEndTime
+      const endsDuringExisting = newEndTime > existingStartTime && newEndTime <= existingEndTime
+      const coversExisting = newStartTime <= existingStartTime && newEndTime >= existingEndTime
 
       return startsDuringExisting || endsDuringExisting || coversExisting
     })
 
     if (conflict) {
-      toast.error(
-        'No podemos añadir este evento por que genera conflicto con otro .'
-      )
+      toast.error('No podemos añadir este evento por que genera conflicto con otro.')
       return
     }
 
-    // If no conflicts, proceed to add/update the event
+    // Add or update the event in the state
     const eventKey = `${eventDetails.day}-${eventDetails.startTime}`
     setEvents((prevEvents) => ({
       ...prevEvents,
@@ -92,11 +93,10 @@ const CreateScheduleAdmin = (props) => {
     }))
 
     setShowEventForm(false)
-    toast.info(
-      'Se agrego tu clase, dale guardar para guardar horario correctamente'
-    )
+    toast.info('Se agrego tu clase, dale guardar para guardar horario correctamente')
   }
 
+  // Handle deleting an event
   const handleEventDelete = (eventToDelete) => {
     const eventKey = `${eventToDelete.day}-${eventToDelete.startTime}`
     setEvents((prevEvents) => {
@@ -106,6 +106,7 @@ const CreateScheduleAdmin = (props) => {
     })
   }
 
+  // Check if an event occupies a given cell
   const isEventInCell = (event, day, time) => {
     if (!event || event.day !== day) return false
 
@@ -116,81 +117,51 @@ const CreateScheduleAdmin = (props) => {
     return cellTime >= startTime && cellTime < endTime
   }
 
+  // Handle saving the entire schedule to the server
   const handleSaveSchedule = async () => {
-    // Prepare your event data for the API
     const eventData = Object.values(events)
-    console.log('eventData', eventData)
     try {
-      // Example API call using axios
-
       const url = `${process.env.REACT_APP_BASE_URL}/api/events/`
       const token = getAccessToken()
       const headers = { Authorization: `Bearer ${token}` }
-      const response = await axios.post(
-        url,
-        eventData,
-        {
-          headers: headers,
-        },
-        { timeout: 5000 }
-      )
-
-      // Handle the response
+      await axios.post(url, eventData, { headers, timeout: 5000 })
       toast.success('Se Guardo tu horario correctamente ')
     } catch (error) {
       showErrorNotification(error)
-      console.log(error)
-      console.error(
-        'Error saving schedule:',
-        error.response ? error.response.data : error.message
-      )
+      console.error('Error saving schedule:', error.response ? error.response.data : error.message)
     }
   }
 
+  // Fetch existing events from the server
   const fetchEvents = async () => {
     try {
-      // Example API call using axios
-
       const url = `${process.env.REACT_APP_BASE_URL}/api/events/`
       const token = getAccessToken()
       const headers = { Authorization: `Bearer ${token}` }
-      const response = await axios.get(
-        url,
-        {
-          headers: headers,
-        },
-        { timeout: 5000 }
-      )
-
-      console.log(response.data)
-
+      const response = await axios.get(url, { headers: headers }, { timeout: 5000 })
       let data = {}
       response.data.forEach((event) => {
         const eventKey = `${event.day}-${event.startTime}`
         data[eventKey] = event
       })
-
-      console.log('events', data)
       setEvents(data)
-      // Handle the response
     } catch (error) {
       showErrorNotification(error)
-      console.log(error)
-      console.error(
-        'Error saving schedule:',
-        error.response ? error.response.data : error.message
-      )
+      console.error('Error fetching events:', error.response ? error.response.data : error.message)
     }
   }
 
+  // Fetch events on component mount
   useEffect(() => {
     fetchEvents()
   }, [])
 
+  // Save events to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem('events', JSON.stringify(events))
   }, [events])
 
+  // Redirect to login if user is not logged in or not an admin
   if (!props.isLoggedIn || (state.user && !state.user.is_staff)) {
     return <Navigate to='/log-in' />
   }
@@ -200,14 +171,9 @@ const CreateScheduleAdmin = (props) => {
       <div className='schedule-container'>
         <div className='schedule-header'>
           <h1>Horarios Sat Nam Escuela</h1>
-          <button
-            type='button'
-            className='btn btn-primary'
-            onClick={handleSaveSchedule}
-          >
+          <button type='button' className='btn btn-primary' onClick={handleSaveSchedule}>
             Guarda Horario
-          </button>{' '}
-          {/* Save Button */}
+          </button>
         </div>
         <table className='schedule-table'>
           <thead>
@@ -234,9 +200,7 @@ const CreateScheduleAdmin = (props) => {
                       key={day}
                       onClick={() => handleCellClick(day, time, eventExists)}
                       style={{
-                        backgroundColor: eventExists
-                          ? '#add8e6'
-                          : 'transparent',
+                        backgroundColor: eventExists ? '#add8e6' : 'transparent',
                       }}
                     >
                       {eventExists ? eventExists.title : ''}
@@ -265,6 +229,7 @@ const CreateScheduleAdmin = (props) => {
   )
 }
 
+// EventForm component for creating or editing an event
 const EventForm = ({
   defaultTitle = '',
   defaultDay,
@@ -277,11 +242,12 @@ const EventForm = ({
 }) => {
   const [day, setDay] = useState(defaultDay)
   const [startTime, setStartTime] = useState('')
-  const [endTime, setEndTime] = useState('') // Initialize endTime state
+  const [endTime, setEndTime] = useState('')
   const [description, setDescription] = useState('')
   const [title, setTitle] = useState('')
   const [errors, setErrors] = useState({})
 
+  // Define validation schema for the event form
   const eventSchema = Yup.object().shape({
     title: Yup.string().required('El título es obligatorio'),
     day: Yup.string().required('El día es obligatorio'),
@@ -302,22 +268,19 @@ const EventForm = ({
     description: Yup.string().required('La descripción es obligatoria'),
   })
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      // Validate form data
       const formData = { title, day, startTime, endTime, description }
       await eventSchema.validate(formData, { abortEarly: false })
-
-      // If validation is successful, call onSave
       onSave({
         ...formData,
-        startTime: formatTime(startTime), // Ensure times are formatted correctly
+        startTime: formatTime(startTime),
         endTime: formatTime(endTime),
       })
       setErrors({})
     } catch (err) {
-      // Handle validation errors
       if (err.inner) {
         const formErrors = err.inner.reduce((acc, error) => {
           acc[error.path] = error.message
@@ -325,18 +288,17 @@ const EventForm = ({
         }, {})
         setErrors(formErrors)
       }
-
-      // Here you can set some state to display the validation errors on the form
     }
   }
 
+  // Update state when default values change
   useEffect(() => {
     setDay(defaultDay)
     setStartTime(formatTime(defaultTime))
     setDescription(defaultDescription)
     setEndTime(defaultEndTime)
     setTitle(defaultTitle)
-  }, [defaultTitle, defaultDay, defaultTime, defaultDescription])
+  }, [defaultTitle, defaultDay, defaultTime, defaultDescription, defaultEndTime])
 
   return (
     <div className='overlay'>
@@ -361,34 +323,18 @@ const EventForm = ({
           </label>
           <label>
             Start Time:
-            <input
-              type='time'
-              value={startTime}
-              onChange={(e) => setStartTime(e.target.value)}
-            />
-            {errors.startTime && (
-              <div className='error'>{errors.startTime}</div>
-            )}
+            <input type='time' value={startTime} onChange={(e) => setStartTime(e.target.value)} />
+            {errors.startTime && <div className='error'>{errors.startTime}</div>}
           </label>
           <label>
             End Time:
-            <input
-              type='time'
-              value={endTime}
-              onChange={(e) => setEndTime(e.target.value)}
-            />
+            <input type='time' value={endTime} onChange={(e) => setEndTime(e.target.value)} />
             {errors.endTime && <div className='error'>{errors.endTime}</div>}
           </label>
           <label>
             Descripción:
-            <input
-              type='text'
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-            {errors.description && (
-              <div className='error'>{errors.description}</div>
-            )}
+            <input type='text' value={description} onChange={(e) => setDescription(e.target.value)} />
+            {errors.description && <div className='error'>{errors.description}</div>}
           </label>
           <button type='submit'>Guardar Clase</button>
           {defaultTitle && (

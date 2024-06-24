@@ -6,10 +6,10 @@ import axios from 'axios'
 import { showErrorNotification } from '../services/notificationService'
 
 const formatTime12Hour = (time24) => {
-  const [hours, minutes] = time24.split(':')
+  const [hours, minutes] = time24.split(':').map(Number) // Convert both hours and minutes to numbers
   const hours12 = ((hours + 11) % 12) + 1 // Convert 24-hour to 12-hour format
   const amPm = hours >= 12 ? 'PM' : 'AM'
-  return `${hours12}:${minutes} ${amPm}`
+  return `${hours12}:${minutes.toString().padStart(2, '0')} ${amPm}` // Pad minutes with leading zero if necessary
 }
 
 const dayColors = {
