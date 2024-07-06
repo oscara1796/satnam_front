@@ -27,6 +27,7 @@ import ResetPassword from './components/ResetPassword'
 import TermsOfService from './components/TermsOfService'
 import Footer from './components/Footer'
 import PrivacyPolicy from './components/PrivacyPolicy'
+import SubscriptionPlansAdmin from './components/SubscriptionPlansAdmin'
 import axios from 'axios'
 import {
   getUser,
@@ -178,6 +179,11 @@ function App() {
           path='schedule-create'
           element={<CreateScheduleAdmin isLoggedIn={isLoggedIn} />}
         />
+
+        <Route
+          path='subcriptions-plans-admin'
+          element={<SubscriptionPlansAdmin isLoggedIn={isLoggedIn} />}
+        />
         <Route path='sign-up' element={<SignUp isLoggedIn={isLoggedIn} />} />
         <Route
           path='log-in'
@@ -326,6 +332,11 @@ function Layout({ isLoggedIn, logOut }) {
                     <LinkContainer to='/schedule-create'>
                       <NavDropdown.Item className='custom-item-navbar-admin'>
                         Horario Escuela
+                      </NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to='/subcriptions-plans-admin'>
+                      <NavDropdown.Item className='custom-item-navbar-admin'>
+                        Crear subscripciones
                       </NavDropdown.Item>
                     </LinkContainer>
                   </NavDropdown>
