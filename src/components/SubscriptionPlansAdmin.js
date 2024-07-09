@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 import axios from 'axios';
+import * as Yup from 'yup'
 import { toast } from 'react-toastify'
 import { Modal, Button, Form } from 'react-bootstrap';
 import { UserContext } from '../context';
+import { getUser, getAccessToken } from '../services/AuthService'
 import { showErrorNotification } from '../services/notificationService'
 import './SubscriptionPlansAdmin.css'; 
 import { Formik } from 'formik'
@@ -14,12 +16,36 @@ const SubscriptionPlansAdmin = ({isLoggedIn}) => {
   const [fetchPlansBool, setFetchPlanBool] = useState(false);
   const [currentPlan, setCurrentPlan] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { user, isLoggedIn } = useContext(UserContext);
+  const { user, setState } = useContext(UserContext);
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState(currentPlan?.image || '');
 
   useEffect(() => {
     setLoading(true);
     fetchPlans();
   }, [fetchPlansBool]);
+
+  useEffect(() => {
+    // Update the image preview when the current plan changes
+    if (currentPlan?.image) {
+      setImagePreviewUrl(currentPlan.image);
+      setImageFile(null); // Reset file input when switching plans
+    }
+  }, [currentPlan]);
+
+
+  const handleImageChange = (event, setFieldValue) => {
+    const file = event.target.files[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreviewUrl(reader.result);
+        setFieldValue('image', file);  // Update Formik's state
+      };
+      reader.readAsDataURL(file);
+    }
+};
 
   const openModal = (plan = null) => {
     setCurrentPlan(plan);  // If plan is null, it's a new plan
@@ -33,32 +59,44 @@ const SubscriptionPlansAdmin = ({isLoggedIn}) => {
 
   const fetchPlans = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}api/subscription_plan/`);
+      const token = getAccessToken()
+      const headers = { Authorization: `Bearer ${token}` }
+      const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/subscription_plan/`, { headers, timeout: 5000 });
       setPlans(data);
       setLoading(false);
     } catch (error) {
-        showErrorNotification(error);
+       console.log(error)
       setLoading(false);
     }
   };
 
   const handleFormSubmit = async (values, { setSubmitting }) => {
-    // Prepare data to fit the expected format, especially JSON fields
-    const planData = {
-      ...values,
-      features: JSON.parse(values.features || '{}'),
-      metadata: JSON.parse(values.metadata || '{}')
-    };
-
+    const formData = new FormData();
+    Object.keys(values).forEach(key => {
+      if (key === 'features' || key === 'metadata') {
+        formData.append(key, JSON.stringify(values[key]));
+      } else if (key === 'image' && values[key]) {
+        formData.append('image', values[key]);  // Append file to FormData
+      } else {
+        formData.append(key, values[key]);
+      }
+    });
+  
     try {
-      const url = `${process.env.REACT_APP_BASE_URL}api/subscription_plan/${currentPlan ? `${currentPlan.id}/` : ''}`;
+      const url = `${process.env.REACT_APP_BASE_URL}/api/subscription_plan/${currentPlan ? `${currentPlan.id}/` : ''}`;
       const method = currentPlan ? 'put' : 'post';
-      await axios[method](url, planData);
+      console.log(formData)
+      await axios[method](url, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${getAccessToken()}`
+        }
+      });
       closeModal();
       setFetchPlanBool(!fetchPlansBool);
-      toast.success('Se Guardo tu actualizaron los planes correctamente');
+      toast.success('Plan updated successfully');
     } catch (error) {
-        showErrorNotification(error);
+      showErrorNotification(error);
     } finally {
       setSubmitting(false);
     }
@@ -86,6 +124,19 @@ const SubscriptionPlansAdmin = ({isLoggedIn}) => {
         try { JSON.parse(value); return true; }
         catch (e) { return false; }
       }
+    ),
+    image: Yup.mixed()
+    .nullable()
+    .notRequired()
+    .test(
+      "fileSize",
+      "File too large",
+      value => !value || (value && value.size <= 1024 * 1024 * 5) // 5 MB limit
+    )
+    .test(
+      "fileFormat",
+      "Unsupported Format",
+      value => !value || (value && ['image/jpeg', 'image/png', 'image/gif'].includes(value.type))
     )
   });
 
@@ -93,7 +144,9 @@ const SubscriptionPlansAdmin = ({isLoggedIn}) => {
   const deletePlan = async (planId) => {
     if (window.confirm('Are you sure you want to delete this plan?')) {
       try {
-        await axios.delete(`${process.env.REACT_APP_BASE_URL}/api/plans/${planId}/`);
+        const token = getAccessToken()
+        const headers = { Authorization: `Bearer ${token}` }
+        await axios.delete(`${process.env.REACT_APP_BASE_URL}/api/subscription_plan/${planId}/`, { headers, timeout: 5000 });
         // Re-fetch plans to update the list
         setFetchPlanBool(!fetchPlansBool);
         toast.success('Se elimino el plan correctamente');
@@ -110,17 +163,21 @@ const SubscriptionPlansAdmin = ({isLoggedIn}) => {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="plan-container">
+    <div className="plan_container_subscriptions">
       <Button onClick={() => openModal()}>Add New Plan</Button>
       {plans.map(plan => (
         <div key={plan.id} className='plan-card'>
-          <p>{plan.name} - {plan.price}</p>
+          <h4>{plan.name}</h4>
+          <p>${plan.price}</p>
+          <div>
+            <p>{plan.description}</p>
+          </div>
           <Button onClick={() => openModal(plan)}>Edit</Button>
           <Button onClick={() => deletePlan(plan.id)}>Delete</Button>
         </div>
       ))}
 
-      <Modal show={showModal} onHide={closeModal}>
+      <Modal show={showModal} onHide={closeModal} centered scrollable={true}>
         <Formik
             initialValues={{
                 name: currentPlan?.name || '',
@@ -137,7 +194,7 @@ const SubscriptionPlansAdmin = ({isLoggedIn}) => {
             onSubmit={handleFormSubmit}
             enableReinitialize={true}
             >
-                    {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+                    {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, setFieldValue }) => (
                     <Form noValidate onSubmit={handleSubmit}>
                     <Form.Group>
                         <Form.Label>Name</Form.Label>
@@ -166,6 +223,15 @@ const SubscriptionPlansAdmin = ({isLoggedIn}) => {
                         <Form.Control.Feedback type="invalid">
                         {errors.description}
                         </Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group>
+                      <Form.Label>Image</Form.Label>
+                      {imagePreviewUrl && <img src={imagePreviewUrl} alt="Preview" style={{ width: '100px', height: 'auto' }} />}
+                      <Form.Control
+                        type="file"
+                        name="image"
+                        onChange={(event) => handleImageChange(event, setFieldValue)}
+                      />
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Price</Form.Label>
@@ -208,6 +274,7 @@ const SubscriptionPlansAdmin = ({isLoggedIn}) => {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         isInvalid={touched.features && !!errors.features}
+                        className='textarea-json'
                         />
                         <Form.Control.Feedback type="invalid">
                         {errors.features}
@@ -222,12 +289,13 @@ const SubscriptionPlansAdmin = ({isLoggedIn}) => {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         isInvalid={touched.metadata && !!errors.metadata}
+                        className='textarea-json'
                         />
                         <Form.Control.Feedback type="invalid">
                         {errors.metadata}
                         </Form.Control.Feedback>
                     </Form.Group>
-                    <Button type="submit" disabled={isSubmitting}>Save Plan</Button>
+                    <Button type="submit" disabled={isSubmitting} className='button-save' >Save Plan</Button>
                     </Form>
                 )}
             </Formik>

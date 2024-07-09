@@ -1,18 +1,16 @@
 /* SubscriptionPlansAdmin.css */
-body {
-    background-color: #f4f4f9; /* Light grey background */
-    color: #333; /* Dark text for readability */
-    font-family: 'Arial', sans-serif; /* Ensure a clean, readable font is used */
-  }
+
   
-  .plan-container {
+  .plan_container_subscriptions {
     display: flex;
     flex-direction: column;
     align-items: center; /* Center align the plan cards */
+    justify-content: center;
     padding: 20px;
+    height: 70vh;
   }
   
-  .plan-card {
+  .plan_container_subscriptions .plan-card {
     background-color: #ffffff; /* White background for plan cards */
     border: 2px solid #007BFF; /* Sat Nam blue border */
     border-radius: 8px;
@@ -20,9 +18,11 @@ body {
     padding: 15px;
     width: 100%; /* Full width on small screens */
     box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+    margin-top: 1rem;
+    margin-bottom: 1rem;
   }
   
-  .plan-card button {
+  .plan_container_subscriptions .plan-card button {
     background-color: #007BFF; /* Sat Nam blue for buttons */
     color: white;
     border: none;
@@ -32,7 +32,7 @@ body {
     cursor: pointer;
   }
   
-  .plan-card button:hover {
+  .plan_container_subscriptions .plan-card button:hover {
     background-color: #0056b3; /* Darker blue on hover */
   }
   
@@ -44,41 +44,63 @@ body {
       justify-content: space-around; /* Evenly space the plan cards */
     }
   
-    .plan-card {
+    .plan_container_subscriptions .plan-card {
       width: 45%; /* Adjust width for larger screens */
     }
   }
+  .modal-dialog {
+    max-width: 100%; /* Ensure modal does not exceed the width of the viewport */
+    margin: 0.5rem;
+  }
   
   .modal-content {
-    background-color: #ffffff; /* Ensure modal is also styled appropriately */
+    overflow-y: auto; /* Allows scrolling within the modal if content overflows */
+    padding: 20px;
+    background-color: #ffffff; /* White background for contrast */
+    border-radius: 8px; /* Rounded corners for a modern look */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
   }
   
   .form-control {
     border-radius: 4px;
     border: 1px solid #ccc;
+    margin-bottom: 15px; /* Ensures space between inputs */
   }
   
   .form-control:focus {
-    border-color: #007BFF; /* Focus state to match the Sat Nam blue */
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    border-color: #007BFF; /* Sat Nam blue for focus state */
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Glow effect */
   }
   
-  /* Improve form validation feedback visibility */
-  .form-control.is-invalid,
-  .form-control.is-valid {
-    border-color: #dc3545;
+  .textarea-json {
+    min-height: 120px; /* Increased height for JSON fields */
+    font-family: monospace; /* Easier to read JSON */
+    background-color: #f8f9fa; /* Light gray background */
+    color: #212529; /* Dark text for better readability */
   }
   
-  .form-control.is-valid {
-    border-color: #28a745;
-  }
-  
-  button[type="submit"] {
-    background-color: #28a745; /* Green for submit to indicate 'go', 'okay', or 'success' */
+  .button-save {
+    background-color: #007BFF; /* Primary button color */
     color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
   }
   
-  button[type="submit"]:hover {
-    background-color: #218838; /* Darker green on hover */
+  .button-save:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  
+  @media (max-width: 768px) {
+    .modal-dialog {
+      margin: 20px; /* More margin on smaller screens */
+    }
+    .modal-content {
+      padding: 10px; /* Less padding on smaller screens */
+    }
+    .button-save {
+      width: 100%; /* Full-width button for easier mobile access */
+    }
   }
   
