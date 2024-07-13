@@ -15,11 +15,13 @@ const PricePlans = () => {
   useEffect(() => {
     const fetchPrices = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/get_product_prices/`);
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/subscription_plan/`);
+        console.log(response.data)
         const fetchedPlans = response.data.map(plan => ({
           ...plan,
-          priceFormatted: formatPrice(plan.price),
-          paymentFrequency: `Cobro ${plan.frequency_type.toLowerCase()} de ${formatPrice(plan.price)} recurrente`
+          priceFormatted: `$${plan.price}`,
+          paymentFrequency: `Cobro ${plan.frequency_type.toLowerCase() === "year" ? "anual" : "mensual"} de $${plan.price} recurrente`,
+          features: plan.features.map((feature, index) => { return {...feature, included: true}})
         }));
         setPlans(fetchedPlans);
         setLoading(false);
@@ -36,10 +38,11 @@ const PricePlans = () => {
   return (
     <div className='plan-container'>
       {plans.map((plan, index) => (
-        <div key={index} className="plan-card">
+        <div key={index} className={plan.frequency_type.toLowerCase()  === "year" ? "plan-card recommended" : "plan-card"}>
           <div className='plan-header'>
             <h2>{plan.name}</h2>
-            <p>{plan.frequency_type}</p>
+            <p>{plan.frequency_type.toLowerCase() === "year" ? "anual" : "mensual"} </p>
+            <p>🇲🇽</p>
           </div>
           <div className='plan-price'>
             <h3>{plan.priceFormatted}</h3>

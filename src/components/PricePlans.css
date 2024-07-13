@@ -20,8 +20,12 @@
 }
 
 .plan-header {
-  margin-bottom: 20px;
+  margin-bottom: 3px;
   animation: fadeIn 1s ease-in-out;
+}
+
+.plan-header p {
+  margin: 0;
 }
 
 .plan-price {

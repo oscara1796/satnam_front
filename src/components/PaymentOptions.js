@@ -168,7 +168,7 @@ const PaymentOptions = ({ isLoggedIn, trialDays }) => {
         />
       ),
     },
-    // { id: 2, label: 'PayPal' },
+    { id: 2, label: 'PayPal' },
     // { id: 3, label: 'Google Pay' },
   ]
   useEffect(() => {

@@ -1,14 +1,15 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef, useCallback } from 'react';
 import { Navigate } from 'react-router-dom';
 import axios from 'axios';
-import * as Yup from 'yup'
+import * as Yup from 'yup';
 import { toast } from 'react-toastify'
 import { Modal, Button, Form } from 'react-bootstrap';
 import { UserContext } from '../context';
 import { getUser, getAccessToken } from '../services/AuthService'
 import { showErrorNotification } from '../services/notificationService'
 import './SubscriptionPlansAdmin.css'; 
-import { Formik } from 'formik'
+import { Formik } from 'formik';
+import { JsonEditor } from 'json-edit-react'
 
 const SubscriptionPlansAdmin = ({isLoggedIn}) => {
   const [plans, setPlans] = useState([]);
@@ -19,6 +20,7 @@ const SubscriptionPlansAdmin = ({isLoggedIn}) => {
   const { user, setState } = useContext(UserContext);
   const [imageFile, setImageFile] = useState(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState(currentPlan?.image || '');
+ 
 
   useEffect(() => {
     setLoading(true);
@@ -78,9 +80,10 @@ const SubscriptionPlansAdmin = ({isLoggedIn}) => {
       } else if (key === 'image' && values[key]) {
         formData.append('image', values[key]);  // Append file to FormData
       } else {
-        formData.append(key, values[key]);
+        formData.append(key, values[key].toString());
       }
     });
+    console.log(formData);
   
     try {
       const url = `${process.env.REACT_APP_BASE_URL}/api/subscription_plan/${currentPlan ? `${currentPlan.id}/` : ''}`;
@@ -109,22 +112,35 @@ const SubscriptionPlansAdmin = ({isLoggedIn}) => {
     frequency_type: Yup.string()
     .oneOf(['month', 'year'], 'Invalid frequency type')
     .required('Frequency type is required'),
-    features: Yup.string().required('Features are required').test(
-      'is-json',
-      'Features must be valid JSON',
+    features: Yup.array()
+    .of(
+      Yup.object()
+        .shape({
+          name: Yup.string().required('Name is required')
+        })
+        .test(
+          'only-name-key',
+          'Object must only contain the name key',
+          value => Object.keys(value).length === 1 && value.hasOwnProperty('name')
+        )
+    )
+    .required('Features are required')
+    .min(1, 'At least one feature is required'),
+    metadata: Yup.object()
+    .test(
+      'is-valid-json-object',
+      'Metadata must be a valid JSON object',
       value => {
-        try { JSON.parse(value); return true; }
-        catch (e) { return false; }
+        try {
+          // Stringify and parse to ensure it is a valid JSON object
+          JSON.parse(JSON.stringify(value));
+          return true;
+        } catch (e) {
+          return false;
+        }
       }
-    ),
-    metadata: Yup.string().required('Metadata are required').test(
-      'is-json',
-      'Metadata must be valid JSON',
-      value => {
-        try { JSON.parse(value); return true; }
-        catch (e) { return false; }
-      }
-    ),
+    )
+    .required('Metadata is required'),
     image: Yup.mixed()
     .nullable()
     .notRequired()
@@ -142,7 +158,7 @@ const SubscriptionPlansAdmin = ({isLoggedIn}) => {
 
 
   const deletePlan = async (planId) => {
-    if (window.confirm('Are you sure you want to delete this plan?')) {
+    if (window.confirm('Estas seguro que quiere eliminar este plan ? ')) {
       try {
         const token = getAccessToken()
         const headers = { Authorization: `Bearer ${token}` }
@@ -156,6 +172,9 @@ const SubscriptionPlansAdmin = ({isLoggedIn}) => {
     }
   };
 
+
+
+
   if (!isLoggedIn || (user && !user.is_staff)) {
     return <Navigate to="/log-in" />;
   }
@@ -165,30 +184,36 @@ const SubscriptionPlansAdmin = ({isLoggedIn}) => {
   return (
     <div className="plan_container_subscriptions">
       <Button onClick={() => openModal()}>Add New Plan</Button>
-      {plans.map(plan => (
-        <div key={plan.id} className='plan-card'>
-          <h4>{plan.name}</h4>
-          <p>${plan.price}</p>
-          <div>
-            <p>{plan.description}</p>
+      <div className='saved_subs'>
+        {plans.map(plan => (
+          <div key={plan.id} className='plan-card'>
+            <h4>{plan.name}</h4>
+            <p> Precio: ${plan.price}</p>
+            <p>{plan.frequency_type === "month" ? "Mensual" : "Anual"}</p>
+            <img src={plan.image}></img>
+            <div>
+              <h5>Descripción: </h5>
+              <p>{plan.description}</p>
+            </div>
+            <Button onClick={() => openModal(plan)}>Edit</Button>
+            <Button onClick={() => deletePlan(plan.id)} className='subs_delete_button'>Delete</Button>
           </div>
-          <Button onClick={() => openModal(plan)}>Edit</Button>
-          <Button onClick={() => deletePlan(plan.id)}>Delete</Button>
-        </div>
-      ))}
+        ))}
+      </div>
+      
 
-      <Modal show={showModal} onHide={closeModal} centered scrollable={true}>
+      <Modal show={showModal} onHide={closeModal} centered scrollable={true} >
         <Formik
             initialValues={{
                 name: currentPlan?.name || '',
                 description: currentPlan?.description || '',
                 price: currentPlan?.price || '',
                 frequency_type: currentPlan?.frequency_type || '',
-                features: JSON.stringify(currentPlan?.features || [
+                features: currentPlan?.features || [
                     {"name": "Feature 1 Description"},
                     {"name": "Feature 2 Description"}
-                ]),
-                metadata: JSON.stringify(currentPlan?.metadata || {"meta1": "data1"})
+                ],
+                metadata: currentPlan?.metadata || {"meta1": "data1"}
             }}
             validationSchema={validationSchema}
             onSubmit={handleFormSubmit}
@@ -266,42 +291,53 @@ const SubscriptionPlansAdmin = ({isLoggedIn}) => {
                         </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Features (JSON)</Form.Label>
-                        <Form.Control
-                        as="textarea"
-                        name="features"
-                        value={values.features}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        isInvalid={touched.features && !!errors.features}
-                        className='textarea-json'
+                      <Form.Label>Features (JSON)</Form.Label>
+                      
+                      <JsonEditor
+                        name="features" 
+                        data={values.features}
+                        rootName={"features"}
+                        onUpdate={(newJson) => {
+                          console.log("Updated Features Data:", newJson.newData);
+                          setFieldValue('features', newJson.newData);
+                        }}
                         />
-                        <Form.Control.Feedback type="invalid">
-                        {errors.features}
-                        </Form.Control.Feedback>
+                      {touched.features && errors.features && (
+                        <div className="invalid-feedback d-block">{errors.features}</div>
+                      )}
                     </Form.Group>
+
                     <Form.Group>
-                        <Form.Label>Metadata (JSON)</Form.Label>
-                        <Form.Control
-                        as="textarea"
+                      <Form.Label>Metadata (JSON)</Form.Label>
+                      <JsonEditor
                         name="metadata"
-                        value={values.metadata}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        isInvalid={touched.metadata && !!errors.metadata}
-                        className='textarea-json'
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        {errors.metadata}
-                        </Form.Control.Feedback>
+                        data={values.metadata}
+                        rootName={"metadata"}
+                        onUpdate={(newJson) => {
+                          console.log("Updated Metadata Data:", newJson.newData);
+                          setFieldValue('metadata', newJson.newData);
+                        }}
+                      />
+                      {touched.metadata && errors.metadata && (
+                        <div className="invalid-feedback d-block">{errors.metadata}</div>
+                      )}
                     </Form.Group>
-                    <Button type="submit" disabled={isSubmitting} className='button-save' >Save Plan</Button>
-                    </Form>
+
+                    <Button type="submit" disabled={isSubmitting} className='button-save'>Save Plan</Button>
+                  </Form>
                 )}
-            </Formik>
+              </Formik>
       </Modal>
     </div>
   );
 };
+
+
+
+
+
+
+
+
 
 export default SubscriptionPlansAdmin;
