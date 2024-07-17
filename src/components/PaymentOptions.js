@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import SubscriptionForm from './SubscriptionForm'
+import PayPalSubscriptionButton from './PayPalSubscriptionButton'
 import { Navigate } from 'react-router-dom'
 import { UserContext } from '../context'
 import { getUser, getAccessToken } from '../services/AuthService'
@@ -11,7 +12,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { getCardBrandIcon } from '../services/CardValidationService'
 import { Button, Spinner } from 'react-bootstrap'
 import { showErrorNotification } from '../services/notificationService'
-const TotalCheckoutBox = ({ setSelectedPriceId, selectedPriceId }) => {
+
+
+const TotalCheckoutBox = ({ setSelectedPriceId, selectedPriceId, setPaypalPlanId }) => {
   const [prices, setPrices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalAmount, setTotalAmount] = useState('');
@@ -33,12 +36,12 @@ const TotalCheckoutBox = ({ setSelectedPriceId, selectedPriceId }) => {
       try {
         const token = getAccessToken();
         const response = await axios.get(
-          `${process.env.REACT_APP_BASE_URL}/api/get_product_prices/`,
+          `${process.env.REACT_APP_BASE_URL}/api/subscription_plan/`,
           { timeout: 5000 }
         );
-        console.log('prices data', JSON.parse(response.data));
+        console.log('prices data', response.data);
         // Assume the response is the array of product data
-        setPrices(JSON.parse(response.data));
+        setPrices(response.data);
         setLoading(false);
       } catch (e) {
         if (retries > 0) {
@@ -54,16 +57,17 @@ const TotalCheckoutBox = ({ setSelectedPriceId, selectedPriceId }) => {
     fetchPrices();
   }, []);
 
-  const handleSelectionChange = (productId, productPrice, productCurrency) => {
+  const handleSelectionChange = (productId, productPrice, productCurrency, plan_id) => {
     setSelectedPriceId(productId);
     setTotalAmount(productPrice);
     setCurrency(productCurrency);
+    setPaypalPlanId(plan_id)
   };
 
   // Display loading, error, or the list of product prices
   return (
     <div className='total-amount-box'>
-      <h3>Monto total: <span id='total-amount' >${formatPrice(totalAmount) + ' ' + currency}</span></h3>
+      <h3>Monto total: <span id='total-amount' >${totalAmount + ' ' + currency}</span></h3>
     
       {error && <p>Could not load prices: {error.message}</p>}
       <h5>Elige un plan:</h5>
@@ -74,32 +78,33 @@ const TotalCheckoutBox = ({ setSelectedPriceId, selectedPriceId }) => {
             <input
               type='checkbox'
               name='priceOption'
-              checked={selectedPriceId === product.default_price}
+              checked={selectedPriceId === product.stripe_price_id}
               onChange={() =>
                 handleSelectionChange(
-                  product.default_price,
-                  product.total_price,
-                  product.currency
+                  product.stripe_price_id,
+                  product.price,
+                  "mxn",
+                  product.paypal_plan_id
                 )
               }
             />
             <span className='price-label'>
               <h3>{product.name} </h3>
-              <img className='product_image' src={product.images[0]} alt={product.name}></img>
+              <img className='product_image' src={product.image} alt={product.name}></img>
               <p>{product.description}</p>
-              <p className='product-payment-frequency'>*{product.paymentFrequency}</p>
+              <p className='product-payment-frequency'>*{product.frequency_type.toLowerCase() === "year" ? "Anual" : "Mensual"} </p>
               <ul className='plan-features'>
                 {product.features.map((feature, index) => (
                   <li
                     key={index}
-                    className={feature.included ? 'included' : 'not-included'}
+                    className={'included'}
                   >
                     {feature.name}
                   </li>
                 ))}
               </ul>
               <span>
-                {product.price + ' ' + product.currency}
+                {product.price + ' mxn'}
               </span>
             </span>
           </label>
@@ -112,12 +117,15 @@ const TotalCheckoutBox = ({ setSelectedPriceId, selectedPriceId }) => {
 const PaymentOptions = ({ isLoggedIn, trialDays }) => {
   const [fetchPaymentMethods, setFetchPaymentMethods] = useState(false)
   const [defaultPaymentMethod, setDefaultPaymentMethod] = useState(null)
-  const [selectDefaultPaymentMethod, setSelectDefaultPaymentMethod] =
-    useState(null)
+  const [selectDefaultPaymentMethod, setSelectDefaultPaymentMethod] = useState(null)
   const [selectedOption, setSelectedOption] = useState(null)
   const [selectedPriceId, setSelectedPriceId] = useState(null)
+  const [paypalPlanId, setPaypalPlanId] = useState(null)
   const [state, setState] = useContext(UserContext)
   const [isLoading, setLoading] = useState(false)
+
+
+  
 
   const getPaymentMethods = async () => {
     setLoading(true)
@@ -168,7 +176,7 @@ const PaymentOptions = ({ isLoggedIn, trialDays }) => {
         />
       ),
     },
-    { id: 2, label: 'PayPal' },
+    { id: 2, label: 'PayPal', component: (<PayPalSubscriptionButton plan_id={paypalPlanId} />)},
     // { id: 3, label: 'Google Pay' },
   ]
   useEffect(() => {
@@ -183,6 +191,24 @@ const PaymentOptions = ({ isLoggedIn, trialDays }) => {
   const handleOptionChange = (optionId) => {
     setSelectedOption(optionId)
   }
+
+  const renderPaymentComponent = () => {
+    switch (selectedOption) {
+      case 1:
+        return (
+          <SubscriptionForm
+            isLoggedIn={isLoggedIn}
+            selectedPriceId={selectedPriceId}
+            trialDays={trialDays}
+            selectDefaultPaymentMethod={selectDefaultPaymentMethod}
+          />
+        );
+      case 2:
+        return <PayPalSubscriptionButton plan_id={paypalPlanId} />;
+      default:
+        return null;
+    }
+  };
 
   if (!isLoggedIn) {
     return <Navigate to='/log-in' />
@@ -233,16 +259,14 @@ const PaymentOptions = ({ isLoggedIn, trialDays }) => {
               trialDays={trialDays}
               setSelectDefaultPaymentMethod={setSelectDefaultPaymentMethod}
             />
-            {
-              paymentOptions.find((option) => option.id === selectedOption)
-                .component
-            }
+            {renderPaymentComponent()}
           </div>
         )}
       </div>
       <TotalCheckoutBox
         setSelectedPriceId={setSelectedPriceId}
         selectedPriceId={selectedPriceId}
+        setPaypalPlanId={setPaypalPlanId}
       />
     </div>
   )
