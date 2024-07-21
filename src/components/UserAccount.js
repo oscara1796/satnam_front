@@ -290,6 +290,7 @@ function UserSubscription(props) {
   const [isLoading, setIsLoading] = useState(true)
   const [refreshSubData, setRefreshSubData] = useState(false)
   const [isCancelled, setIsCancelled] = useState(false)
+  
 
   // Fetch subscription data on mount
   useEffect(() => {
@@ -334,7 +335,14 @@ function UserSubscription(props) {
     // Implement your cancel subscription logic here
 
     let user = getUser()
-    let url = `${process.env.REACT_APP_BASE_URL}/api/create_subscription/${user.id}/`
+    let url = ""
+    if (userSub.subscription_type === "stripe") {
+      url = `${process.env.REACT_APP_BASE_URL}/api/create_subscription/${user.id}/`
+      
+    } else{
+      
+      url = `${process.env.REACT_APP_BASE_URL}/api/subscription_plan_paypal/${user.id}/`
+    }
 
     const token = getAccessToken()
     const headers = { Authorization: `Bearer ${token}` }
@@ -359,7 +367,14 @@ function UserSubscription(props) {
 
   const handleReactivateSubscription = async () => {
     let user = getUser()
-    const url = `${process.env.REACT_APP_BASE_URL}/api/create_subscription/${user.id}/`
+    let url= ""
+    if (userSub.subscription_type === "stripe") {
+      url = `${process.env.REACT_APP_BASE_URL}/api/create_subscription/${user.id}/`
+      
+    } else{
+      
+      url = `${process.env.REACT_APP_BASE_URL}/api/subscription_plan_paypal/${user.id}/`
+    }
 
     try {
       const token = getAccessToken()
@@ -404,8 +419,8 @@ function UserSubscription(props) {
             <strong>Plan:</strong> {userSub.product_name}
             <br />
             <strong>Precio: </strong> $
-            {Math.floor(userSub.product_price / 100) +
-              (userSub.product_price % 100) / 100}
+            {userSub.subscription_type == "paypal" ?  userSub.product_price : Math.floor(userSub.product_price / 100) +
+              (userSub.product_price % 100) / 100} MXN
             <br />
             {!isCancelled ? (
               <strong>Siguiente cobró: </strong>
@@ -434,10 +449,22 @@ function UserSubscription(props) {
 
 // Component to convert timestamp to readable date
 function TimestampToDate({ timestamp }) {
-  const date = new Date(timestamp * 1000)
-  const formattedDate = date.toLocaleString() // Adjust formatting as needed
 
-  return <> {formattedDate}</>
+  let date;
+  if (typeof timestamp === 'number') {
+      date = new Date(timestamp * 1000);
+  } else if (typeof timestamp === 'string') {
+      date = new Date(timestamp);
+  } else {
+      console.error('Invalid timestamp format:', timestamp);
+      return <>{'Invalid date'}</>; // Render some fallback or error message
+  }
+
+  // Use Spanish locale and custom options for formatting the date
+  const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+  const formattedDate = date.toLocaleString('es-ES', options);
+
+  return <> {formattedDate} </>;
 }
 
 export default UserAccount

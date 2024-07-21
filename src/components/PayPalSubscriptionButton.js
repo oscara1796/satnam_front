@@ -11,10 +11,41 @@ const PayPalSubscriptionButton = ({ plan_id }) => {
 
     const paypalRef = useRef(null);  // Reference to the PayPal button container
   
+    const retryLimit = 3; // Maximum number of retries
+    const retryDelay = 2000; // Delay between retries in milliseconds
+
+    const attemptApiCall = async (data, attempt = 1) => {
+      try {
+        const token = getAccessToken();
+        const headers = { Authorization: `Bearer ${token}` };
+
+        const response = await axios.post(
+          `${process.env.REACT_APP_BASE_URL}/api/subscription_plan_paypal/`,
+          data, {
+            headers: headers,
+            timeout: 5000
+          }
+        );
+
+        console.log("API response:", response);
+        setSubSuccess(true); // Set subscription success state
+        setSubmitted(true); 
+      } catch (e) {
+        console.log(`Attempt ${attempt}:`, e);
+        if (attempt < retryLimit) {
+          setTimeout(() => attemptApiCall(data, attempt + 1), retryDelay);
+        } else {
+          console.error("API call failed after several attempts:", e);
+          toast.error(".");
+          setSubmitted(true); 
+          // Indicate that the process is done, failed after retries
+        }
+      }
+    };
+
     useEffect(() => {
       if (plan_id && paypalRef.current) {
-        // Ensure the container is empty before initializing a new button
-        paypalRef.current.innerHTML = '';
+        paypalRef.current.innerHTML = ''; // Clear the PayPal button container
         
         window.paypal.Buttons({
           createSubscription: function(data, actions) {
@@ -22,34 +53,13 @@ const PayPalSubscriptionButton = ({ plan_id }) => {
               'plan_id': plan_id
             });
           },
-          onApprove:  async function(data, actions) {
+          onApprove: function(data, actions) {
             console.log("Subscription successful!", data);
             data["user_id"] = state.user.id;
-            try {
-              const token = getAccessToken();
-              const headers = { Authorization: `Bearer ${token}` }
-          
-              const response = await axios.post(
-                `${process.env.REACT_APP_BASE_URL}/api/subscription_plan_paypal/`,
-                data,{
-                  headers: headers,
-                },
-                { timeout: 5000 }
-              );
-
-
-              setSubSuccess(true);
-              // Assume the response is the array of product data
-            } catch (e) {
-              console.log(e);
-            }
-
-            setSubmitted(true);
-            // Further actions upon successful subscription
+            attemptApiCall(data); // Attempt to call the API with retries
           },
           onError: function(err) {
             console.error('Error with PayPal Button:', err);
-
             setSubmitted(true);
           }
         }).render(paypalRef.current);

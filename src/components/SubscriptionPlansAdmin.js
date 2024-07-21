@@ -210,10 +210,12 @@ const SubscriptionPlansAdmin = ({isLoggedIn}) => {
                 price: currentPlan?.price || '',
                 frequency_type: currentPlan?.frequency_type || '',
                 features: currentPlan?.features || [
-                    {"name": "Feature 1 Description"},
-                    {"name": "Feature 2 Description"}
+                    {"name": "Contenido de yoga actualizado"},
+                    {"name": "Videos ilimitados"},
+                    {"name": "Acceso a 1 clase  presencial al mes *Si radicas en Guadalajara, Jalisco, México"},
+                    {"name": "Cancela cuando quieras"}
                 ],
-                metadata: currentPlan?.metadata || {"meta1": "data1"}
+                metadata: currentPlan?.metadata || {"buttonText": "Subscribete al plan"}
             }}
             validationSchema={validationSchema}
             onSubmit={handleFormSubmit}
