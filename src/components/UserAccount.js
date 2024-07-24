@@ -457,7 +457,7 @@ function TimestampToDate({ timestamp }) {
       date = new Date(timestamp);
   } else {
       console.error('Invalid timestamp format:', timestamp);
-      return <>{'Invalid date'}</>; // Render some fallback or error message
+      return <>{'Fecha invalida '}</>; // Render some fallback or error message
   }
 
   // Use Spanish locale and custom options for formatting the date
