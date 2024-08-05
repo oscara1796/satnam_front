@@ -136,7 +136,7 @@ function UserAccount({ isLoggedIn, logIn, logOut }) {
       </Container>
 
       <Container>
-        <PaymentMethodsList isLoggedIn={isLoggedIn} />
+        {state.user && state.user.paypal_subscription_id ? (<></>) : ( <PaymentMethodsList isLoggedIn={isLoggedIn} />)}
       </Container>
 
       <Container className='mt-2  user_form'>
