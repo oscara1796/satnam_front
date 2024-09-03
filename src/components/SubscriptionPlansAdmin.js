@@ -121,7 +121,7 @@ const SubscriptionPlansAdmin = ({isLoggedIn}) => {
         .test(
           'only-name-key',
           'Object must only contain the name key',
-          value => Object.keys(value).length === 1 && value.hasOwnProperty('name')
+          value => Object.keys(value).length === 1 && Object.prototype.hasOwnProperty.call(value, 'name')
         )
     )
     .required('Features are required')

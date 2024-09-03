@@ -10,9 +10,9 @@ const extractErrorMessage = (htmlContent) => {
 
 export const showErrorNotification = (error) => {
   let defaultMessage = 'Un error inesperado ocurrió, por favor intente más tarde.';
-
+  let message = ""
   if (error.response) {
-    let message = error.response.data.message || error.response.data;
+    message = error.response.data.message || error.response.data;
 
     if (message) {
       if (typeof message === 'object') {
