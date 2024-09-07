@@ -28,6 +28,7 @@ import TermsOfService from './components/TermsOfService'
 import Footer from './components/Footer'
 import PrivacyPolicy from './components/PrivacyPolicy'
 import SubscriptionPlansAdmin from './components/SubscriptionPlansAdmin'
+import YogaTeacher from './components/YogaTeacher'
 import axios from 'axios'
 import {
   getUser,
@@ -209,14 +210,17 @@ function App() {
           path='contact-form'
           element={<ContactForm isLoggedIn={isLoggedIn} />}
         />
+
+        <Route
+          path='maestros'
+          element={<YogaTeacher isLoggedIn={isLoggedIn} />}
+        />
+
         <Route
           path='calendar'
           element={<CalendarComponent isLoggedIn={isLoggedIn} />}
         />
-        {/* <Route
-          path='sub-form'
-          element={<SubscriptionForm isLoggedIn={isLoggedIn} />}
-        /> */}
+
         <Route
           path='sub-success'
           element={<StripeSuccess isLoggedIn={isLoggedIn} />}
@@ -311,6 +315,12 @@ function Layout({ isLoggedIn, logOut }) {
                 <LinkContainer to='/contact-form'>
                   <a className='nav_link'>Contacto</a>
                 </LinkContainer>
+
+                <LinkContainer to='/maestros'>
+                  <a className='nav_link'>Maestros</a>
+                </LinkContainer>
+
+
                 {state && state.user && state.user.is_staff ? (
                   <NavDropdown id='adminmenue' title='Admin'>
                     <LinkContainer to='/videos-create'>

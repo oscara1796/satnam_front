@@ -31,14 +31,23 @@ main {
 }
 
 /* NAVBAR */
-/* .navbar .container{
+.navbar .container{
   display: flex;
   justify-content: space-between !important;
-} */
+}
 
 .logo img {
   width: 15vw;
 }
+
+.logo{
+  width: 15vw;
+}
+
+.navbar-collapse{
+  width: 50vw;
+}
+
 .navbar-nav {
   display: flex;
   justify-content: space-between;
@@ -55,13 +64,13 @@ main {
   background-color: #137ea7 !important;
 }
 .navbar-nav .auth_buttons {
-  width: 50%;
+  
   display: flex;
   justify-content: flex-end;
 }
 
 .navbar-nav .navbar_links {
-  width: 50%;
+  
   display: flex;
   align-items: center;
   justify-content: flex-start;
