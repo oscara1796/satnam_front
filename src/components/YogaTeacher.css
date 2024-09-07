@@ -33,7 +33,7 @@ body {
 }
 
 .bio-section {
-    max-width: 70%;
+    max-width: 50%;
     background-color: white;
     padding: 40px;
     border-radius: 15px;
@@ -61,8 +61,8 @@ body {
 }
 
 .bio-text {
-    flex: 1;
-    color: var(--text-color);
+    text-align: left; /* Align text to the left */
+    color: var(--text-color); /* Keeping the existing color */
     font-size: 1.1em;
     line-height: 1.8em;
     margin-right: 20px;
