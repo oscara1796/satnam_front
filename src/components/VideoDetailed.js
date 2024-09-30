@@ -47,9 +47,7 @@ const VideoDetailed = (props) => {
     console.log('video', video)
   }, [])
 
-  if (!props.isLoggedIn) {
-    return <Navigate to='/log-in' />
-  }
+  
 
   function convertRawDataToDescription(rawData) {
     const parsedData = JSON.parse(rawData)
