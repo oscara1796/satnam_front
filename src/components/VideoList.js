@@ -173,9 +173,7 @@ const VideoList = ({ isLoggedIn }) => {
     getVideos()
   }, [page, category, searchInitiated])
 
-  if (!isLoggedIn) {
-    return <Navigate to='/log-in' />
-  }
+ 
 
   return (
     <div className='video-list container-fluid mt-4'>
