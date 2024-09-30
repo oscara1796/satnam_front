@@ -5,11 +5,11 @@ import VideoCard from './VideoCard'
 import PageIndex from './PageIndex'
 import { Navigate } from 'react-router-dom'
 import { UserContext } from '../context'
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import './Spinner.css'
 
-const Spinner = () => {
-  return <div className='spinner'></div>
-}
+const MySwal = withReactContent(Swal);
 
 const Categories = ({ handleCategoryOption, selectedCategory }) => {
   const [categories, setCategories] = useState([]);
@@ -51,17 +51,34 @@ const Categories = ({ handleCategoryOption, selectedCategory }) => {
     }
   };
 
+  const confirmDeleteCategory = (categoryId) => {
+    MySwal.fire({
+      title: 'Estas segur@?',
+      text: 'Realmente  quieres eliminar esta categoria?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleDeleteCategory(categoryId);
+        MySwal.fire('Eliminada!', 'La categoria ha sido eliminada con exito.', 'success');
+      }
+    });
+  };
+
   return (
     <>
       {categories.map((category) => (
         <div key={category.id} style={{ marginBottom: '10px' }}>
           {state.user && state.user.is_staff && (
             <button
-              onClick={() => handleDeleteCategory(category.id)}
+              onClick={() => confirmDeleteCategory(category.id)}
               className='delete-category-button'
               style={{ marginBottom: '5px', backgroundColor: 'red', color: 'white' }}
             >
-              Delete Category
+              Delete {category.title}
             </button>
           )}
           <button
