@@ -19,12 +19,10 @@ const Categories = ({ handleCategoryOption, selectedCategory }) => {
     async function getCategories() {
       // Define the URL of your Django API endpoint
       const url = `${process.env.REACT_APP_BASE_URL}/api/category_list/`;
-      const token = getAccessToken();
-      const headers = { Authorization: `Bearer ${token}` };
 
       // Fetch categories from the API
       try {
-        let response = await axios.get(url, { headers: headers, timeout: 5000 });
+        let response = await axios.get(url, {  timeout: 5000 });
         setCategories(response.data);
         console.log('categories', response.data);
       } catch (error) {
@@ -136,8 +134,7 @@ const VideoList = ({ isLoggedIn }) => {
     let url =
       `${process.env.REACT_APP_BASE_URL}/api/video_list/` +
       `?page=${page}&page_size=${video_elements_per_page}`
-    const token = getAccessToken()
-    const headers = { Authorization: `Bearer ${token}` }
+    
 
     if (searchQuery) {
       url = url + `&search=${searchQuery}`
@@ -150,9 +147,6 @@ const VideoList = ({ isLoggedIn }) => {
     try {
       let response = await axios.get(
         url,
-        {
-          headers: headers,
-        },
         { timeout: 5000 }
       )
       setTotalPages(
