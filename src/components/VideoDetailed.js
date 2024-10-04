@@ -19,15 +19,26 @@ const VideoDetailed = (props) => {
   const getVideo = async () => {
     // Replace 'your_api_base_url' with the actual base URL of your API
     const apiUrl = `${process.env.REACT_APP_BASE_URL}/api/video_detail/${video_id}`
-
     const token = getAccessToken()
+    const headers = { Authorization: `Bearer ${token}` }
 
     // Make the GET request to retrieve the video
     try {
-      let response = await axios.get(
-        apiUrl,
-        { timeout: 5000 }
-      )
+
+      let response= {};
+
+      if (state.user && state.user.active) {
+         response = await axios.get(
+          apiUrl,
+          {headers: headers},
+          { timeout: 5000 }
+        )
+      }else{
+        response = await axios.get(
+         apiUrl,
+         { timeout: 5000 }
+       )
+      }
 
       setVideo(response.data)
       console.log('videos', response.data)
