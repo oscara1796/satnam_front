@@ -21,15 +21,11 @@ const VideoDetailed = (props) => {
     const apiUrl = `${process.env.REACT_APP_BASE_URL}/api/video_detail/${video_id}`
 
     const token = getAccessToken()
-    const headers = { Authorization: `Bearer ${token}` }
 
     // Make the GET request to retrieve the video
     try {
       let response = await axios.get(
         apiUrl,
-        {
-          headers: headers,
-        },
         { timeout: 5000 }
       )
 
