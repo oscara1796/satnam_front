@@ -1,0 +1,62 @@
+.yoga-pose-tracker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background: #f0f4f8; /* Light gray background */
+    font-family: 'Arial, sans-serif';
+  }
+  
+  .title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #738fd6; /* Blue color from the logo */
+    margin-bottom: 20px;
+  }
+  
+  .start-button {
+    background: #738fd6; /* Blue color from the logo */
+    color: #ffffff;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .start-button:disabled {
+    background: #a0a5b8; /* Lighter version of blue */
+    cursor: not-allowed;
+  }
+  
+  .start-button:hover:enabled {
+    background: #5e75b6; /* Darker blue for hover effect */
+  }
+  
+  .pose-result {
+    font-size: 1.5rem;
+    color: #444444; /* Darker gray for visibility */
+    margin: 15px 0;
+  }
+  
+  .webcam-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .current-pose {
+    font-size: 1.2rem;
+    color: #738fd6; /* Blue color from the logo */
+    margin-bottom: 10px;
+  }
+  
+  .webcam {
+    width: 320px;
+    height: 240px;
+    border: 4px solid #d3d3d3; /* Light gray border for emphasis */
+    border-radius: 10px;
+  }
+  

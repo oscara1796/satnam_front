@@ -29,6 +29,7 @@ import Footer from './components/Footer'
 import PrivacyPolicy from './components/PrivacyPolicy'
 import SubscriptionPlansAdmin from './components/SubscriptionPlansAdmin'
 import YogaTeacher from './components/YogaTeacher'
+import YogaPoseTracker from './components/pose_recognition/YogaPoseTracker'
 import axios from 'axios'
 import {
   getUser,
@@ -211,6 +212,11 @@ function App() {
           element={<ContactForm isLoggedIn={isLoggedIn} />}
         />
 
+      <Route
+          path='pose-recognition'
+          element={<YogaPoseTracker isLoggedIn={isLoggedIn} />}
+        />
+
         <Route
           path='maestros'
           element={<YogaTeacher isLoggedIn={isLoggedIn} />}
@@ -318,6 +324,10 @@ function Layout({ isLoggedIn, logOut }) {
 
                 <LinkContainer to='/maestros'>
                   <a className='nav_link'>Maestros</a>
+                </LinkContainer>
+
+                <LinkContainer to='/pose-recognition'>
+                  <a className='nav_link'>Entrenamiento yoga (IA)</a>
                 </LinkContainer>
 
 
